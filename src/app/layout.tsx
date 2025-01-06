@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "@/components/layout/navbar/Navbar";
+import Footer from "@/components/layout/footer/Footer";
 
 export const metadata: Metadata = {
-    title: "E Commerce Sliwka",
+    title: "E-Commerce Sliwka",
     description: "",
     icons: "/icon.ico",
 };
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="antialiased">{children}</body>
+            <body>
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+            </body>
         </html>
     );
 }
