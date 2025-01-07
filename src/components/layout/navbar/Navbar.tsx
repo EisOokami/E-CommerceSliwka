@@ -37,8 +37,10 @@ export default function Navbar() {
         [hamburgerRef],
     );
 
+    const styleMenuBorder = isOpen ? "border-t" : "";
+
     return (
-        <nav className="relative p-3 bg-white">
+        <nav className="sticky top-0 p-3 bg-white">
             <div className="flex justify-between items-center container mx-auto">
                 <div className="lg:flex-1">
                     <Logo width={50} height={50} />
@@ -55,7 +57,9 @@ export default function Navbar() {
                 </div>
             </div>
             {isOpen && (
-                <div className="md:hidden absolute top-full left-0 w-full h-svh bg-black/50">
+                <div
+                    className={`md:hidden absolute top-full left-0 w-full h-svh bg-black/50 ${styleMenuBorder}`}
+                >
                     <div
                         ref={containerNavbarMenu}
                         className="grid gap-5 p-5 bg-white"
