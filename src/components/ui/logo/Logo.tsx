@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface LogoProps {
     width: number | `${number}` | undefined;
@@ -7,7 +8,7 @@ interface LogoProps {
 
 export default function Logo({ width, height }: LogoProps) {
     return (
-        <div>
+        <Link href="/">
             <Image
                 src="/generallogoblue.png"
                 alt="logo"
@@ -15,6 +16,6 @@ export default function Logo({ width, height }: LogoProps) {
                 width={width}
                 height={height}
             />
-        </div>
+        </Link>
     );
 }
