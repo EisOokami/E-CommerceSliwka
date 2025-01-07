@@ -1,0 +1,11 @@
+.footer__container-links {
+    @apply grid gap-5 md:gap-3 text-gray-300;
+
+    & li {
+        @apply md:text-xl hover:text-white cursor-pointer transition;
+    }
+}
+
+.footer__icons {
+    @apply text-3xl md:text-2xl hover:text-gray-300 cursor-pointer transition;
+}
