@@ -40,7 +40,7 @@ export default function Navbar() {
     const styleMenuBorder = isOpen ? "border-t" : "";
 
     return (
-        <nav className="sticky top-0 p-3 bg-white">
+        <nav className="sticky top-0 p-3 bg-white z-50">
             <div className="flex justify-between items-center container mx-auto">
                 <div className="lg:flex-1">
                     <Logo width={50} height={50} />
