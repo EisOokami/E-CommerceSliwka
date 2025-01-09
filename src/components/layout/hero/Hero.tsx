@@ -14,7 +14,7 @@ export default function Hero() {
                             Created to change everything for the better. For
                             everyone
                         </p>
-                        <InlineButton theme="light" />
+                        <InlineButton theme="light" text="Shop now" />
                     </div>
                     <Image
                         src="/iphone-hero.png"
@@ -53,7 +53,7 @@ export default function Hero() {
                             The new 15-inch Macbook Air makes room for more of
                             what уоu love with а spacious Liquid Retina display.
                         </p>
-                        <InlineButton theme="dark" />
+                        <InlineButton theme="dark" text="Shop now" />
                     </div>
                     <Image
                         src="/macbook-air-hero.png"

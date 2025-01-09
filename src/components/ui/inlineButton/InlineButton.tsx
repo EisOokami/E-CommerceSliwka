@@ -1,8 +1,9 @@
 interface InlineButtonProps {
     theme: "light" | "dark";
+    text: string;
 }
 
-export default function InlineButton({ theme }: InlineButtonProps) {
+export default function InlineButton({ theme, text }: InlineButtonProps) {
     const styleTheme =
         theme === "dark"
             ? "hover:text-white hover:bg-black border-black transition"
@@ -10,7 +11,7 @@ export default function InlineButton({ theme }: InlineButtonProps) {
 
     return (
         <button className={`w-fit px-10 py-3 border rounded-md ${styleTheme}`}>
-            Shop Now
+            {text}
         </button>
     );
 }
