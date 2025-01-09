@@ -1,12 +1,19 @@
 interface InlineButtonProps {
     theme: "light" | "dark";
     text: string;
+    inline?: boolean;
 }
 
-export default function InlineButton({ theme, text }: InlineButtonProps) {
+export default function Button({
+    theme,
+    text,
+    inline = false,
+}: InlineButtonProps) {
     const styleTheme =
-        theme === "dark"
+        theme === "dark" && !inline
             ? "hover:text-white hover:bg-black border-black transition"
+            : theme === "dark" && inline
+            ? "text-white hover:text-black bg-black hover:bg-white border-black transition"
             : "text-white hover:text-black hover:bg-white border-white transition";
 
     return (
