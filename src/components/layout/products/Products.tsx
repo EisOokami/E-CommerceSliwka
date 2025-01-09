@@ -52,12 +52,12 @@ export default function Products() {
     return (
         <section>
             <div className="py-20 bg-gray-100">
-                <div className="grid gap-7 container mx-auto">
+                <div className="grid gap-7 container mx-auto p-3 md:p-0">
                     <div className="flex justify-between items-center">
-                        <h4 className="text-3xl font-medium">
+                        <h4 className="text-2xl md:text-3xl font-medium">
                             Browse By Category
                         </h4>
-                        <div className="flex items-center gap-5 text-2xl">
+                        <div className="flex items-center gap-5 text-xl md:text-2xl">
                             <button>
                                 <FaChevronLeft />
                             </button>
@@ -66,7 +66,7 @@ export default function Products() {
                             </button>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center gap-5">
+                    <div className="grid lg:flex grid-cols-2 md:grid-cols-3 lg:justify-between lg:items-center gap-5">
                         {initialCategoriesData.map((category, i) => (
                             <div
                                 key={i}
@@ -81,40 +81,44 @@ export default function Products() {
                     </div>
                 </div>
             </div>
-            <div className="grid gap-7 container mx-auto py-10">
-                <div className="flex gap-10">
+            <div className="grid gap-7 container mx-auto p-3 md:px-0 py-10">
+                <div className="flex gap-5 md:gap-10 whitespace-nowrap overflow-y-auto">
                     {initialTabsData.map((tab, i) => (
                         <div
                             key={i}
-                            className={`text-xl font-medium cursor-pointer ${
+                            className={`cursor-pointer ${
                                 activeTab === i
                                     ? "text-black border-b-[3px] border-black"
                                     : "text-gray-500"
                             }`}
                             onClick={() => handleChangeActiveTab(i)}
                         >
-                            <span>{tab}</span>
+                            <span className="text-lg md:text-xl font-medium">
+                                {tab}
+                            </span>
                         </div>
                     ))}
                 </div>
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {[...Array(8)].map((_, i) => (
                         <div
                             key={i}
-                            className="grid justify-items-center gap-3 p-8 bg-gray-100 rounded-md cursor-pointer"
+                            className="grid justify-items-center gap-3 p-3 md:p-8 bg-gray-100 rounded-md cursor-pointer"
                         >
-                            <FaRegHeart className="justify-self-end text-3xl text-gray-500" />
+                            <FaRegHeart className="justify-self-end text-2xl md:text-3xl text-gray-500" />
                             <Image
                                 src="/product_image_thumb.png"
                                 alt="image"
-                                width={300}
-                                height={300}
+                                width={250}
+                                height={250}
                             />
-                            <span className="text-center text-lg font-medium">
+                            <span className="text-center md:text-lg font-medium">
                                 Lorem ipsum dolor sit amet consectetur
                                 adipisicing elit
                             </span>
-                            <span className="text-3xl font-semibold">$999</span>
+                            <span className="text-2xl md:text-3xl font-semibold">
+                                $999
+                            </span>
                             <Button theme="dark" text="Buy now" inline />
                         </div>
                     ))}
