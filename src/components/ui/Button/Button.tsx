@@ -10,9 +10,9 @@ export default function Button({
     inline = false,
 }: InlineButtonProps) {
     const styleTheme =
-        theme === "dark" && !inline
+        theme === "dark" && inline
             ? "hover:text-white hover:bg-black border-black transition"
-            : theme === "dark" && inline
+            : theme === "dark" && !inline
             ? "text-white hover:text-black bg-black hover:bg-white border-black transition"
             : "text-white hover:text-black hover:bg-white border-white transition";
 

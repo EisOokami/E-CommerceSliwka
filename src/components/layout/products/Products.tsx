@@ -11,7 +11,7 @@ import {
 import { FiHeadphones } from "react-icons/fi";
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { LuGamepad2 } from "react-icons/lu";
-import Button from "@/components/ui/Button/Button";
+import Button from "@/components/ui/button/Button";
 
 const initialCategoriesData = [
     {
@@ -72,8 +72,8 @@ export default function Products() {
                                 key={i}
                                 className="grid justify-items-center gap-5 w-full p-5 bg-gray-200 rounded-xl"
                             >
-                                <category.icon className="text-5xl" />
-                                <span className="text-xl font-medium">
+                                <category.icon className="text-4xl sm:text-5xl" />
+                                <span className="text-base sm:text-xl font-medium">
                                     {category.name}
                                 </span>
                             </div>
