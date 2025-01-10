@@ -6,7 +6,7 @@ import "@splidejs/splide/css";
 import "@splidejs/splide/css/skyblue";
 import "@splidejs/splide/css/sea-green";
 import "@splidejs/splide/css/core";
-import Button from "../button/Button";
+import Button from "@/components/ui/button/Button";
 
 interface CarouselClientProps {
     imagesData: { src: string; alt: string; descr: string }[];
