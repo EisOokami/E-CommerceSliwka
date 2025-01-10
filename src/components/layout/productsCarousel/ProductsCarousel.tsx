@@ -65,19 +65,22 @@ const initialOptionsMobile = {
 };
 
 export default function ProductsCarousel() {
-    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+    const [screenWidth, setScreenWidth] = useState<number>(750);
 
     useEffect(() => {
-        const handleResize = () => {
+        if (typeof window !== "undefined") {
+            const handleResize = () => {
+                setScreenWidth(window.innerWidth);
+            };
+
             setScreenWidth(window.innerWidth);
-        };
+            window.addEventListener("resize", handleResize);
 
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    });
+            return () => {
+                window.removeEventListener("resize", handleResize);
+            };
+        }
+    }, []);
 
     return (
         <section>
