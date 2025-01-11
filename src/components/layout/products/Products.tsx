@@ -119,7 +119,7 @@ export default function Products() {
                             <span className="text-2xl md:text-3xl font-semibold">
                                 $999
                             </span>
-                            <Button theme="dark" text="Buy now" inline />
+                            <Button theme="dark" text="Buy now" />
                         </div>
                     ))}
                 </div>

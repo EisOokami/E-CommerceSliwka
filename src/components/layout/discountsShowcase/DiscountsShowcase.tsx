@@ -4,7 +4,7 @@ import { FaRegHeart } from "react-icons/fa6";
 
 export default function DiscountsShowcase() {
     return (
-        <section className="container mx-auto py-0 md:py-10">
+        <section className="container mx-auto px-3 py-10">
             <div className="mb-8">
                 <h4 className="text-2xl md:text-3xl font-medium">
                     Discounts uр to -50%
@@ -30,7 +30,7 @@ export default function DiscountsShowcase() {
                         <span className="text-2xl md:text-3xl font-semibold">
                             $999
                         </span>
-                        <Button theme="dark" text="Buy now" inline />
+                        <Button theme="dark" text="Buy now" />
                     </div>
                 ))}
             </div>

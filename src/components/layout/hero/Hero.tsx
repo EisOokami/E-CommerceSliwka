@@ -53,7 +53,7 @@ export default function Hero() {
                             The new 15-inch Macbook Air makes room for more of
                             what уоu love with а spacious Liquid Retina display.
                         </p>
-                        <Button theme="dark" text="Shop now" />
+                        <Button theme="dark" text="Shop now" inline />
                     </div>
                     <Image
                         src="/macbook-air-hero.png"
