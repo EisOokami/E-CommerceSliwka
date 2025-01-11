@@ -9,14 +9,14 @@ import "@splidejs/splide/css/core";
 import Button from "@/components/ui/button/Button";
 
 interface CarouselClientProps {
-    imagesData: { src: string; alt: string; descr: string }[];
+    productsData: { src: string; alt: string; name: string; descr: string }[];
     options: unknown;
     width: number | `${number}` | undefined;
     height: number | `${number}` | undefined;
 }
 
 export default function CarouselClient({
-    imagesData,
+    productsData,
     options,
     width,
     height,
@@ -24,18 +24,21 @@ export default function CarouselClient({
     return (
         <Splide options={options} hasTrack={false}>
             <SplideTrack>
-                {imagesData.map((imageData, i) => (
+                {productsData.map((product, i) => (
                     <SplideSlide key={i}>
                         <div className="grid gap-5 p-8 bg-gray-100">
                             <Image
-                                src={imageData.src}
-                                alt={imageData.alt}
+                                src={product.src}
+                                alt={product.alt}
                                 width={width}
                                 height={height}
                                 className="justify-self-center"
                             />
+                            <h4 className="text-2xl md:text-xl xl:text-4xl">
+                                {product.name}
+                            </h4>
                             <span className="text-gray-500">
-                                {imageData.descr}
+                                {product.descr}
                             </span>
                             <Button theme="dark" text="Shop now" inline />
                         </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CarouselClient from "@/components/ui/carouselClient/CarouselClient";
 
-const initialImagesData = [
+const initialProductsData = [
     {
         src: "/product_image_thumb.png",
         alt: "Image1",
@@ -95,7 +95,7 @@ export default function ProductsCarousel() {
         <section>
             {screenWidth < 750 && (
                 <CarouselClient
-                    imagesData={initialImagesData}
+                    productsData={initialProductsData}
                     options={initialOptionsMobile}
                     width={350}
                     height={350}
@@ -103,18 +103,18 @@ export default function ProductsCarousel() {
             )}
             {screenWidth > 750 && screenWidth < 1500 && (
                 <CarouselClient
-                    imagesData={initialImagesData}
+                    productsData={initialProductsData}
                     options={initialOptionsLaptop}
-                    width={500}
-                    height={500}
+                    width={350}
+                    height={350}
                 />
             )}
             {screenWidth > 1500 && (
                 <CarouselClient
-                    imagesData={initialImagesData}
+                    productsData={initialProductsData}
                     options={initialOptionsDesktop}
-                    width={500}
-                    height={500}
+                    width={350}
+                    height={350}
                 />
             )}
         </section>
