@@ -51,6 +51,15 @@ const initialImagesData = [
 const initialOptionsDesktop = {
     type: "loop",
     autoplay: true,
+    perPage: 4,
+    perMove: 1,
+    arrows: false,
+    pagination: false,
+};
+
+const initialOptionsLaptop = {
+    type: "loop",
+    autoplay: true,
     perPage: 3,
     perMove: 1,
     arrows: false,
@@ -80,18 +89,27 @@ export default function ProductsCarousel() {
                 window.removeEventListener("resize", handleResize);
             };
         }
-    }, []);
+    }, [screenWidth]);
 
     return (
         <section>
-            {screenWidth < 750 ? (
+            {screenWidth < 750 && (
                 <CarouselClient
                     imagesData={initialImagesData}
                     options={initialOptionsMobile}
                     width={350}
                     height={350}
                 />
-            ) : (
+            )}
+            {screenWidth > 750 && screenWidth < 1500 && (
+                <CarouselClient
+                    imagesData={initialImagesData}
+                    options={initialOptionsLaptop}
+                    width={500}
+                    height={500}
+                />
+            )}
+            {screenWidth > 1500 && (
                 <CarouselClient
                     imagesData={initialImagesData}
                     options={initialOptionsDesktop}
