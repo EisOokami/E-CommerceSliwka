@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Hero() {
     return (
         <section>
-            <div className="pt-16 md:pt-0 bg-[#211C24]">
+            <div className="pt-16 md:pt-0 px-3 md:px-5 bg-[#211C24]">
                 <div className="grid md:flex md:justify-between container mx-auto">
                     <div className="grid justify-items-center md:justify-items-start md:content-center gap-3">
                         <h1 className="text-center md:text-left text-6xl md:text-7xl lg:text-8xl text-white font-light">
@@ -14,7 +14,7 @@ export default function Hero() {
                             Created to change everything for the better. For
                             everyone
                         </p>
-                        <Button theme="light" text="Shop now" />
+                        <Button href="/catalog" theme="light" text="Shop now" />
                     </div>
                     <Image
                         src="/iphone-hero.png"
@@ -53,7 +53,12 @@ export default function Hero() {
                             The new 15-inch Macbook Air makes room for more of
                             what уоu love with а spacious Liquid Retina display.
                         </p>
-                        <Button theme="dark" text="Shop now" inline />
+                        <Button
+                            href="/catalog"
+                            theme="dark"
+                            text="Shop now"
+                            inline
+                        />
                     </div>
                     <Image
                         src="/macbook-air-hero.png"

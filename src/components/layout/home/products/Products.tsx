@@ -50,7 +50,7 @@ export default function Products() {
 
     return (
         <section>
-            <div className="py-20 bg-gray-100">
+            <div className="px-3 md:px-5 py-20 bg-gray-100">
                 <div className="grid gap-7 container mx-auto p-3 md:p-0">
                     <div className="flex justify-between items-center">
                         <h4 className="text-2xl md:text-3xl font-medium">
@@ -80,7 +80,7 @@ export default function Products() {
                     </div>
                 </div>
             </div>
-            <div className="grid gap-7 container mx-auto p-3 md:px-0 py-10">
+            <div className="grid gap-7 container mx-auto px-3 md:px-5 py-10">
                 <div className="flex gap-5 md:gap-10 whitespace-nowrap overflow-y-auto">
                     {initialTabsData.map((tab, i) => (
                         <div
@@ -108,6 +108,7 @@ export default function Products() {
                             imageHeight={250}
                             title="Lorem ipsum, dolor sit amet consectetur adipisicing elit."
                             price="$999"
+                            buttonHref="/catalog"
                             buttonTheme="dark"
                             buttonText="Buy Now"
                         />

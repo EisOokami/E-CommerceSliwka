@@ -2,7 +2,7 @@ import Card from "@/components/ui/card/Card";
 
 export default function DiscountsShowcase() {
     return (
-        <section className="container mx-auto px-3 py-10">
+        <section className="container mx-auto px-3 md:px-5 py-10">
             <div className="mb-8">
                 <h4 className="text-2xl md:text-3xl font-medium">
                     Discounts uр to -50%
@@ -18,6 +18,7 @@ export default function DiscountsShowcase() {
                         imageHeight={250}
                         title="Lorem ipsum, dolor sit amet consectetur adipisicing elit."
                         price="$999"
+                        buttonHref="/catalog"
                         buttonTheme="dark"
                         buttonText="Buy Now"
                     />
