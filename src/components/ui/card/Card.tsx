@@ -9,6 +9,7 @@ interface CardProps {
     imageHeight: number | `${number}` | undefined;
     title: string;
     price: string;
+    buttonHref: string;
     buttonTheme: "dark" | "light";
     buttonText: string;
     buttonInline?: boolean;
@@ -21,6 +22,7 @@ export default function Card({
     imageHeight,
     title,
     price,
+    buttonHref,
     buttonTheme,
     buttonText,
     buttonInline,
@@ -37,6 +39,7 @@ export default function Card({
             <span className="text-center md:text-lg font-medium">{title}</span>
             <span className="text-2xl md:text-3xl font-semibold">{price}</span>
             <Button
+                href={buttonHref}
                 theme={buttonTheme}
                 text={buttonText}
                 inline={buttonInline}

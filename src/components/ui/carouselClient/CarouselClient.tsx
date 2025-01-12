@@ -9,7 +9,13 @@ import "@splidejs/splide/css/core";
 import Button from "@/components/ui/button/Button";
 
 interface CarouselClientProps {
-    productsData: { src: string; alt: string; name: string; descr: string }[];
+    productsData: {
+        src: string;
+        alt: string;
+        name: string;
+        descr: string;
+        href: string;
+    }[];
     options: unknown;
     width: number | `${number}` | undefined;
     height: number | `${number}` | undefined;
@@ -40,7 +46,12 @@ export default function CarouselClient({
                             <span className="text-gray-500">
                                 {product.descr}
                             </span>
-                            <Button theme="dark" text="Shop now" inline />
+                            <Button
+                                href={product.href}
+                                theme="dark"
+                                text="Shop now"
+                                inline
+                            />
                         </div>
                     </SplideSlide>
                 ))}

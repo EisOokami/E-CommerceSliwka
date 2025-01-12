@@ -1,10 +1,12 @@
 interface InlineButtonProps {
+    href: string;
     theme: "light" | "dark";
     text: string;
     inline?: boolean;
 }
 
 export default function Button({
+    href,
     theme,
     text,
     inline = false,
@@ -17,8 +19,11 @@ export default function Button({
             : "text-white hover:text-black hover:bg-white border-white transition";
 
     return (
-        <button className={`w-fit px-10 py-3 border rounded-md ${styleTheme}`}>
+        <a
+            href={href}
+            className={`w-fit px-10 py-3 border rounded-md ${styleTheme}`}
+        >
             {text}
-        </button>
+        </a>
     );
 }
