@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-interface NavigationProps {
-    navigationLinks: { name: string; href: string }[];
-}
+import { NavigationProps } from "./Navigation.interfaces";
 
 export default function Navigation({ navigationLinks }: NavigationProps) {
     const currentPath = usePathname();

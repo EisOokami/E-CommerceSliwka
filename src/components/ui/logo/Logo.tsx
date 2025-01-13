@@ -1,10 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
-interface LogoProps {
-    width: number | `${number}` | undefined;
-    height: number | `${number}` | undefined;
-}
+import { LogoProps } from "./Logo.interfaces";
 
 export default function Logo({ width, height }: LogoProps) {
     return (

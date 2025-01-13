@@ -1,9 +1,4 @@
-interface InlineButtonProps {
-    href: string;
-    theme: "light" | "dark";
-    text: string;
-    inline?: boolean;
-}
+import { InlineButtonProps } from "./Button.interfaces";
 
 export default function Button({
     href,

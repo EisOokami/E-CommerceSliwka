@@ -1,19 +1,7 @@
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa6";
 import Button from "@/components/ui/button/Button";
-
-interface CardProps {
-    imageSrc: string;
-    imageAlt: string;
-    imageWidth: number | `${number}` | undefined;
-    imageHeight: number | `${number}` | undefined;
-    title: string;
-    price: string;
-    buttonHref: string;
-    buttonTheme: "dark" | "light";
-    buttonText: string;
-    buttonInline?: boolean;
-}
+import { CardProps } from "./Card.interfaces";
 
 export default function Card({
     imageSrc,
