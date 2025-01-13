@@ -5,11 +5,11 @@ import ProductsCarousel from "@/components/layout/home/productsCarousel/Products
 
 export default function Home() {
     return (
-        <>
+        <main>
             <Hero />
             <Products />
             <ProductsCarousel />
             <DiscountsShowcase />
-        </>
+        </main>
     );
 }

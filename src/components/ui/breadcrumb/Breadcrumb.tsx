@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChevronRight } from "react-icons/fa6";
 
-const Breadcrumbs = () => {
+export default function Breadcrumb() {
     const pathname = usePathname();
 
     const pathSegments = pathname.split("/").filter((segment) => segment);
@@ -14,7 +14,7 @@ const Breadcrumbs = () => {
     });
 
     return (
-        <nav aria-label="breadcrumb">
+        <nav>
             <ul className="flex gap-3">
                 <li>
                     <Link
@@ -44,6 +44,4 @@ const Breadcrumbs = () => {
             </ul>
         </nav>
     );
-};
-
-export default Breadcrumbs;
+}
