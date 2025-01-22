@@ -22,7 +22,7 @@ const initailAccordionItems: IInitailAccordionItems[] = [
 
 export default function AccordionContainer() {
     return (
-        <section className="md:container md:mx-auto md:px-5 h-svh">
+        <section className="w-full md:h-svh">
             <Accordion items={initailAccordionItems} />
         </section>
     );

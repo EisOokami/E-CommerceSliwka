@@ -18,7 +18,7 @@ const AccordionItem = ({ header, ...rest }: AccordionItemProps) => (
         {...rest}
         header={({ state: { isEnter } }) => (
             <div className="flex justify-between items-center w-full">
-                <h6 className="text-xl font-medium">{header}</h6>
+                <h4 className="text-xl font-medium">{header}</h4>
                 <FaChevronDown
                     className={`transition-transform duration-200 ease-out ${
                         isEnter && "rotate-180"
@@ -28,7 +28,7 @@ const AccordionItem = ({ header, ...rest }: AccordionItemProps) => (
         )}
         buttonProps={{
             className: () =>
-                `flex w-full my-4 py-3 text-left transition border-b`,
+                `flex w-full my-4 py-3 text-left transition border-b-4`,
         }}
         contentProps={{
             className: "transition-height duration-200 ease-out",
@@ -39,7 +39,7 @@ const AccordionItem = ({ header, ...rest }: AccordionItemProps) => (
 
 export default function Accordion({ items }: AccordionContainerProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [screenWidth, setScreenWidth] = useState<number>(750);
+    const [screenWidth, setScreenWidth] = useState<number>(699);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -58,17 +58,15 @@ export default function Accordion({ items }: AccordionContainerProps) {
 
     return (
         <>
-            <div className="p-3">
-                <button
-                    className="md:hidden flex justify-between items-center w-full px-3 py-2 border rounded-md"
-                    onClick={() => setIsOpen(true)}
-                >
-                    Filters <IoFilter />
-                </button>
-            </div>
-            {isOpen ||
-                (screenWidth > 700 && (
-                    <div className="absolute md:relative top-0 w-full h-full px-3 py-5 md:p-0 bg-white z-40">
+            <button
+                className="md:hidden flex justify-between items-center w-full px-3 py-2 border rounded-md"
+                onClick={() => setIsOpen(true)}
+            >
+                Filters <IoFilter />
+            </button>
+            {(screenWidth > 767 || isOpen) && (
+                <div className="absolute md:relative left-0 top-0 w-full h-full px-3 py-5 md:p-0 bg-white z-40">
+                    <div className="container mx-auto">
                         <div className="md:hidden flex items-center gap-3">
                             <FaChevronLeft
                                 className="text-xl"
@@ -80,7 +78,7 @@ export default function Accordion({ items }: AccordionContainerProps) {
                             allowMultiple
                             transition
                             transitionTimeout={250}
-                            className="w-full"
+                            className="w-auto"
                         >
                             {items.map(
                                 ({ header, content, type, searchBar }, i) => (
@@ -119,7 +117,6 @@ export default function Accordion({ items }: AccordionContainerProps) {
                                                         id={option}
                                                         className="w-4 h-4 text-blue-600 border-gray-300"
                                                     />
-
                                                     <label htmlFor={option}>
                                                         {option}
                                                     </label>
@@ -131,7 +128,7 @@ export default function Accordion({ items }: AccordionContainerProps) {
                                                     type="number"
                                                     name={header}
                                                     placeholder="from"
-                                                    className="px-4 py-2 border rounded-lg"
+                                                    className="px-4 py-2 border rounded-lg w-1/2"
                                                 />
                                                 <span className="text-xl">
                                                     -
@@ -140,7 +137,7 @@ export default function Accordion({ items }: AccordionContainerProps) {
                                                     type="number"
                                                     name={header}
                                                     placeholder="to"
-                                                    className="px-4 py-2 border rounded-lg"
+                                                    className="px-4 py-2 border rounded-lg w-1/2"
                                                 />
                                             </div>
                                         )}
@@ -149,7 +146,8 @@ export default function Accordion({ items }: AccordionContainerProps) {
                             )}
                         </AccordionWrapper>
                     </div>
-                ))}
+                </div>
+            )}
         </>
     );
 }
