@@ -38,7 +38,7 @@ const AccordionItem = ({ header, ...rest }: AccordionItemProps) => (
 );
 
 export default function Accordion({ items }: AccordionContainerProps) {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [screenWidth, setScreenWidth] = useState<number>(699);
 
     useEffect(() => {
@@ -60,17 +60,17 @@ export default function Accordion({ items }: AccordionContainerProps) {
         <>
             <button
                 className="md:hidden flex justify-between items-center w-full px-3 py-2 border rounded-md"
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsFilterOpen(true)}
             >
                 Filters <IoFilter />
             </button>
-            {(screenWidth > 767 || isOpen) && (
+            {(screenWidth > 767 || isFilterOpen) && (
                 <div className="absolute md:relative left-0 top-0 w-full h-full px-3 py-5 md:p-0 bg-white z-40">
                     <div className="container mx-auto">
                         <div className="md:hidden flex items-center gap-3">
                             <FaChevronLeft
                                 className="text-xl"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => setIsFilterOpen(false)}
                             />
                             <h2 className="text-2xl">Filters</h2>
                         </div>
