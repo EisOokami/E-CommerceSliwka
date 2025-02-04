@@ -16,11 +16,11 @@ const navigationLinks = [
     },
     {
         name: "About",
-        href: "/about",
+        href: "/",
     },
     {
         name: "Contact Us",
-        href: "/contactUs",
+        href: "/",
     },
 ];
 
