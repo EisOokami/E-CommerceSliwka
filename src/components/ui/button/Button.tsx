@@ -5,6 +5,7 @@ export default function Button({
     theme,
     text,
     inline = false,
+    className,
 }: InlineButtonProps) {
     const styleTheme =
         theme === "dark" && inline
@@ -16,7 +17,7 @@ export default function Button({
     return (
         <a
             href={href}
-            className={`w-fit px-10 py-3 border rounded-md ${styleTheme}`}
+            className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
         >
             {text}
         </a>

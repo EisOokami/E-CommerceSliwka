@@ -3,4 +3,5 @@ export interface InlineButtonProps {
     theme: "light" | "dark";
     text: string;
     inline?: boolean;
+    className?: string;
 }
