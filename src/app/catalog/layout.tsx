@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import BreadcrumbContainer from "@/components/layout/catalog/breadcrumbContainer/BreadcrumbContainer";
+import Breadcrumb from "@/components/ui/breadcrumb/Breadcrumb";
 
 export const metadata: Metadata = {
     title: "E-Commerce Sliwka",
@@ -14,7 +14,9 @@ export default function RootLayout({
 }>) {
     return (
         <main className="relative grid gap-10 py-6 md:py-10">
-            <BreadcrumbContainer />
+            <section className="container mx-auto px-3 md:px-5">
+                <Breadcrumb />
+            </section>
             {children}
         </main>
     );
