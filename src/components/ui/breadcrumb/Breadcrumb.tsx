@@ -33,7 +33,7 @@ export default function Breadcrumb() {
                             </span>
                         ) : (
                             <Link
-                                href={path}
+                                href={`/${path}`}
                                 className="text-gray-500 hover:text-gray-800 capitalize transition"
                             >
                                 {decodeURIComponent(pathSegments[index])}
