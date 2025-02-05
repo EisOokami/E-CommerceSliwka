@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { InlineButtonProps } from "./Button.interfaces";
 
 export default function Button({
@@ -15,11 +16,11 @@ export default function Button({
             : "text-white hover:text-black hover:bg-white border-white transition";
 
     return (
-        <a
+        <Link
             href={href}
             className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
         >
             {text}
-        </a>
+        </Link>
     );
 }
