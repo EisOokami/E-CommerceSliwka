@@ -38,7 +38,7 @@ export default function Hero() {
                             Playstation 5
                         </h3>
                         <p className="text-gray-700">
-                            Incredibly powerful CPUs, GPUs, and ап SSD with
+                            Incredibly powerful CPUs, GPUs, and a SSD with
                             integrated I/O will redefine your PlayStation
                             experience.
                         </p>
