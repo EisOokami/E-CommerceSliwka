@@ -1,18 +1,19 @@
 "use client";
 
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
 import { useRef } from "react";
 import Image from "next/image";
+import { Options, Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/react-splide/css";
 import { ProductImageGalleryProps } from "./ProductImageGallery.interfaces";
 
 export default function ProductImageGallery({
     images,
 }: ProductImageGalleryProps) {
     const mainRef = useRef<Splide>(null);
-    const thumbnailRef = useRef<Splide>(null);
+    const thumbnailColumnRef = useRef<Splide>(null);
+    const thumbnailRowRef = useRef<Splide>(null);
 
-    const mainOptions = {
+    const mainOptions: Options = {
         type: "loop",
         perPage: 1,
         perMove: 1,
@@ -21,13 +22,22 @@ export default function ProductImageGallery({
         height: "27em",
     };
 
-    const thumbnailOptions = {
+    const thumbnailColumnOptions: Options = {
         perPage: 4,
         perMove: 1,
         height: "100%",
         pagination: false,
         direction: "ttb",
-        focus: "center",
+        isNavigation: true,
+    };
+
+    const thumbnailRowOptions: Options = {
+        perPage: 4,
+        perMove: 1,
+        width: "100%",
+        height: "100%",
+        pagination: false,
+        isNavigation: true,
     };
 
     const handleThumbs = (id: number) => {
@@ -37,14 +47,22 @@ export default function ProductImageGallery({
     };
 
     const handleMain = (id: number) => {
-        if (thumbnailRef.current) {
-            thumbnailRef.current.go(id);
+        if (thumbnailColumnRef.current) {
+            thumbnailColumnRef.current.go(id);
+        }
+
+        if (thumbnailRowRef.current) {
+            thumbnailRowRef.current.go(id);
         }
     };
 
     return (
-        <section className="flex w-full">
-            <Splide options={thumbnailOptions} ref={thumbnailRef}>
+        <section className="lg:flex items-start w-full md:w-1/2 lg:w-full">
+            <Splide
+                options={thumbnailColumnOptions}
+                ref={thumbnailColumnRef}
+                className="hidden lg:block h-2/3"
+            >
                 {images.map((image, index) => (
                     <SplideSlide
                         key={image.alt}
@@ -70,7 +88,7 @@ export default function ProductImageGallery({
                 onMove={(splide: Splide, newIndex: number) =>
                     handleMain(newIndex)
                 }
-                className="max-w-5xl grid place-content-center"
+                className="grid place-content-center max-w-5xl w-svw md:w-auto"
             >
                 {images.map((image) => (
                     <SplideSlide key={image.alt}>
@@ -81,6 +99,30 @@ export default function ProductImageGallery({
                             height={1000}
                             className="h-full object-contain"
                         />
+                    </SplideSlide>
+                ))}
+            </Splide>
+            <Splide
+                options={thumbnailRowOptions}
+                ref={thumbnailRowRef}
+                className="lg:hidden w-svw"
+            >
+                {images.map((image, index) => (
+                    <SplideSlide
+                        key={image.alt}
+                        className="grid place-items-center !h-auto"
+                    >
+                        <button
+                            onClick={() => handleThumbs(index)}
+                            className="w-20 lg:w-28"
+                        >
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                width={1000}
+                                height={1000}
+                            />
+                        </button>
                     </SplideSlide>
                 ))}
             </Splide>
