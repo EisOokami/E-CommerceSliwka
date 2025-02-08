@@ -25,7 +25,7 @@ export default function Products() {
                         imageHeight={250}
                         title="Lorem ipsum, dolor sit amet consectetur adipisicing elit."
                         price="$999"
-                        buttonHref="/catalog"
+                        buttonHref="/catalog/product"
                         buttonTheme="dark"
                         buttonText="Buy Now"
                     />
