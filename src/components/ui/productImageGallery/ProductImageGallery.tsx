@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { Options, Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
+import { Options, Splide, SplideSlide } from "@splidejs/react-splide";
 import { ProductImageGalleryProps } from "./ProductImageGallery.interfaces";
 
 export default function ProductImageGallery({
