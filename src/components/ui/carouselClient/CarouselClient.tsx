@@ -39,6 +39,7 @@ export default function CarouselClient({
                                 theme="dark"
                                 text="Shop now"
                                 inline
+                                isLink
                             />
                         </div>
                     </SplideSlide>

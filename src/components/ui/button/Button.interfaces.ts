@@ -4,4 +4,6 @@ export interface InlineButtonProps {
     text: string;
     inline?: boolean;
     className?: string;
+    isLink?: boolean;
+    onClick?: () => void;
 }

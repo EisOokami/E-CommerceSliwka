@@ -7,6 +7,8 @@ export default function Button({
     text,
     inline = false,
     className,
+    isLink = false,
+    onClick,
 }: InlineButtonProps) {
     const styleTheme =
         theme === "dark" && inline
@@ -16,11 +18,22 @@ export default function Button({
             : "text-white hover:text-black hover:bg-white border-white transition";
 
     return (
-        <Link
-            href={href}
-            className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
-        >
-            {text}
-        </Link>
+        <>
+            {isLink ? (
+                <Link
+                    href={href}
+                    className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
+                >
+                    {text}
+                </Link>
+            ) : (
+                <button
+                    onClick={onClick}
+                    className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
+                >
+                    {text}
+                </button>
+            )}
+        </>
     );
 }

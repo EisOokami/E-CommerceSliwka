@@ -14,7 +14,12 @@ export default function Hero() {
                             Created to change everything for the better. For
                             everyone
                         </p>
-                        <Button href="/catalog" theme="light" text="Shop now" />
+                        <Button
+                            href="/catalog"
+                            theme="light"
+                            text="Shop now"
+                            isLink
+                        />
                     </div>
                     <Image
                         src="/iphone-hero.png"
@@ -58,6 +63,7 @@ export default function Hero() {
                             theme="dark"
                             text="Shop now"
                             inline
+                            isLink
                         />
                     </div>
                     <Image

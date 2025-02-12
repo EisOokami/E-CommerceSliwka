@@ -31,6 +31,7 @@ export default function Card({
                 theme={buttonTheme}
                 text={buttonText}
                 inline={buttonInline}
+                isLink
             />
         </div>
     );
