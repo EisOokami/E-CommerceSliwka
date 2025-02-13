@@ -15,7 +15,7 @@ export default function Products() {
                     <RatingSelect />
                 </div>
             </div>
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-3">
+            <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-3">
                 {[...Array(9)].map((_, i) => (
                     <Card
                         key={i}
