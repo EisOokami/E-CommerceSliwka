@@ -16,7 +16,9 @@ export const imagesData = [
 ];
 
 export const titleData = "Apple iPhone 16 Pro Max";
+
 export const priceData = "$1399";
+
 export const discountData = "$1499";
 
 export const colorsData = ["#f4f4f4", "#555555", "#dcd5cb", "#f2e0d4"];
@@ -129,5 +131,98 @@ export const detailsSpecsData = [
                 ],
             },
         ],
+    },
+];
+
+export const reviewsData = [
+    {
+        avatar: "/product_image_thumb.png",
+        fullname: "Image Simple",
+        rating: 4,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt, sapiente suscipit repellendus voluptas quam quidem modi.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/macbook-air-hero.png",
+        fullname: "Macbook Air",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/generallogoblue.png",
+        fullname: "Blue Logo",
+        rating: 4,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, sapiente suscipit repellendus voluptas quam quidem modi.",
+        publicationDate: "13.02.2025",
+        images: ["/review1.png"],
+    },
+    {
+        avatar: "/ps5-hero.png",
+        fullname: "Play Station",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis.",
+        publicationDate: "13.02.2025",
+        images: ["/review2.png", "/review3.png"],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 1,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 5,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
+    },
+    {
+        avatar: "/avatar.png",
+        fullname: "Lorem Ipsum",
+        rating: 2,
+        comment:
+            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae accusantium veritatis sequi, atque omnis, vero dolores ut nesciunt.",
+        publicationDate: "13.02.2025",
+        images: [],
     },
 ];
