@@ -6,6 +6,7 @@ import {
     imagesData,
     infoData,
     priceData,
+    reviewsData,
     specsData,
     storageData,
     titleData,
@@ -21,6 +22,8 @@ import ProductInfo from "@/components/layout/product/productInfo/ProductInfo";
 import ProductTitle from "@/components/layout/product/productTitle/ProductTitle";
 import ProductPrice from "@/components/layout/product/productPrice/ProductPrice";
 import DetailsSpecs from "@/components/layout/product/detailsSpecs/DetailsSpecs";
+import RatingSummary from "@/components/ui/ratingSummary/RatingSummary";
+import ReviewList from "@/components/layout/product/reviewList/ReviewList";
 
 export default function ProductPage() {
     return (
@@ -60,6 +63,13 @@ export default function ProductPage() {
                     <ProductDescription descr={descrData} />
                     <DetailsSpecs specsData={detailsSpecsData} />
                 </div>
+            </section>
+            <section className="grid gap-10 container mx-auto px-3 md:px-5 py-10">
+                <h4 className="text-2xl md:text-3xl xl:text-4xl font-medium">
+                    Reviews
+                </h4>
+                <RatingSummary reviewsData={reviewsData} />
+                <ReviewList reviewsData={reviewsData} />
             </section>
         </>
     );
