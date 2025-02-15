@@ -2,7 +2,7 @@ import Link from "next/link";
 import { InlineButtonProps } from "./Button.interfaces";
 
 export default function Button({
-    href,
+    href = "",
     theme,
     text,
     inline = false,
@@ -22,7 +22,7 @@ export default function Button({
             {isLink ? (
                 <Link
                     href={href}
-                    className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
+                    className={`w-fit px-10 py-3 text-center border rounded-md ${styleTheme} ${className}`}
                 >
                     {text}
                 </Link>

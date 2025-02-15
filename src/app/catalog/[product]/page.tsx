@@ -39,14 +39,12 @@ export default function ProductPage() {
                     <ProductDescription descr={descrData} isShowMore />
                     <div className="grid lg:flex items-center gap-3 md:gap-5">
                         <Button
-                            href=""
                             theme="dark"
                             text="Add to Wishlist"
                             inline
                             className="w-full text-center"
                         />
                         <Button
-                            href=""
                             theme="dark"
                             text="Add to Card"
                             className="w-full text-center"

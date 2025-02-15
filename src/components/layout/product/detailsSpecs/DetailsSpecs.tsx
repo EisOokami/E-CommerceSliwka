@@ -50,7 +50,6 @@ export default function DetailsSpecs({ specsData }: DetailsSpecsProps) {
             })}
             <div className="w-full text-center">
                 <Button
-                    href=""
                     text={showMore ? "View less" : "View more"}
                     theme="dark"
                     inline

@@ -23,7 +23,6 @@ export default function ReviewList({ reviewsData }: ReviewListProps) {
             {reviewsData.length !== displayedData.length && (
                 <div className="w-full text-center">
                     <Button
-                        href=""
                         text="View more"
                         theme="dark"
                         inline

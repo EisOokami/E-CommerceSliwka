@@ -1,5 +1,5 @@
 export interface InlineButtonProps {
-    href: string;
+    href?: string;
     theme: "light" | "dark";
     text: string;
     inline?: boolean;
