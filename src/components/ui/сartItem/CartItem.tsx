@@ -5,20 +5,20 @@ import { CartItemProps } from "./CartItem.interfaces";
 
 export default function CartItem({ cartItem }: CartItemProps) {
     return (
-        <div className="flex items-center gap-6 py-8 first:border-none border-t">
+        <div className="flex items-center gap-6 w-full py-8 first:border-none border-t">
             <Image
                 src={cartItem.image}
                 alt={cartItem.name}
                 width={100}
                 height={100}
-                className="w-20 md:w-auto h-20 md:h-auto"
+                className="w-20 lg:w-auto h-20 lg:h-auto"
             />
-            <div className="grid md:flex items-center gap-2 w-full">
+            <div className="grid xl:flex items-center gap-2 w-full">
                 <div className="md:flex-1 grid gap-2">
-                    <h6 className="text-base md:text-xl text-pretty font-medium">
+                    <h6 className="text-base lg:text-xl text-pretty font-medium">
                         {cartItem.name}
                     </h6>
-                    <span className="text-sm md:text-base">
+                    <span className="text-sm lg:text-base">
                         {cartItem.productId}
                     </span>
                 </div>
@@ -34,7 +34,7 @@ export default function CartItem({ cartItem }: CartItemProps) {
                             <FaPlus />
                         </button>
                     </div>
-                    <h5 className="text-xl md:text-2xl font-medium">
+                    <h5 className="text-xl lg:text-2xl font-medium">
                         ${cartItem.price}
                     </h5>
                     <button>
