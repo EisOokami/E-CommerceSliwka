@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 import { InlineButtonProps } from "./Button.interfaces";
 
 export default function Button({
@@ -22,14 +23,18 @@ export default function Button({
             {isLink ? (
                 <Link
                     href={href}
-                    className={`w-fit px-10 py-3 text-center border rounded-md ${styleTheme} ${className}`}
+                    className={twMerge(
+                        `w-fit px-10 py-3 text-center border rounded-md ${styleTheme} ${className}`,
+                    )}
                 >
                     {text}
                 </Link>
             ) : (
                 <button
                     onClick={onClick}
-                    className={`w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`}
+                    className={twMerge(
+                        `w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`,
+                    )}
                 >
                     {text}
                 </button>
