@@ -8,13 +8,13 @@ import {
 export default function NavbarIcons() {
     return (
         <div className="flex justify-around md:justify-normal items-center gap-5 text-2xl">
-            <Link href="/favorites">
+            <Link href="/">
                 <IoHeartOutline />
             </Link>
             <Link href="/cart">
                 <IoCartOutline />
             </Link>
-            <Link href="/profile">
+            <Link href="/">
                 <IoPersonOutline />
             </Link>
         </div>
