@@ -1,4 +1,5 @@
-import { FaFacebook, FaInstagram, FaTiktok, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaBluesky, FaXTwitter } from "react-icons/fa6";
 import styles from "./Footer.module.scss";
 
 import Logo from "@/components/ui/logo/Logo";
@@ -43,7 +44,8 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="flex justify-center md:justify-normal gap-5">
-                    <FaTwitter className={styles.footer__icons} />
+                    <FaXTwitter className={styles.footer__icons} />
+                    <FaBluesky className={styles.footer__icons} />
                     <FaFacebook className={styles.footer__icons} />
                     <FaTiktok className={styles.footer__icons} />
                     <FaInstagram className={styles.footer__icons} />
