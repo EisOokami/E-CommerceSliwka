@@ -1,0 +1,11 @@
+.order-summary__input-group {
+    @apply grid gap-2;
+}
+
+.order-summary__label {
+    @apply text-gray-600;
+}
+
+.order-summary__input {
+    @apply w-full px-4 py-5 text-sm md:text-base border rounded-md;
+}
