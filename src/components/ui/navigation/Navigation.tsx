@@ -8,7 +8,7 @@ export default function Navigation({ navigationLinks }: NavigationProps) {
     const currentPath = usePathname();
 
     return (
-        <div className="text-center grid gap-2 md:flex md:items-center md:gap-10">
+        <nav className="text-center grid gap-2 md:flex md:items-center md:gap-10">
             {navigationLinks.map((navigationLink, i) => (
                 <Link
                     key={i}
@@ -22,6 +22,6 @@ export default function Navigation({ navigationLinks }: NavigationProps) {
                     {navigationLink.name}
                 </Link>
             ))}
-        </div>
+        </nav>
     );
 }

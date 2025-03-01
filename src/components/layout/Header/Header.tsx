@@ -5,7 +5,7 @@ import { Squash as Hamburger } from "hamburger-react";
 import useClickOutside from "@/hooks/UseClickOutside";
 
 import Logo from "@/components/ui/logo/Logo";
-import NavbarIcons from "@/components/ui/navbarIcons/NavbarIcons";
+import HeaderIcons from "@/components/ui/HeaderIcons/HeaderIcons";
 import Navigation from "@/components/ui/navigation/Navigation";
 import SearchBar from "@/components/ui/searchBar/SearchBar";
 
@@ -24,7 +24,7 @@ const navigationLinks = [
     },
 ];
 
-export default function Navbar() {
+export default function Header() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerNavbarMenu = useRef<HTMLDivElement>(null);
     const hamburgerRef = useRef<HTMLDivElement>(null);
@@ -40,7 +40,7 @@ export default function Navbar() {
     const styleMenuBorder = isOpen ? "border-t" : "";
 
     return (
-        <nav className="sticky top-0 p-3 md:px-5 bg-white border-b z-50">
+        <header className="sticky top-0 p-3 md:px-5 bg-white border-b z-50">
             <div className="flex justify-between items-center container mx-auto">
                 <div className="lg:flex-1">
                     <Logo width={50} height={50} />
@@ -50,7 +50,7 @@ export default function Navbar() {
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-end items-center gap-5">
                     <SearchBar />
-                    <NavbarIcons />
+                    <HeaderIcons />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
                     <Hamburger toggled={isOpen} toggle={setIsOpen} />
@@ -66,10 +66,10 @@ export default function Navbar() {
                     >
                         <Navigation navigationLinks={navigationLinks} />
                         <SearchBar />
-                        <NavbarIcons />
+                        <HeaderIcons />
                     </div>
                 </div>
             )}
-        </nav>
+        </header>
     );
 }
