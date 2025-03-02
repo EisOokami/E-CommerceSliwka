@@ -6,4 +6,5 @@ export interface InlineButtonProps {
     className?: string;
     isLink?: boolean;
     onClick?: () => void;
+    type?: "button" | "reset" | "submit";
 }

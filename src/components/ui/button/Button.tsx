@@ -10,6 +10,7 @@ export default function Button({
     className,
     isLink = false,
     onClick,
+    type = "button",
 }: InlineButtonProps) {
     const styleTheme =
         theme === "dark" && inline
@@ -35,6 +36,7 @@ export default function Button({
                     className={twMerge(
                         `w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`,
                     )}
+                    type={type}
                 >
                     {text}
                 </button>
