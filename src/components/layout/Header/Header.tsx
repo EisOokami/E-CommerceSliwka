@@ -3,28 +3,14 @@
 import { useRef, useState } from "react";
 import { Squash as Hamburger } from "hamburger-react";
 import useClickOutside from "@/hooks/UseClickOutside";
+import { HeaderProps } from "./Header.interfaces";
 
 import Logo from "@/components/ui/logo/Logo";
 import HeaderIcons from "@/components/ui/HeaderIcons/HeaderIcons";
 import Navigation from "@/components/ui/navigation/Navigation";
 import SearchBar from "@/components/ui/searchBar/SearchBar";
 
-const navigationLinks = [
-    {
-        name: "Home",
-        href: "/",
-    },
-    {
-        name: "About",
-        href: "/",
-    },
-    {
-        name: "Contact Us",
-        href: "/",
-    },
-];
-
-export default function Header() {
+export default function Header({ data }: Readonly<HeaderProps>) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerNavbarMenu = useRef<HTMLDivElement>(null);
     const hamburgerRef = useRef<HTMLDivElement>(null);
@@ -37,20 +23,28 @@ export default function Header() {
         [hamburgerRef],
     );
 
+    const { logoImage, iconsLink, logoLink, navigationLinks } = data;
+
     const styleMenuBorder = isOpen ? "border-t" : "";
 
     return (
         <header className="sticky top-0 p-3 md:px-5 bg-white border-b z-50">
             <div className="flex justify-between items-center container mx-auto">
                 <div className="lg:flex-1">
-                    <Logo width={50} height={50} />
+                    <Logo
+                        width={50}
+                        height={50}
+                        src={logoImage.url}
+                        alt={logoImage.alternativeText}
+                        link={logoLink.url}
+                    />
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-center">
                     <Navigation navigationLinks={navigationLinks} />
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-end items-center gap-5">
                     <SearchBar />
-                    <HeaderIcons />
+                    <HeaderIcons iconsLink={iconsLink} />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
                     <Hamburger toggled={isOpen} toggle={setIsOpen} />
@@ -66,7 +60,7 @@ export default function Header() {
                     >
                         <Navigation navigationLinks={navigationLinks} />
                         <SearchBar />
-                        <HeaderIcons />
+                        <HeaderIcons iconsLink={iconsLink} />
                     </div>
                 </div>
             )}
