@@ -1,6 +1,8 @@
 import { ColorSelectorProps } from "./ColorSelector.interfaces";
 
-export default function ColorSelector({ colorsData }: ColorSelectorProps) {
+export default function ColorSelector({
+    colorsData,
+}: Readonly<ColorSelectorProps>) {
     return (
         <div className="flex items-center gap-5">
             <span>Select color: </span>

@@ -2,7 +2,9 @@ import styles from "./OrderSummary.module.scss";
 import { OrderSummaryProps } from "./OrderSummary.interfaces";
 import Button from "@/components/ui/button/Button";
 
-export default function OrderSummary({ cartItemsData }: OrderSummaryProps) {
+export default function OrderSummary({
+    cartItemsData,
+}: Readonly<OrderSummaryProps>) {
     const subtotal = cartItemsData.reduce(
         (accumulator, currentValue) =>
             accumulator + currentValue.price * currentValue.count,

@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavigationProps } from "./Navigation.interfaces";
 
-export default function Navigation({ navigationLinks }: NavigationProps) {
+export default function Navigation({
+    navigationLinks,
+}: Readonly<NavigationProps>) {
     const currentPath = usePathname();
 
     return (

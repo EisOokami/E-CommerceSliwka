@@ -14,7 +14,7 @@ export default function CarouselClient({
     options,
     width,
     height,
-}: CarouselClientProps) {
+}: Readonly<CarouselClientProps>) {
     return (
         <Splide options={options} hasTrack={false}>
             <SplideTrack>

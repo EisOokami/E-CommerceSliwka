@@ -6,7 +6,7 @@ import { ProductDescriptionProps } from "./ProductDescription.interfaces";
 export default function ProductDescription({
     descr,
     isShowMore = false,
-}: ProductDescriptionProps) {
+}: Readonly<ProductDescriptionProps>) {
     const [showMore, setShowMore] = useState(false);
 
     return (

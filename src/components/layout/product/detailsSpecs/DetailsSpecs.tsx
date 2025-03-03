@@ -4,7 +4,9 @@ import { useState } from "react";
 import Button from "@/components/ui/button/Button";
 import { DetailsSpecsProps } from "./DetailsSpecs.interfaces";
 
-export default function DetailsSpecs({ specsData }: DetailsSpecsProps) {
+export default function DetailsSpecs({
+    specsData,
+}: Readonly<DetailsSpecsProps>) {
     const [showMore, setShowMore] = useState(false);
 
     return (

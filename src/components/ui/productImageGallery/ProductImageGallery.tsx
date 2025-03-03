@@ -8,7 +8,7 @@ import { ProductImageGalleryProps } from "./ProductImageGallery.interfaces";
 
 export default function ProductImageGallery({
     images,
-}: ProductImageGalleryProps) {
+}: Readonly<ProductImageGalleryProps>) {
     const mainRef = useRef<Splide>(null);
     const thumbnailColumnRef = useRef<Splide>(null);
     const thumbnailRowRef = useRef<Splide>(null);

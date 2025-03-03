@@ -3,7 +3,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { CartItemProps } from "./CartItem.interfaces";
 
-export default function CartItem({ cartItem }: CartItemProps) {
+export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     return (
         <div className="flex items-center gap-6 w-full py-8 first:border-none border-t">
             <Image

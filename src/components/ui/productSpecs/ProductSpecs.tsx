@@ -1,6 +1,8 @@
 import { ProductSpecsProps } from "./ProductSpecs.interfaces";
 
-export default function ProductSpecs({ specsData }: ProductSpecsProps) {
+export default function ProductSpecs({
+    specsData,
+}: Readonly<ProductSpecsProps>) {
     return (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-5">
             {specsData.map((spec, i) => (

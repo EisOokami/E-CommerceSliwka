@@ -4,7 +4,9 @@ import Image from "next/image";
 import { ReviewCommentProps } from "./ReviewComment.interfaces";
 import RatingStars from "../ratingStars/RatingStars";
 
-export default function ReviewComment({ review }: ReviewCommentProps) {
+export default function ReviewComment({
+    review,
+}: Readonly<ReviewCommentProps>) {
     return (
         <article className="flex items-start gap-3 md:gap-5 p-3 md:p-5 bg-gray-100 rounded-xl">
             <Image

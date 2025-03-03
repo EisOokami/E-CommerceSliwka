@@ -11,7 +11,7 @@ export default function Button({
     isLink = false,
     onClick,
     type = "button",
-}: InlineButtonProps) {
+}: Readonly<InlineButtonProps>) {
     const styleTheme =
         theme === "dark" && inline
             ? "hover:text-white hover:bg-black border-black transition"

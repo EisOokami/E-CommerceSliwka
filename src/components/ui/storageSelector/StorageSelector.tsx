@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { StorageSelectorProps } from "./StorageSelector.interfaces";
 
-export default function StorageSelector({ storageData }: StorageSelectorProps) {
+export default function StorageSelector({
+    storageData,
+}: Readonly<StorageSelectorProps>) {
     const [selectedStorage, setSelectedStorage] = useState(0);
 
     return (

@@ -2,7 +2,13 @@ import Link from "next/link";
 import { LogoProps } from "./Logo.interfaces";
 import StrapiImage from "../strapiImage/StrapiImage";
 
-export default function Logo({ width, height, link, src, alt }: LogoProps) {
+export default function Logo({
+    width,
+    height,
+    link,
+    src,
+    alt,
+}: Readonly<LogoProps>) {
     return (
         <Link href={link ?? ""}>
             <StrapiImage

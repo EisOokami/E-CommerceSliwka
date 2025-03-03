@@ -4,9 +4,9 @@ import { useEffect } from "react";
 
 export default function Error({
     error,
-}: {
+}: Readonly<{
     error: Error & { digest?: string };
-}) {
+}>) {
     useEffect(() => {
         console.error(error);
     }, [error]);

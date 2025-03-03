@@ -13,7 +13,7 @@ import {
 import SearchBar from "../searchBar/SearchBar";
 import { useEffect, useState } from "react";
 
-const AccordionItem = ({ header, ...rest }: AccordionItemProps) => (
+const AccordionItem = ({ header, ...rest }: Readonly<AccordionItemProps>) => (
     <Item
         {...rest}
         header={({ state: { isEnter } }) => (

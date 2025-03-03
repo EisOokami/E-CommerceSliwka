@@ -22,7 +22,7 @@ function selectSocialIcon(url: string) {
     return null;
 }
 
-export default function HeaderIcons({ iconsLink }: HeaderIconsProps) {
+export default function HeaderIcons({ iconsLink }: Readonly<HeaderIconsProps>) {
     return (
         <div className="flex justify-around md:justify-normal items-center gap-5 text-2xl">
             {iconsLink.map(({ id, url, text }) => (

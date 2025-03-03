@@ -1,6 +1,6 @@
 import { ProductInfoProps } from "./ProductInfo.interfaces";
 
-export default function ProductInfo({ infoData }: ProductInfoProps) {
+export default function ProductInfo({ infoData }: Readonly<ProductInfoProps>) {
     return (
         <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {infoData.map((info, i) => (

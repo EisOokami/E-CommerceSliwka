@@ -14,7 +14,7 @@ export default function Card({
     buttonTheme,
     buttonText,
     buttonInline,
-}: CardProps) {
+}: Readonly<CardProps>) {
     return (
         <div className="grid justify-items-center gap-3 p-3 md:p-8 bg-gray-100 rounded-md cursor-pointer">
             <FaRegHeart className="justify-self-end text-2xl md:text-3xl text-gray-500" />

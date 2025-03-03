@@ -1,7 +1,9 @@
 import RatingStars from "@/components/ui/ratingStars/RatingStars";
 import { RatingSummaryProps } from "./RatingSummary.interfaces";
 
-export default function RatingSummary({ reviewsData }: RatingSummaryProps) {
+export default function RatingSummary({
+    reviewsData,
+}: Readonly<RatingSummaryProps>) {
     const totalReviews = reviewsData.length;
     const averageRating = +(
         reviewsData.reduce(

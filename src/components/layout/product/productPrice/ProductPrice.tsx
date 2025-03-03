@@ -3,7 +3,7 @@ import { ProductPriceProps } from "./ProductPrice.interfaces";
 export default function ProductPrice({
     price,
     discount = "",
-}: ProductPriceProps) {
+}: Readonly<ProductPriceProps>) {
     return (
         <div className="flex items-center gap-5">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold">

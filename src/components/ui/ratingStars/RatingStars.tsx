@@ -1,7 +1,7 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { RatingStarsProps } from "./RatingStars.interfaces";
 
-export default function RatingStars({ count }: RatingStarsProps) {
+export default function RatingStars({ count }: Readonly<RatingStarsProps>) {
     const fullStars = count > 5 ? 5 : Math.floor(count);
     const hasHalfStar = count > 5 ? false : !Number.isInteger(count);
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
