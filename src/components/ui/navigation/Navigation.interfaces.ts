@@ -1,3 +1,10 @@
+export interface Link {
+    id: number;
+    url: string;
+    text: string;
+    isExternal: boolean;
+}
+
 export interface NavigationProps {
-    navigationLinks: { name: string; href: string }[];
+    navigationLinks: Link[];
 }

@@ -9,17 +9,17 @@ export default function Navigation({ navigationLinks }: NavigationProps) {
 
     return (
         <nav className="text-center grid gap-2 md:flex md:items-center md:gap-10">
-            {navigationLinks.map((navigationLink, i) => (
+            {navigationLinks.map(({ id, url, text }) => (
                 <Link
-                    key={i}
-                    href={navigationLink.href}
+                    key={id}
+                    href={url ?? ""}
                     className={`py-2 md:p-0 text-lg lg:text-xl ${
-                        currentPath === navigationLink.href
+                        currentPath === url
                             ? "text-black"
                             : "text-gray-500 hover:text-gray-800 transition"
                     }`}
                 >
-                    {navigationLink.name}
+                    {text}
                 </Link>
             ))}
         </nav>
