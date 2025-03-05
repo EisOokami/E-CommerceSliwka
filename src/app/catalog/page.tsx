@@ -3,7 +3,7 @@ import Products from "@/components/layout/catalog/products/Products";
 import RatingSelect from "@/components/ui/ratingSelect/RatingSelect";
 import Pagination from "@/components/ui/pagination/Pagination";
 
-export default function Catalog() {
+export default function CatalogPage() {
     return (
         <>
             <section className="grid md:flex md:items-center gap-5 container mx-auto px-3 md:px-5">
