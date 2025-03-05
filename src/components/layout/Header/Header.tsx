@@ -10,7 +10,7 @@ import HeaderIcons from "@/components/ui/HeaderIcons/HeaderIcons";
 import Navigation from "@/components/ui/navigation/Navigation";
 import SearchBar from "@/components/ui/searchBar/SearchBar";
 
-export default function Header({ data }: Readonly<HeaderProps>) {
+export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerNavbarMenu = useRef<HTMLDivElement>(null);
     const hamburgerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +44,10 @@ export default function Header({ data }: Readonly<HeaderProps>) {
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-end items-center gap-5">
                     <SearchBar />
-                    <HeaderIcons iconsLink={iconsLink} />
+                    <HeaderIcons
+                        iconsLink={iconsLink}
+                        isUserSingIn={isUserSingIn}
+                    />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
                     <Hamburger toggled={isOpen} toggle={setIsOpen} />
@@ -60,7 +63,10 @@ export default function Header({ data }: Readonly<HeaderProps>) {
                     >
                         <Navigation navigationLinks={navigationLinks} />
                         <SearchBar />
-                        <HeaderIcons iconsLink={iconsLink} />
+                        <HeaderIcons
+                            iconsLink={iconsLink}
+                            isUserSingIn={isUserSingIn}
+                        />
                     </div>
                 </div>
             )}
