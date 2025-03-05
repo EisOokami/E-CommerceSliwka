@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { registerUserAction } from "@/data/authActions";
+import { registerUserAction } from "@/data/actions/authActions";
 import Button from "@/components/ui/button/Button";
 import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 import { StrapiErrors } from "@/components/ui/strapiErrors/StrapiErrors";
