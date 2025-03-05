@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { logoutAction } from "@/data/authActions";
+import { logoutAction } from "@/data/actions/authActions";
 import useClickOutside from "@/hooks/UseClickOutside";
 import { IoPersonOutline, IoLogOutOutline } from "react-icons/io5";
 import { ProfileButtonProps } from "./ProfileButton.interfaces";
@@ -38,7 +38,7 @@ export default function ProfileButton({
                         className="w-full px-5 py-2 text-left"
                         onClick={handleIsOpen}
                     >
-                        <Link href="" className="text-lg text-gray-700">
+                        <Link href="/account" className="text-lg text-gray-700">
                             Account settings
                         </Link>
                     </button>
