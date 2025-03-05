@@ -7,4 +7,5 @@ export interface Link {
 
 export interface HeaderIconsProps {
     iconsLink: Link[];
+    isUserSingIn: boolean;
 }

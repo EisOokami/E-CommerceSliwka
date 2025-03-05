@@ -1,9 +1,6 @@
 import Link from "next/link";
-import {
-    IoCartOutline,
-    IoPersonOutline,
-    IoHeartOutline,
-} from "react-icons/io5";
+import { IoCartOutline, IoHeartOutline } from "react-icons/io5";
+import ProfileButton from "../profileButton/ProfileButton";
 import { HeaderIconsProps } from "./HeaderIcons.interfaces";
 
 function selectSocialIcon(url: string) {
@@ -15,21 +12,26 @@ function selectSocialIcon(url: string) {
         return <IoCartOutline />;
     }
 
-    if (url.includes("account")) {
-        return <IoPersonOutline />;
-    }
-
     return null;
 }
 
-export default function HeaderIcons({ iconsLink }: Readonly<HeaderIconsProps>) {
+export default async function HeaderIcons({
+    iconsLink,
+    isUserSingIn,
+}: Readonly<HeaderIconsProps>) {
     return (
         <div className="flex justify-around md:justify-normal items-center gap-5 text-2xl">
-            {iconsLink.map(({ id, url, text }) => (
-                <Link key={id} href={url ?? ""}>
-                    {selectSocialIcon(text)}
-                </Link>
-            ))}
+            {iconsLink.map(({ id, url, text }) => {
+                if (!text.includes("profile")) {
+                    return (
+                        <Link key={id} href={url ?? ""}>
+                            {selectSocialIcon(text)}
+                        </Link>
+                    );
+                }
+
+                return <ProfileButton key={id} isUserSingIn={isUserSingIn} />;
+            })}
         </div>
     );
 }
