@@ -17,10 +17,6 @@ export default function SignUp() {
         INITIAL_STATE,
     );
 
-    // console.log("## will render on client ##");
-    console.log(formState);
-    // console.log("###########################");
-
     return (
         <>
             <section className="hidden md:block w-1/2 bg-gray-100">
