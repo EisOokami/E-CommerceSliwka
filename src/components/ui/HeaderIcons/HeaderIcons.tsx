@@ -15,7 +15,7 @@ function selectSocialIcon(url: string) {
     return null;
 }
 
-export default async function HeaderIcons({
+export default function HeaderIcons({
     iconsLink,
     isUserSingIn,
 }: Readonly<HeaderIconsProps>) {
