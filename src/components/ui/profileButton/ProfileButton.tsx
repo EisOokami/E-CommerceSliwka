@@ -42,11 +42,10 @@ export default function ProfileButton({
                             Account settings
                         </Link>
                     </button>
-                    <form action={logoutAction}>
+                    <form action={logoutAction} onSubmit={handleIsOpen}>
                         <button
                             type="submit"
                             className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700"
-                            onClick={handleIsOpen}
                         >
                             Sign out <IoLogOutOutline className="text-lg" />
                         </button>
