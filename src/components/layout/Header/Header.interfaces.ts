@@ -20,4 +20,5 @@ export interface HeaderProps {
         navigationLinks: Link[];
         logoLink: Link;
     };
+    isUserSingIn: boolean;
 }
