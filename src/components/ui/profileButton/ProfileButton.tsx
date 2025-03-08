@@ -34,11 +34,12 @@ export default function ProfileButton({
                     ref={dropdownRef}
                     className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
                 >
-                    <button
-                        className="w-full px-5 py-2 text-left"
-                        onClick={handleIsOpen}
-                    >
-                        <Link href="/account" className="text-lg text-gray-700">
+                    <button className="w-full text-left" onClick={handleIsOpen}>
+                        <Link
+                            href="/account"
+                            className="block w-full px-5 py-2 text-lg text-gray-700"
+                            onClick={handleIsOpen}
+                        >
                             Account settings
                         </Link>
                     </button>
