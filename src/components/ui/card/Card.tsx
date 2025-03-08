@@ -14,6 +14,7 @@ export default function Card({
     buttonTheme,
     buttonText,
     buttonInline,
+    buttonClassName,
 }: Readonly<CardProps>) {
     return (
         <div className="grid justify-items-center gap-3 p-3 md:p-8 bg-gray-100 rounded-md cursor-pointer">
@@ -23,16 +24,24 @@ export default function Card({
                 alt={imageAlt}
                 width={imageWidth}
                 height={imageHeight}
+                className="self-center"
             />
-            <span className="text-center md:text-lg font-medium">{title}</span>
-            <span className="text-2xl md:text-3xl font-semibold">{price}</span>
-            <Button
-                href={buttonHref}
-                theme={buttonTheme}
-                text={buttonText}
-                inline={buttonInline}
-                isLink
-            />
+            <div className="grid justify-items-center content-end gap-3">
+                <span className="text-center md:text-lg font-medium">
+                    {title}
+                </span>
+                <span className="text-2xl md:text-3xl font-semibold">
+                    {price}
+                </span>
+                <Button
+                    href={buttonHref}
+                    theme={buttonTheme}
+                    text={buttonText}
+                    inline={buttonInline}
+                    className={buttonClassName}
+                    isLink
+                />
+            </div>
         </div>
     );
 }
