@@ -7,7 +7,7 @@ export default function Button({
     theme,
     text,
     inline = false,
-    className,
+    className = "",
     isLink = false,
     onClick,
     type = "button",
