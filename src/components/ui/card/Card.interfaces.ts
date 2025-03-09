@@ -9,4 +9,5 @@ export interface CardProps {
     buttonTheme: "dark" | "light";
     buttonText: string;
     buttonInline?: boolean;
+    buttonClassName?: string;
 }
