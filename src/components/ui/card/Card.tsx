@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa6";
 import Button from "@/components/ui/button/Button";
 import { CardProps } from "./Card.interfaces";
+import Link from "next/link";
 
 export default function Card({
     imageSrc,
@@ -17,7 +18,10 @@ export default function Card({
     buttonClassName,
 }: Readonly<CardProps>) {
     return (
-        <div className="grid justify-items-center gap-3 p-3 md:p-8 bg-gray-100 rounded-md cursor-pointer">
+        <Link
+            href={buttonHref}
+            className="grid justify-items-center gap-3 p-3 md:p-8 bg-gray-100 rounded-md cursor-pointer"
+        >
             <FaRegHeart className="justify-self-end text-2xl md:text-3xl text-gray-500" />
             <Image
                 src={imageSrc}
@@ -34,14 +38,12 @@ export default function Card({
                     {price}
                 </span>
                 <Button
-                    href={buttonHref}
                     theme={buttonTheme}
                     text={buttonText}
                     inline={buttonInline}
                     className={buttonClassName}
-                    isLink
                 />
             </div>
-        </div>
+        </Link>
     );
 }
