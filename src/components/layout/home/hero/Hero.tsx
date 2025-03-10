@@ -4,7 +4,7 @@ import { HeroProps } from "./Hero.interfaces";
 
 export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
     const { heading, subHeading, image, link } = data;
-    const imageURL = "http://127.0.0.1:1337" + image.url;
+    const imageURL = process.env.NEXT_PUBLIC_DB_URL + image.url;
 
     return (
         <section className="pt-16 md:pt-0 px-3 md:px-5 bg-[#211C24]">
