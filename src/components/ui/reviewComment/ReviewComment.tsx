@@ -7,10 +7,12 @@ import RatingStars from "../ratingStars/RatingStars";
 export default function ReviewComment({
     review,
 }: Readonly<ReviewCommentProps>) {
+    const avatarImageURL = process.env.NEXT_PUBLIC_DB_URL + review.avatar.url;
+
     return (
         <article className="flex items-start gap-3 md:gap-5 p-3 md:p-5 bg-gray-100 rounded-xl">
             <Image
-                src={review.avatar}
+                src={avatarImageURL}
                 width={70}
                 height={70}
                 alt={review.fullname}
@@ -28,14 +30,16 @@ export default function ReviewComment({
                         {review.publicationDate}
                     </span>
                 </div>
-                <p className="text-gray-600 text-pretty">{review.comment}</p>
+                <p className="text-gray-600 text-pretty">
+                    {review.description}
+                </p>
                 {review.images && (
                     <div className="flex flex-wrap gap-3">
-                        {review.images.map((image, i) => (
+                        {review.images.map((image) => (
                             <Image
-                                key={i}
-                                src={image}
-                                alt={`${review.fullname}${i}`}
+                                key={image.id}
+                                src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                alt={`${review.fullname}`}
                                 width={300}
                                 height={300}
                                 className="w-20 md:w-32 h-16 md:h-24 rounded-xl cursor-pointer"
