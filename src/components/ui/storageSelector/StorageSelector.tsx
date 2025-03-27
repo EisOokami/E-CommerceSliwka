@@ -12,7 +12,7 @@ export default function StorageSelector({
         <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-2 md:gap-3">
             {storageData.map((storage, i) => (
                 <button
-                    key={i}
+                    key={storage.id}
                     className={`text-center w-full py-3 border rounded-xl ${
                         selectedStorage === i
                             ? "border-black text-black"
@@ -20,7 +20,7 @@ export default function StorageSelector({
                     }`}
                     onClick={() => setSelectedStorage(i)}
                 >
-                    {storage}
+                    {storage.item}
                 </button>
             ))}
         </div>
