@@ -21,16 +21,18 @@ export interface IProductSpecs {
     specification: string;
 }
 
+export interface ISpecification {
+    id: number;
+    item: string;
+}
 export interface ISpecifications {
     id: number;
-    documentId: string;
     name: string;
-    specifications: string[];
+    specifications: ISpecification[];
 }
 
 export interface IDetailedSpecifications {
     id: number;
-    documentId: string;
     name: string;
     specifications: ISpecifications[];
 }
@@ -51,6 +53,11 @@ export interface ICategory {
     category: string;
 }
 
+export interface IArray {
+    id: number;
+    item: string;
+}
+
 export interface IStore {
     id: number;
     documentId: string;
@@ -62,8 +69,8 @@ export interface IStore {
     category: ICategory;
     image: Image;
     sliderImages: Image[];
-    colors: string[];
-    options: string[];
+    colors: IArray[];
+    options: IArray[];
     productInfo: IProductInfo;
     productSpecs: IProductSpecs[];
     detailedSpecifications: IDetailedSpecifications[];

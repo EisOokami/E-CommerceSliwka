@@ -361,6 +361,61 @@ export async function getGlobalPageMetadata() {
     return await fetchData(url.href);
 }
 
+export async function getStoreProductsData() {
+    const url = new URL("/api/stores", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            image: {
+                fields: ["url", "alternativeText"],
+            },
+            sliderImages: {
+                fields: ["url", "alternativeText"],
+            },
+            colors: {
+                populate: true,
+            },
+            options: {
+                populate: true,
+            },
+            productInfo: {
+                populate: true,
+            },
+            productSpecs: {
+                populate: true,
+            },
+            category: {
+                populate: true,
+            },
+            detailedSpecifications: {
+                populate: {
+                    specifications: {
+                        populate: {
+                            specifications: {
+                                populate: true,
+                            },
+                        },
+                    },
+                },
+            },
+            reviews: {
+                populate: {
+                    avatar: {
+                        fields: ["url", "alternativeText"],
+                    },
+                    images: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
+            },
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
 export async function getStoreProductData(id: number) {
     const url = new URL("/api/stores", baseUrl);
 
@@ -390,7 +445,11 @@ export async function getStoreProductData(id: number) {
             detailedSpecifications: {
                 populate: {
                     specifications: {
-                        populate: true,
+                        populate: {
+                            specifications: {
+                                populate: true,
+                            },
+                        },
                     },
                 },
             },
