@@ -1,5 +1,11 @@
-import { IconType } from "react-icons";
+export interface IProductSpecs {
+    id: number;
+    documentId: string;
+    icon: string;
+    name: string;
+    specification: string;
+}
 
 export interface ProductSpecsProps {
-    specsData: { icon: IconType; title: string; spec: string }[];
+    specsData: IProductSpecs[];
 }
