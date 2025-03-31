@@ -65,7 +65,7 @@ export default function ProductImageGallery({
             >
                 {images.map((image, index) => (
                     <SplideSlide
-                        key={image.alt}
+                        key={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
                         className="grid place-content-center first:place-content-end last:place-content-start"
                     >
                         <button
@@ -73,8 +73,8 @@ export default function ProductImageGallery({
                             className="w-28"
                         >
                             <Image
-                                src={image.src}
-                                alt={image.alt}
+                                src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                alt={image.alternativeText ?? ""}
                                 width={1000}
                                 height={1000}
                             />
@@ -91,10 +91,10 @@ export default function ProductImageGallery({
                 className="grid place-content-center max-w-5xl w-svw md:w-auto"
             >
                 {images.map((image) => (
-                    <SplideSlide key={image.alt}>
+                    <SplideSlide key={image.documentId}>
                         <Image
-                            src={image.src}
-                            alt={image.alt}
+                            src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                            alt={image.alternativeText ?? ""}
                             width={1000}
                             height={1000}
                             className="h-full object-contain"
@@ -109,7 +109,7 @@ export default function ProductImageGallery({
             >
                 {images.map((image, index) => (
                     <SplideSlide
-                        key={image.alt}
+                        key={image.documentId}
                         className="grid place-items-center !h-auto"
                     >
                         <button
@@ -117,8 +117,8 @@ export default function ProductImageGallery({
                             className="w-20 lg:w-28"
                         >
                             <Image
-                                src={image.src}
-                                alt={image.alt}
+                                src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                alt={image.alternativeText ?? ""}
                                 width={1000}
                                 height={1000}
                             />
