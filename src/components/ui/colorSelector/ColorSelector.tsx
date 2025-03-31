@@ -7,11 +7,11 @@ export default function ColorSelector({
         <div className="flex items-center gap-5">
             <span>Select color: </span>
             <div className="flex items-center gap-3">
-                {colorsData.map((color, i) => (
+                {colorsData.map((color) => (
                     <button
-                        key={i}
+                        key={color.id}
                         className="w-9 h-9 rounded-full"
-                        style={{ backgroundColor: color }}
+                        style={{ backgroundColor: color.item }}
                     ></button>
                 ))}
             </div>

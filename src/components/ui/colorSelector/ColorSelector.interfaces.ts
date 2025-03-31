@@ -1,3 +1,8 @@
+export interface IArray {
+    id: number;
+    item: string;
+}
+
 export interface ColorSelectorProps {
-    colorsData: string[];
+    colorsData: IArray[];
 }
