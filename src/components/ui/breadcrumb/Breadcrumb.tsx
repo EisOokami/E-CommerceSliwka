@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChevronRight } from "react-icons/fa6";
+import { BreadcrumbProps } from "./Breadcrumb.interfaces";
 
-export default function Breadcrumb() {
+export default function Breadcrumb({ customSlug }: BreadcrumbProps) {
     const pathname = usePathname();
 
     const pathSegments = pathname.split("/").filter((segment) => segment);
@@ -28,9 +29,13 @@ export default function Breadcrumb() {
                     <li key={path} className="flex items-center gap-3">
                         <FaChevronRight className="text-xs text-gray-500" />
                         {index === breadcrumbPaths.length - 1 ? (
-                            <span className="capitalize">
-                                {decodeURIComponent(pathSegments[index])}
-                            </span>
+                            customSlug ? (
+                                <span className="capitalize">{customSlug}</span>
+                            ) : (
+                                <span className="capitalize">
+                                    {decodeURIComponent(pathSegments[index])}
+                                </span>
+                            )
                         ) : (
                             <Link
                                 href={`/${path}`}
