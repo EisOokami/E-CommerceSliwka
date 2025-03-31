@@ -2,18 +2,19 @@ import { ProductPriceProps } from "./ProductPrice.interfaces";
 
 export default function ProductPrice({
     price,
-    discount = "",
+    isDiscount,
+    discount,
 }: Readonly<ProductPriceProps>) {
     return (
         <div className="flex items-center gap-5">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold">
-                {price}
+                ${price}
             </h1>
-            {discount && (
+            {isDiscount ? (
                 <h1 className="text-xl md:text-2xl lg:text-3xl text-gray-500 font-semibold line-through">
-                    {discount}
+                    ${discount}
                 </h1>
-            )}
+            ) : null}
         </div>
     );
 }

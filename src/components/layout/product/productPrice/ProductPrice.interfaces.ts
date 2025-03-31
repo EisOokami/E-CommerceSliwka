@@ -1,4 +1,5 @@
 export interface ProductPriceProps {
     price: number | string;
-    discount?: number | string;
+    isDiscount: boolean;
+    discount?: number | string | null;
 }
