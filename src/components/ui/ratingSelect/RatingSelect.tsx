@@ -9,6 +9,7 @@ export default function RatingSelect() {
             <option value="DEFAULT" disabled hidden>
                 By rating
             </option>
+            <option value="all">All</option>
             <option value="5.0">5.0</option>
             <option value="4.8">From 4.8</option>
             <option value="4.6">From 4.6</option>
