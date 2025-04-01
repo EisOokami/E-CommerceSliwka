@@ -17,8 +17,8 @@ export default function ReviewList({ reviewsData }: Readonly<ReviewListProps>) {
 
     return (
         <div className="grid gap-5">
-            {displayedData.map((review, i) => (
-                <ReviewComment key={i} review={review} />
+            {displayedData.map((review) => (
+                <ReviewComment key={review.id} review={review} />
             ))}
             {reviewsData.length !== displayedData.length && (
                 <div className="w-full text-center">
