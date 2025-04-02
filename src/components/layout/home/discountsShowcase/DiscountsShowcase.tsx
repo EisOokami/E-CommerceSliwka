@@ -1,6 +1,13 @@
 import Card from "@/components/ui/card/Card";
+import { DiscountsShowcaseProps } from "./DiscountsShowcase.interfaces";
 
-export default function DiscountsShowcase() {
+export default function DiscountsShowcase({
+    data,
+}: Readonly<{
+    data: DiscountsShowcaseProps;
+}>) {
+    const { stores } = data;
+
     return (
         <section className="container mx-auto px-3 md:px-5 py-10">
             <div className="mb-8">
@@ -9,18 +16,23 @@ export default function DiscountsShowcase() {
                 </h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {[...Array(4)].map((_, i) => (
+                {stores.map((product) => (
                     <Card
-                        key={i}
-                        imageSrc="/product_image_thumb.png"
-                        imageAlt="product"
+                        key={product.documentId}
+                        imageSrc={`${process.env.NEXT_PUBLIC_DB_URL}${product.image.url}`}
+                        imageAlt={product.name}
                         imageWidth={250}
                         imageHeight={250}
-                        title="Lorem ipsum, dolor sit amet consectetur adipisicing elit."
-                        price="$999"
-                        buttonHref="/catalog"
+                        title={product.name}
+                        price={`$${
+                            product.isDiscount
+                                ? product.discountedPrice
+                                : product.price
+                        }`}
+                        buttonHref={`/catalog/${product.id}`}
                         buttonTheme="dark"
                         buttonText="Buy Now"
+                        buttonClassName="self-end"
                     />
                 ))}
             </div>
