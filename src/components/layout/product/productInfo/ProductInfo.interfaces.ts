@@ -1,5 +1,11 @@
-import { IconType } from "react-icons";
+export interface IProductInfo {
+    id: number;
+    documentId: string;
+    delivery: string;
+    inStore: string;
+    guaranteed: string;
+}
 
 export interface ProductInfoProps {
-    infoData: { icon: IconType; title: string; info: string }[];
+    infoData: IProductInfo;
 }
