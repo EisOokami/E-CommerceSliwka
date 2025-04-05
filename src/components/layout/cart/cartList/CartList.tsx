@@ -1,5 +1,6 @@
-import CartItem from "@/components/ui/сartItem/CartItem";
 import { CartListProps } from "./CartList.interfaces";
+
+import CartItem from "@/components/ui/сartItem/CartItem";
 
 export default function CartList({ cartItemsData }: Readonly<CartListProps>) {
     return (

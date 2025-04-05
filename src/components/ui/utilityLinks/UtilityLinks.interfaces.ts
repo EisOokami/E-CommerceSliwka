@@ -1,15 +1,4 @@
-export interface Link {
-    id: number;
-    url: string;
-    text: string;
-    isExternal: boolean;
-}
-
-export interface UtilityLink {
-    id: number;
-    title: string;
-    links: Link[];
-}
+import { UtilityLink } from "@/interfaces/interfaces";
 
 export interface UtilityLinksProps {
     utilityLinks: UtilityLink[];

@@ -1,9 +1,4 @@
-export interface Image {
-    id: number;
-    documentId: string;
-    url: string;
-    alternativeText: string | null;
-}
+import { Image } from "@/interfaces/interfaces";
 
 export interface ProductImageGalleryProps {
     images: Image[];

@@ -7,6 +7,7 @@ import "@splidejs/splide/css/skyblue";
 import "@splidejs/splide/css/sea-green";
 import "@splidejs/splide/css/core";
 import { CarouselClientProps } from "./CarouselClient.interfaces";
+
 import Button from "@/components/ui/button/Button";
 
 export default function CarouselClient({

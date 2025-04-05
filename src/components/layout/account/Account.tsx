@@ -1,9 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
+import { AccountProps } from "./Account.interfaces";
+
 import Button from "@/components/ui/button/Button";
 import { updateProfileAction } from "@/data/actions/profileActions";
-import { AccountProps } from "./Account.interfaces";
 import { StrapiErrors } from "@/components/ui/strapiErrors/StrapiErrors";
 import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 

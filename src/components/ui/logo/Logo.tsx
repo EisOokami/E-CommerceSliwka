@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoProps } from "./Logo.interfaces";
+
 import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function Logo({

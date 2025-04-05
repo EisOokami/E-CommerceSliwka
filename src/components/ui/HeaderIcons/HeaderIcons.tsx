@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { IoCartOutline, IoHeartOutline } from "react-icons/io5";
-import ProfileButton from "../profileButton/ProfileButton";
 import { HeaderIconsProps } from "./HeaderIcons.interfaces";
+
+import ProfileButton from "../profileButton/ProfileButton";
 
 function selectSocialIcon(url: string) {
     if (url.includes("favorite")) {

@@ -1,9 +1,4 @@
-export interface Link {
-    id: number;
-    url: string;
-    text: string;
-    isExternal: boolean;
-}
+import { Link } from "@/interfaces/interfaces";
 
 export interface HeaderIconsProps {
     iconsLink: Link[];

@@ -1,5 +1,6 @@
-import RatingStars from "@/components/ui/ratingStars/RatingStars";
 import { RatingSummaryProps } from "./RatingSummary.interfaces";
+
+import RatingStars from "@/components/ui/ratingStars/RatingStars";
 
 export default function RatingSummary({
     reviewsData,

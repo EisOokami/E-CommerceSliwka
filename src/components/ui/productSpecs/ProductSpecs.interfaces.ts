@@ -1,10 +1,4 @@
-export interface IProductSpecs {
-    id: number;
-    documentId: string;
-    icon: string;
-    name: string;
-    specification: string;
-}
+import { IProductSpecs } from "@/interfaces/interfaces";
 
 export interface ProductSpecsProps {
     specsData: IProductSpecs[];

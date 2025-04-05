@@ -1,16 +1,4 @@
-export interface Image {
-    id: number;
-    documentId: string;
-    url: string;
-    alternativeText: string | null;
-}
-
-export interface Link {
-    id: number;
-    url: string;
-    text: string;
-    isExternal: boolean;
-}
+import { Image, Link } from "@/interfaces/interfaces";
 
 export interface FeatureProduct {
     id: number;

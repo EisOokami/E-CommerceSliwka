@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ReviewCommentProps } from "./ReviewComment.interfaces";
+
 import RatingStars from "../ratingStars/RatingStars";
 
 export default function ReviewComment({

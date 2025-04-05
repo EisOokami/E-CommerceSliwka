@@ -1,22 +1,4 @@
-export interface Image {
-    id: number;
-    documentId: string;
-    url: string;
-    alternativeText: string | null;
-}
-
-export interface Link {
-    id: number;
-    url: string;
-    text: string;
-    isExternal: boolean;
-}
-
-export interface UtilityLink {
-    id: number;
-    title: string;
-    links: Link[];
-}
+import { Image, Link, UtilityLink } from "@/interfaces/interfaces";
 
 export interface FooterProps {
     data: {

@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 import { FaBluesky, FaXTwitter } from "react-icons/fa6";
 import { SocialMediaProps } from "./SocialMedia.interfaces";
-import Link from "next/link";
 
 function selectSocialMediaIcon(url: string) {
     switch (url) {

@@ -1,7 +1,4 @@
-export interface IArray {
-    id: number;
-    item: string;
-}
+import { IArray } from "@/interfaces/interfaces";
 
 export interface ColorSelectorProps {
     colorsData: IArray[];

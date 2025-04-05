@@ -1,6 +1,7 @@
+import { FeatureProductsProps } from "./FeatureProducts.interfaces";
+
 import StrapiImage from "@/components/ui/strapiImage/StrapiImage";
 import Button from "@/components/ui/button/Button";
-import { FeatureProductsProps } from "./FeatureProducts.interfaces";
 
 export default function FeatureProducts({
     data,

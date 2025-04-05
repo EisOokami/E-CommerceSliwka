@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { ReviewListProps } from "./ReviewList.interfaces";
+
 import ReviewComment from "@/components/ui/reviewComment/ReviewComment";
 import Button from "@/components/ui/button/Button";
-import { ReviewListProps } from "./ReviewList.interfaces";
 
 export default function ReviewList({ reviewsData }: Readonly<ReviewListProps>) {
     const [displayedData, setDisplayedData] = useState(reviewsData.slice(0, 3));

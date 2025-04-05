@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Button from "@/components/ui/button/Button";
 import { DetailsSpecsProps } from "./DetailsSpecs.interfaces";
+
+import Button from "@/components/ui/button/Button";
 
 export default function DetailsSpecs({
     specsData,

@@ -1,5 +1,6 @@
-import Card from "@/components/ui/card/Card";
 import { DiscountsShowcaseProps } from "./DiscountsShowcase.interfaces";
+
+import Card from "@/components/ui/card/Card";
 
 export default function DiscountsShowcase({
     data,

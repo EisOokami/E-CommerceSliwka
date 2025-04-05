@@ -1,8 +1,9 @@
+import Link from "next/link";
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa6";
-import Button from "@/components/ui/button/Button";
 import { CardProps } from "./Card.interfaces";
-import Link from "next/link";
+
+import Button from "@/components/ui/button/Button";
 
 export default function Card({
     imageSrc,
