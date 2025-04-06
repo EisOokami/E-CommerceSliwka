@@ -1,59 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CarouselClient from "@/components/ui/carouselClient/CarouselClient";
+import { ProductsCarouselProps } from "./ProductsCarousel.interfaces";
 
-const initialProductsData = [
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image1",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image2",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image3",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image4",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image5",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image6",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-    {
-        src: "/product_image_thumb.png",
-        alt: "Image7",
-        name: "Lorem, ipsum.",
-        descr: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nisi corrupti magnam?",
-        href: "/catalog",
-    },
-];
+import CarouselClient from "@/components/ui/carouselClient/CarouselClient";
 
 const initialOptionsDesktop = {
     type: "loop",
@@ -80,8 +30,12 @@ const initialOptionsMobile = {
     arrows: false,
 };
 
-export default function ProductsCarousel() {
+export default function ProductsCarousel({
+    data,
+}: Readonly<{ data: ProductsCarouselProps }>) {
     const [screenWidth, setScreenWidth] = useState<number>(750);
+
+    const { stores } = data;
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -102,7 +56,7 @@ export default function ProductsCarousel() {
         <section>
             {screenWidth < 750 && (
                 <CarouselClient
-                    productsData={initialProductsData}
+                    productsData={stores}
                     options={initialOptionsMobile}
                     width={350}
                     height={350}
@@ -110,7 +64,7 @@ export default function ProductsCarousel() {
             )}
             {screenWidth > 750 && screenWidth < 1500 && (
                 <CarouselClient
-                    productsData={initialProductsData}
+                    productsData={stores}
                     options={initialOptionsLaptop}
                     width={350}
                     height={350}
@@ -118,7 +72,7 @@ export default function ProductsCarousel() {
             )}
             {screenWidth > 1500 && (
                 <CarouselClient
-                    productsData={initialProductsData}
+                    productsData={stores}
                     options={initialOptionsDesktop}
                     width={350}
                     height={350}
