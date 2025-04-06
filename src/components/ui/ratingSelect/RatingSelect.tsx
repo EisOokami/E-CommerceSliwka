@@ -18,12 +18,10 @@ export default function RatingSelect({ setProductRating }: RatingSelectProps) {
             </option>
             <option value="all">All</option>
             <option value="5.0">5.0</option>
-            <option value="4.8">From 4.8</option>
-            <option value="4.5">From 4.5</option>
-            <option value="4.0">From 4.0</option>
-            <option value="3.0">From 3.0</option>
-            <option value="2.0">From 2.0</option>
-            <option value="1.0">From 1.0</option>
+            <option value="4.8">Above 4.8</option>
+            <option value="4.5">Above 4.5</option>
+            <option value="4.0">Above 4.0</option>
+            <option value="0.0">Below 4.0</option>
         </select>
     );
 }
