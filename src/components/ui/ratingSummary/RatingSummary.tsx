@@ -4,14 +4,9 @@ import RatingStars from "@/components/ui/ratingStars/RatingStars";
 
 export default function RatingSummary({
     reviewsData,
+    averageRating,
 }: Readonly<RatingSummaryProps>) {
     const totalReviews = reviewsData.length;
-    const averageRating = +(
-        reviewsData.reduce(
-            (accumulator, currentValue) => currentValue.rating + accumulator,
-            0,
-        ) / totalReviews
-    ).toFixed(1);
     const counterStarsData = [
         {
             star: "5 star",
