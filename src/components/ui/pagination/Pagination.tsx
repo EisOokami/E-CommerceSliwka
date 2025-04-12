@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
+import { PaginationProps } from "./Pagination.interfaces";
 
-export default function Pagination() {
-    const [currentPage, setCurrentPage] = useState(1);
+export default function Pagination({
+    currentPage,
+    setCurrentPage,
+    totalPages,
+}: PaginationProps) {
     const [screenWidth, setScreenWidth] = useState<number>(500);
-    const totalPages = 20;
 
     useEffect(() => {
         if (typeof window !== "undefined") {
