@@ -1,6 +1,6 @@
 import qs from "qs";
 import { getStrapiURL } from "@/lib/utils";
-import { IStore } from "./loaders.interfaces";
+import { IStore } from "@/interfaces/interfaces";
 
 const baseUrl = getStrapiURL();
 
@@ -361,7 +361,10 @@ export async function getGlobalPageMetadata() {
     return await fetchData(url.href);
 }
 
-export async function getStoreProductsData() {
+export async function getStoreProductsData(
+    page: number = 1,
+    limit: number = 8,
+) {
     const url = new URL("/api/stores", baseUrl);
 
     url.search = qs.stringify({
@@ -407,6 +410,227 @@ export async function getStoreProductsData() {
                         fields: ["url", "alternativeText"],
                     },
                 },
+            },
+        },
+        pagination: {
+            page,
+            pageSize: limit,
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return {
+        products: fetchedData.data,
+        totalPages: fetchedData.meta.pagination.pageCount,
+    };
+}
+
+export async function getStoreProductData(documentId: string) {
+    const url = new URL("/api/stores", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            image: {
+                fields: ["url", "alternativeText"],
+            },
+            sliderImages: {
+                fields: ["url", "alternativeText"],
+            },
+            colors: {
+                populate: true,
+            },
+            options: {
+                populate: true,
+            },
+            productInfo: {
+                populate: true,
+            },
+            productSpecs: {
+                populate: true,
+            },
+            category: {
+                populate: true,
+            },
+            detailedSpecifications: {
+                populate: {
+                    specifications: {
+                        populate: {
+                            specifications: {
+                                populate: true,
+                            },
+                        },
+                    },
+                },
+            },
+            reviews: {
+                populate: {
+                    avatar: {
+                        fields: ["url", "alternativeText"],
+                    },
+                    images: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
+            },
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data.find(
+        (product: IStore) => product.documentId === documentId,
+    );
+}
+
+export async function getFilteredProductsData(
+    category: string | null,
+    price: number[] | null,
+    colors: string[] | null,
+    options: string[] | null,
+    rating: number | null,
+    page: number = 1,
+    limit: number = 8,
+) {
+    const url = new URL("/api/stores/filtered", baseUrl);
+
+    const filters = {
+        ...(category && { category: { category: { $eq: category } } }),
+        ...(colors &&
+            colors.length > 0 && { colors: { item: { $in: colors } } }),
+        ...(options &&
+            options.length > 0 && { options: { item: { $in: options } } }),
+        ...(rating && { averageRating: { $gte: rating } }),
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const queryParams: Record<string, any> = {
+        ...(price && { price: price }),
+    };
+
+    url.search = qs.stringify(
+        {
+            populate: {
+                image: {
+                    fields: ["url", "alternativeText"],
+                },
+                sliderImages: {
+                    fields: ["url", "alternativeText"],
+                },
+                colors: {
+                    populate: true,
+                },
+                options: {
+                    populate: true,
+                },
+                productInfo: {
+                    populate: true,
+                },
+                productSpecs: {
+                    populate: true,
+                },
+                category: {
+                    populate: true,
+                },
+                detailedSpecifications: {
+                    populate: {
+                        specifications: {
+                            populate: {
+                                specifications: {
+                                    populate: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                reviews: {
+                    populate: {
+                        avatar: {
+                            fields: ["url", "alternativeText"],
+                        },
+                        images: {
+                            fields: ["url", "alternativeText"],
+                        },
+                    },
+                },
+            },
+            filters,
+            queryParams,
+            pagination: {
+                page,
+                pageSize: limit,
+            },
+        },
+        { encodeValuesOnly: true },
+    );
+
+    const fetchedData = await fetchData(url.href);
+
+    return {
+        products: fetchedData.data,
+        totalPages: fetchedData.totalPages,
+        productsCount: fetchedData.productsCount,
+    };
+}
+
+export async function getFiltersByCategory(category: string | null) {
+    const url = new URL("/api/stores", baseUrl);
+
+    const filters = {
+        ...(category && { category: { category: { $eq: category } } }),
+    };
+
+    url.search = qs.stringify({
+        populate: {
+            colors: {
+                populate: true,
+            },
+            options: {
+                populate: true,
+            },
+            category: {
+                populate: true,
+            },
+        },
+        filters,
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getProductsPriceRange(
+    category: string | null,
+    colors: string[] | null,
+    options: string[] | null,
+    rating: number | null,
+) {
+    const url = new URL("/api/stores/price-range", baseUrl);
+
+    const filters = {
+        ...(category && { category: { category: { $eq: category } } }),
+        ...(colors &&
+            colors.length > 0 && { colors: { item: { $in: colors } } }),
+        ...(options &&
+            options.length > 0 && { options: { item: { $in: options } } }),
+        ...(rating && { averageRating: { $gte: rating } }),
+    };
+
+    url.search = qs.stringify({ filters }, { encodeValuesOnly: true });
+
+    const { minPrice, maxPrice } = await fetchData(url.href);
+
+    return { minPrice, maxPrice };
+}
+
+export async function getProductsCategory() {
+    const url = new URL("/api/stores", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            category: {
+                populate: true,
             },
         },
     });
@@ -416,57 +640,14 @@ export async function getStoreProductsData() {
     return fetchedData.data;
 }
 
-export async function getStoreProductData(id: number) {
-    const url = new URL("/api/stores", baseUrl);
+export async function getProductsCount() {
+    const url = new URL("/api/stores/products-count", baseUrl);
 
     url.search = qs.stringify({
-        populate: {
-            image: {
-                fields: ["url", "alternativeText"],
-            },
-            sliderImages: {
-                fields: ["url", "alternativeText"],
-            },
-            colors: {
-                populate: true,
-            },
-            options: {
-                populate: true,
-            },
-            productInfo: {
-                populate: true,
-            },
-            productSpecs: {
-                populate: true,
-            },
-            category: {
-                populate: true,
-            },
-            detailedSpecifications: {
-                populate: {
-                    specifications: {
-                        populate: {
-                            specifications: {
-                                populate: true,
-                            },
-                        },
-                    },
-                },
-            },
-            reviews: {
-                populate: {
-                    avatar: {
-                        fields: ["url", "alternativeText"],
-                    },
-                    images: {
-                        fields: ["url", "alternativeText"],
-                    },
-                },
-            },
-        },
+        populate: "*",
     });
 
     const fetchedData = await fetchData(url.href);
 
-    return fetchedData.data.find((product: IStore) => product.id === id);
+    return fetchedData.data;
 }
