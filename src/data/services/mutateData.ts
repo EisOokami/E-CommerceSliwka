@@ -1,6 +1,7 @@
 import { getAuthToken } from "./getToken";
 import { getStrapiURL } from "@/lib/utils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function mutateData(method: string, path: string, payload?: any) {
     const baseUrl = getStrapiURL();
     const authToken = await getAuthToken();
