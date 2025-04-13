@@ -1,16 +1,6 @@
-import {
-    colorsData,
-    descrData,
-    detailsSpecsData,
-    discountData,
-    imagesData,
-    infoData,
-    priceData,
-    reviewsData,
-    specsData,
-    storageData,
-    titleData,
-} from "./page.data";
+import { getStoreProductData } from "@/data/loaders";
+import { ProductPageProps } from "./page.interfaces";
+import { IStore } from "@/interfaces/interfaces";
 
 import ColorSelector from "@/components/ui/colorSelector/ColorSelector";
 import ProductImageGallery from "@/components/ui/productImageGallery/ProductImageGallery";
@@ -24,19 +14,33 @@ import ProductPrice from "@/components/layout/product/productPrice/ProductPrice"
 import DetailsSpecs from "@/components/layout/product/detailsSpecs/DetailsSpecs";
 import RatingSummary from "@/components/ui/ratingSummary/RatingSummary";
 import ReviewList from "@/components/layout/product/reviewList/ReviewList";
+import Breadcrumb from "@/components/ui/breadcrumb/Breadcrumb";
 
-export default function ProductPage() {
+export default async function ProductPage({ params }: ProductPageProps) {
+    const { product } = await params;
+    const strapiData: IStore = await getStoreProductData(product);
+
     return (
         <>
+            <section className="container mx-auto px-3 md:px-5">
+                <Breadcrumb customSlug={strapiData.name} />
+            </section>
             <section className="md:flex gap-5 lg:gap-16 container mx-auto">
-                <ProductImageGallery images={imagesData} />
+                <ProductImageGallery images={strapiData.sliderImages} />
                 <div className="grid content-start gap-4 md:gap-8 w-full mt-3 px-3 md:px-5">
-                    <ProductTitle title={titleData} />
-                    <ProductPrice price={priceData} discount={discountData} />
-                    <ColorSelector colorsData={colorsData} />
-                    <StorageSelector storageData={storageData} />
-                    <ProductSpecs specsData={specsData} />
-                    <ProductDescription descr={descrData} isShowMore />
+                    <ProductTitle title={strapiData.name} />
+                    <ProductPrice
+                        price={strapiData.price}
+                        isDiscount={strapiData.isDiscount}
+                        discount={strapiData.discountedPrice}
+                    />
+                    <ColorSelector colorsData={strapiData.colors} />
+                    <StorageSelector storageData={strapiData.options} />
+                    <ProductSpecs specsData={strapiData.productSpecs} />
+                    <ProductDescription
+                        descr={strapiData.description}
+                        isShowMore
+                    />
                     <div className="grid lg:flex items-center gap-3 md:gap-5">
                         <Button
                             theme="dark"
@@ -50,7 +54,7 @@ export default function ProductPage() {
                             className="w-full text-center"
                         />
                     </div>
-                    <ProductInfo infoData={infoData} />
+                    <ProductInfo infoData={strapiData.productInfo} />
                 </div>
             </section>
             <section className="px-3 md:px-5 py-10 bg-gray-100">
@@ -58,16 +62,21 @@ export default function ProductPage() {
                     <h4 className="text-2xl md:text-3xl xl:text-4xl font-medium">
                         Details
                     </h4>
-                    <ProductDescription descr={descrData} />
-                    <DetailsSpecs specsData={detailsSpecsData} />
+                    <ProductDescription descr={strapiData.description} />
+                    <DetailsSpecs
+                        specsData={strapiData.detailedSpecifications}
+                    />
                 </div>
             </section>
             <section className="grid gap-10 container mx-auto px-3 md:px-5 py-10">
                 <h4 className="text-2xl md:text-3xl xl:text-4xl font-medium">
                     Reviews
                 </h4>
-                <RatingSummary reviewsData={reviewsData} />
-                <ReviewList reviewsData={reviewsData} />
+                <RatingSummary
+                    reviewsData={strapiData.reviews}
+                    averageRating={strapiData.averageRating}
+                />
+                <ReviewList reviewsData={strapiData.reviews} />
             </section>
         </>
     );
