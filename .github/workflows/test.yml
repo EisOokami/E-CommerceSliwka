@@ -6,6 +6,8 @@ jobs:
     lint:
         name: Run tests
         runs-on: ubuntu-latest
+        env:
+            NEXT_PUBLIC_DB_URL: ${{ secrets.NEXT_PUBLIC_DB_URL }}
         # container: "node:20"
         steps:
             - uses: actions/checkout@v4
