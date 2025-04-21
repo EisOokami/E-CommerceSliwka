@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layout_discounts",
+  "info": {
+    "displayName": "Discounts Section",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "stores": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::store.store"
+    }
+  }
+}

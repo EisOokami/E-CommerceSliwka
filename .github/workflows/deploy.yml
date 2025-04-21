@@ -1,15 +1,27 @@
-name: Release
+name: Build and Deploy
 
 on:
-    workflow_dispatch:
+    push:
+        branches: 
+            - main
+            - dev
 
 jobs:
-    release:
-        permissions:
-            contents: write
-            issues: write
-            pull-requests: write
+    build:
         runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:15
+                ports: ["5432:5432"]
+                env:
+                    POSTGRES_USER: strapi
+                    POSTGRES_PASSWORD: strapi
+                    POSTGRES_DB: strapi
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
 
         steps:
             - name: Checkout repository
@@ -18,7 +30,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                node-version: 20
 
             - name: Install backend dependencies (Strapi)
               working-directory: ./backend
@@ -47,7 +59,7 @@ jobs:
                     echo "Still waiting..."
                 done
                 echo "Strapi is up!"
-            
+
             - name: Install frontend dependencies (Next.js)
               working-directory: ./frontend
               run: npm ci
@@ -58,9 +70,3 @@ jobs:
                 NEXT_PUBLIC_DB_URL: http://127.0.0.1:1337
                 NEXT_PUBLIC_STRAPI_URL: http://127.0.0.1:1337
               run: npm run build
-            
-            - name: Semantic Release
-              working-directory: ./frontend
-              run: npx semantic-release
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

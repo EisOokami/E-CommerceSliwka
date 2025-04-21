@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_components_categories",
+  "info": {
+    "displayName": "Category",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Smartphones",
+        "Smartwatches",
+        "Cameras",
+        "Headphones",
+        "Computers",
+        "Laptops",
+        "Gaming",
+        "Other"
+      ]
+    }
+  }
+}

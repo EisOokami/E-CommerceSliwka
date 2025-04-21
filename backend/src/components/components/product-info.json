@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_components_product_infos",
+  "info": {
+    "displayName": "Product Info"
+  },
+  "options": {},
+  "attributes": {
+    "delivery": {
+      "type": "string"
+    },
+    "inStore": {
+      "type": "string"
+    },
+    "guaranteed": {
+      "type": "string"
+    }
+  }
+}

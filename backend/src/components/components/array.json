@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_components_arrays",
+  "info": {
+    "displayName": "Array",
+    "icon": "archive"
+  },
+  "options": {},
+  "attributes": {
+    "item": {
+      "type": "string"
+    }
+  }
+}

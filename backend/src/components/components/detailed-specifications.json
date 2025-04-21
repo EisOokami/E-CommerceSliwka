@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_components_detailed_specifications",
+  "info": {
+    "displayName": "Detailed Specifications"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "specifications": {
+      "displayName": "Specification",
+      "type": "component",
+      "repeatable": true,
+      "component": "components.specification"
+    }
+  }
+}

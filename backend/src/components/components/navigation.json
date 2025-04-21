@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_components_navigations",
+  "info": {
+    "displayName": "Navigation"
+  },
+  "options": {},
+  "attributes": {
+    "s": {
+      "type": "string"
+    }
+  }
+}

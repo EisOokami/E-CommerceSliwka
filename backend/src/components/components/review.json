@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_components_reviews",
+  "info": {
+    "displayName": "Review",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "fullname": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "rating": {
+      "type": "integer"
+    },
+    "publicationDate": {
+      "type": "date"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "avatar": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

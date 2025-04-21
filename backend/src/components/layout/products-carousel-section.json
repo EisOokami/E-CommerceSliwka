@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_layout_products_carousel_sections",
+  "info": {
+    "displayName": "Products Carousel Section"
+  },
+  "options": {},
+  "attributes": {
+    "stores": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::store.store"
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stores",
+  "info": {
+    "singularName": "store",
+    "pluralName": "stores",
+    "displayName": "Store",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float",
+      "default": 0
+    },
+    "sliderImages": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "description": {
+      "type": "text"
+    },
+    "colors": {
+      "type": "component",
+      "repeatable": true,
+      "component": "components.array"
+    },
+    "options": {
+      "type": "component",
+      "repeatable": true,
+      "component": "components.array"
+    },
+    "productInfo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "components.product-info"
+    },
+    "productSpecs": {
+      "displayName": "Product Specifications",
+      "type": "component",
+      "repeatable": true,
+      "component": "components.product-specifications"
+    },
+    "discountedPrice": {
+      "type": "float"
+    },
+    "isDiscount": {
+      "type": "boolean",
+      "default": false
+    },
+    "detailedSpecifications": {
+      "displayName": "Detailed Specifications",
+      "type": "component",
+      "repeatable": true,
+      "component": "components.detailed-specifications"
+    },
+    "reviews": {
+      "type": "component",
+      "repeatable": true,
+      "component": "components.review"
+    },
+    "category": {
+      "type": "component",
+      "repeatable": false,
+      "component": "components.category"
+    },
+    "averageRating": {
+      "type": "decimal",
+      "default": 0
+    },
+    "finalPrice": {
+      "type": "decimal"
+    }
+  }
+}
