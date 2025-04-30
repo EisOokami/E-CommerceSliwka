@@ -44,7 +44,7 @@ export default function CarouselClient({
                                     </p>
                                 </div>
                                 <Button
-                                    href={`/catalog/${product.id}`}
+                                    href={`/catalog/${product.documentId}`}
                                     theme="dark"
                                     text="Shop now"
                                     className="self-end"
