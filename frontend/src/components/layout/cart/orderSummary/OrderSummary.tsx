@@ -6,14 +6,16 @@ import Button from "@/components/ui/button/Button";
 export default function OrderSummary({
     cartItemsData,
 }: Readonly<OrderSummaryProps>) {
-    const subtotal = cartItemsData.reduce(
-        (accumulator, currentValue) =>
-            accumulator + currentValue.price * currentValue.count,
-        0,
-    );
+    const subtotal = cartItemsData.reduce((accumulator, currentValue) => {
+        const price = currentValue.store.isDiscount
+            ? (currentValue.store.discountedPrice as number)
+            : currentValue.store.price;
+
+        return accumulator + price * currentValue.quantity;
+    }, 0);
     const tax = +(subtotal * 0.23).toFixed(2);
     const shippingAndHandling = 50;
-    const total = subtotal + tax + shippingAndHandling;
+    const total = (subtotal + tax + shippingAndHandling).toFixed(2);
 
     return (
         <div className="grid content-start gap-5 w-full h-min md:w-1/2 p-5 md:p-8 xl:p-14 border rounded-xl">
