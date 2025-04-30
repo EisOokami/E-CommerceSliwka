@@ -1,11 +1,14 @@
+"use server";
+
 import qs from "qs";
 import { getStrapiURL } from "@/lib/utils";
-import { IStore } from "@/interfaces/interfaces";
+import { getAuthToken } from "./services/getToken";
+import { getUserMeLoader } from "./services/getUserMeLoader";
 
 const baseUrl = getStrapiURL();
 
 async function fetchData(url: string) {
-    const authToken = null;
+    const authToken = await getAuthToken();
 
     const headers = {
         method: "GET",
@@ -474,13 +477,16 @@ export async function getStoreProductData(documentId: string) {
                 },
             },
         },
+        filters: {
+            documentId: {
+                $eq: documentId,
+            },
+        },
     });
 
     const fetchedData = await fetchData(url.href);
 
-    return fetchedData.data.find(
-        (product: IStore) => product.documentId === documentId,
-    );
+    return fetchedData.data[0];
 }
 
 export async function getFilteredProductsData(
@@ -645,6 +651,33 @@ export async function getProductsCount() {
 
     url.search = qs.stringify({
         populate: "*",
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getCartProductsData() {
+    const user = await getUserMeLoader();
+    const url = new URL("/api/carts", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            store: {
+                populate: "*",
+            },
+            user: {
+                fields: ["id"],
+            },
+        },
+        filtered: {
+            user: {
+                id: {
+                    $eq: user.data.id,
+                },
+            },
+        },
     });
 
     const fetchedData = await fetchData(url.href);
