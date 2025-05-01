@@ -117,8 +117,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
         };
     }
 
-    console.log(responseData, "responseData");
-
     const cookieStore = await cookies();
     cookieStore.set("jwt", responseData.jwt, config);
 
