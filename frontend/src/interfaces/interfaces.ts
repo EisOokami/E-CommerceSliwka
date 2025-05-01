@@ -86,3 +86,14 @@ export interface UtilityLink {
     title: string;
     links: Link[];
 }
+
+export interface ICart {
+    id: number;
+    documentId: string;
+    quantity: number;
+    store: IStore;
+    user: {
+        documentId: string;
+        id: number;
+    };
+}
