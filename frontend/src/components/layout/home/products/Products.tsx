@@ -42,7 +42,6 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
 
     useEffect(() => {
         setProductsData(tabsData[activeTab]);
-        console.log("update");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -156,7 +155,7 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
                                         ? product.discountedPrice
                                         : product.price
                                 }`}
-                                buttonHref={`/catalog/${product.id}`}
+                                buttonHref={`/catalog/${product.documentId}`}
                                 buttonTheme="dark"
                                 buttonText="Buy Now"
                             />
