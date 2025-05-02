@@ -30,7 +30,7 @@ export default function DiscountsShowcase({
                                 ? product.discountedPrice
                                 : product.price
                         }`}
-                        buttonHref={`/catalog/${product.id}`}
+                        buttonHref={`/catalog/${product.documentId}`}
                         buttonTheme="dark"
                         buttonText="Buy Now"
                         buttonClassName="self-end"
