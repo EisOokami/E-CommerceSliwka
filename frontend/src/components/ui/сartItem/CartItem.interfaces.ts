@@ -1,14 +1,7 @@
-import { IStore } from "@/interfaces/interfaces";
+import { Dispatch, SetStateAction } from "react";
+import { ICart } from "@/interfaces/interfaces";
 
 export interface CartItemProps {
-    cartItem: {
-        id: number;
-        documentId: number;
-        quantity: number;
-        store: IStore;
-        user: {
-            documentId: number;
-            id: number;
-        };
-    };
+    cartItem: ICart;
+    setDeletedProducts: Dispatch<SetStateAction<string[]>>;
 }

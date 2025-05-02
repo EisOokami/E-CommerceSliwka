@@ -1,11 +1,47 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaPlus, FaMinus } from "react-icons/fa6";
+import {
+    addQuantityToProductAction,
+    deleteProductFromCartAction,
+    removeQuantityToProductAction,
+} from "@/data/actions/cartActions";
 import { CartItemProps } from "./CartItem.interfaces";
 
-export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
+export default function CartItem({
+    cartItem,
+    setDeletedProducts,
+}: Readonly<CartItemProps>) {
+    const [productQuantity, setProductQuantity] = useState<number>(
+        cartItem.quantity,
+    );
+
+    const handleAddQuantityToProduct = () => {
+        addQuantityToProductAction(cartItem.store.documentId);
+        setProductQuantity((prevState) => prevState + 1);
+    };
+
+    const handleRemoveQuantityToProduct = () => {
+        removeQuantityToProductAction(cartItem.store.documentId);
+        setProductQuantity((prevState) => {
+            if (prevState === 1) {
+                return prevState;
+            }
+
+            return prevState - 1;
+        });
+    };
+
+    const handleDeleteProductFromCart = () => {
+        deleteProductFromCartAction(cartItem.store.documentId);
+        setDeletedProducts((prevState) => [...prevState, cartItem.documentId]);
+    };
+
     return (
-        <div className="flex items-center gap-6 w-full py-8 first:border-none border-t">
+        <section className="flex items-center gap-6 w-full py-8 first:border-none border-t">
             <Image
                 src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.store.image.url}`}
                 alt={
@@ -26,13 +62,13 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
                 </div>
                 <div className="flex justify-start items-center gap-2 md:gap-6">
                     <div className="flex items-center gap-3">
-                        <button>
+                        <button onClick={handleRemoveQuantityToProduct}>
                             <FaMinus />
                         </button>
                         <span className="px-2 md:px-4 py-0.5 md:py-1 border rounded">
-                            {cartItem.quantity}
+                            {productQuantity}
                         </span>
-                        <button>
+                        <button onClick={handleAddQuantityToProduct}>
                             <FaPlus />
                         </button>
                     </div>
@@ -42,11 +78,11 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
                             ? cartItem.store.discountedPrice
                             : cartItem.store.price}
                     </h5>
-                    <button>
+                    <button onClick={handleDeleteProductFromCart}>
                         <IoCloseOutline className="text-3xl" />
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
