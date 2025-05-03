@@ -41,12 +41,12 @@ export interface IDetailedSpecifications {
 export interface IReviews {
     id: number;
     documentId: string;
-    fullname: string;
     description: string;
     rating: number;
     publicationDate: string;
     images: Image[];
-    avatar: Image;
+    user: IUser;
+    store: IStore;
 }
 
 export interface ICategory {
@@ -96,4 +96,25 @@ export interface ICart {
         documentId: string;
         id: number;
     };
+}
+
+export interface IUser {
+    id: number;
+    documentId: string;
+    username: string;
+    email: string;
+    confirmed: boolean;
+    blocked: boolean;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    provider: string;
+    productsCart: ICart[];
+    avatar: Image;
+}
+
+export interface IUserMeLoader {
+    ok: boolean;
+    data: IUser | null;
+    error: Error | null;
 }
