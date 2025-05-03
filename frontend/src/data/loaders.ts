@@ -93,11 +93,11 @@ export async function getHomePageData() {
                                     },
                                     reviews: {
                                         populate: {
-                                            avatar: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
+                                            user: {
+                                                populate: "*",
+                                            },
+                                            store: {
+                                                populate: "*",
                                             },
                                             images: {
                                                 fields: [
@@ -145,11 +145,11 @@ export async function getHomePageData() {
                                     },
                                     reviews: {
                                         populate: {
-                                            avatar: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
+                                            user: {
+                                                populate: "*",
+                                            },
+                                            store: {
+                                                populate: "*",
                                             },
                                             images: {
                                                 fields: [
@@ -203,11 +203,11 @@ export async function getHomePageData() {
                                     },
                                     reviews: {
                                         populate: {
-                                            avatar: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
+                                            user: {
+                                                populate: "*",
+                                            },
+                                            store: {
+                                                populate: "*",
                                             },
                                             images: {
                                                 fields: [
@@ -251,11 +251,11 @@ export async function getHomePageData() {
                                     },
                                     reviews: {
                                         populate: {
-                                            avatar: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
+                                            user: {
+                                                populate: "*",
+                                            },
+                                            store: {
+                                                populate: "*",
                                             },
                                             images: {
                                                 fields: [
@@ -299,11 +299,11 @@ export async function getHomePageData() {
                                     },
                                     reviews: {
                                         populate: {
-                                            avatar: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
+                                            user: {
+                                                populate: "*",
+                                            },
+                                            store: {
+                                                populate: "*",
                                             },
                                             images: {
                                                 fields: [
@@ -406,8 +406,11 @@ export async function getStoreProductsData(
             },
             reviews: {
                 populate: {
-                    avatar: {
-                        fields: ["url", "alternativeText"],
+                    user: {
+                        populate: "*",
+                    },
+                    store: {
+                        populate: "*",
                     },
                     images: {
                         fields: ["url", "alternativeText"],
@@ -422,6 +425,8 @@ export async function getStoreProductsData(
     });
 
     const fetchedData = await fetchData(url.href);
+
+    console.dir(fetchedData);
 
     return {
         products: fetchedData.data,
@@ -468,8 +473,11 @@ export async function getStoreProductData(documentId: string) {
             },
             reviews: {
                 populate: {
-                    avatar: {
-                        fields: ["url", "alternativeText"],
+                    user: {
+                        populate: "*",
+                    },
+                    store: {
+                        populate: "*",
                     },
                     images: {
                         fields: ["url", "alternativeText"],
@@ -551,8 +559,11 @@ export async function getFilteredProductsData(
                 },
                 reviews: {
                     populate: {
-                        avatar: {
-                            fields: ["url", "alternativeText"],
+                        user: {
+                            populate: "*",
+                        },
+                        store: {
+                            populate: "*",
                         },
                         images: {
                             fields: ["url", "alternativeText"],
@@ -671,7 +682,40 @@ export async function getCartProductsData() {
                 fields: ["id"],
             },
         },
-        filtered: {
+        filters: {
+            user: {
+                id: {
+                    $eq: user.data.id,
+                },
+            },
+        },
+        sort: ["createdAt:asc"],
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getCartProductData(documentId: string) {
+    const user = await getUserMeLoader();
+    const url = new URL("/api/carts", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            store: {
+                populate: "*",
+            },
+            user: {
+                fields: ["id"],
+            },
+        },
+        filters: {
+            store: {
+                documentId: {
+                    $eq: documentId,
+                },
+            },
             user: {
                 id: {
                     $eq: user.data.id,
