@@ -1,5 +1,6 @@
 // "use server";
 
+import qs from "qs";
 import { getAuthToken } from "./getToken";
 import { getStrapiURL } from "@/lib/utils";
 
@@ -14,6 +15,17 @@ export async function getUserMeLoader() {
         return { ok: false, data: null, error: null };
     }
 
+    url.search = qs.stringify({
+        populate: {
+            productsCart: {
+                populate: "*",
+            },
+            avatar: {
+                fields: ["url", "alternativeText"],
+            },
+        },
+    });
+
     try {
         const response = await fetch(url.href, {
             method: "GET",
@@ -22,6 +34,7 @@ export async function getUserMeLoader() {
                 Authorization: `Bearer ${authToken}`,
             },
         });
+
         const data = await response.json();
 
         if (data.error) {
