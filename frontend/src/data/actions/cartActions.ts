@@ -61,7 +61,7 @@ export async function removeQuantityToProductAction(documentId: string) {
         throw new Error("User not found");
     }
 
-    if (productCart.quantity <= 0) {
+    if (productCart.quantity <= 1) {
         throw new Error("Quantity must more than 0");
     }
 
@@ -106,10 +106,6 @@ export async function deleteProductFromCartAction(documentId: string) {
 
     if (!user.ok) {
         throw new Error("User not found");
-    }
-
-    if (productCart.quantity <= 0) {
-        throw new Error("Quantity must more than 0");
     }
 
     const responseData = await mutateData(
