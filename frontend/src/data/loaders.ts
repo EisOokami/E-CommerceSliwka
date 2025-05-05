@@ -426,8 +426,6 @@ export async function getStoreProductsData(
 
     const fetchedData = await fetchData(url.href);
 
-    console.dir(fetchedData);
-
     return {
         products: fetchedData.data,
         totalPages: fetchedData.meta.pagination.pageCount,
