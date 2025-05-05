@@ -2,6 +2,10 @@ import { getStrapiURL } from "@/lib/utils";
 import { getAuthToken } from "./getToken";
 
 export async function uploadImagesToStrapi(images: File[]) {
+    if (!Array.isArray(images) || images.length === 0 || !images[0].size) {
+        return null;
+    }
+
     const baseUrl = getStrapiURL();
     const authToken = await getAuthToken();
     const url = new URL("/api/upload", baseUrl);
