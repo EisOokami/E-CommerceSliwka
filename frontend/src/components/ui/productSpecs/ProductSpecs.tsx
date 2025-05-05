@@ -34,7 +34,7 @@ export default function ProductSpecs({
 
                 return (
                     <div
-                        key={spec.documentId}
+                        key={spec.id}
                         className="flex items-center gap-2 p-3 bg-gray-100 rounded-xl"
                     >
                         <Icon className="text-2xl" />
