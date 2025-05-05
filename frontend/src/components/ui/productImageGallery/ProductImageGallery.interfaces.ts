@@ -1,5 +1,5 @@
-import { Image } from "@/interfaces/interfaces";
+import { IImage } from "@/interfaces/interfaces";
 
 export interface ProductImageGalleryProps {
-    images: Image[];
+    images: IImage[];
 }

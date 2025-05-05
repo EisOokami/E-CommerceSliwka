@@ -1,4 +1,4 @@
-export interface Image {
+export interface IImage {
     id: number;
     documentId: string;
     url: string;
@@ -44,9 +44,10 @@ export interface IReviews {
     description: string;
     rating: number;
     publicationDate: string;
-    images: Image[];
+    images: IImage[] | null;
     user: IUser;
     store: IStore;
+    lastEdited: string | null;
 }
 
 export interface ICategory {
@@ -63,8 +64,8 @@ export interface IStore {
     discountedPrice: number | null;
     isDiscount: boolean;
     category: ICategory;
-    image: Image;
-    sliderImages: Image[];
+    image: IImage;
+    sliderImages: IImage[];
     colors: IArray[];
     options: IArray[];
     productInfo: IProductInfo;
@@ -110,7 +111,7 @@ export interface IUser {
     publishedAt: string;
     provider: string;
     productsCart: ICart[];
-    avatar: Image;
+    avatar: IImage;
 }
 
 export interface IUserMeLoader {

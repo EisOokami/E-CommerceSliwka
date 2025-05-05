@@ -1,4 +1,4 @@
-import { Image, Link } from "@/interfaces/interfaces";
+import { IImage, Link } from "@/interfaces/interfaces";
 
 export interface HeroProps {
     id: number;
@@ -6,6 +6,6 @@ export interface HeroProps {
     __component: string;
     heading: string;
     subHeading: string;
-    image: Image;
+    image: IImage;
     link: Link;
 }

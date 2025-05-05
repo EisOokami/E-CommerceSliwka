@@ -1,14 +1,5 @@
-import { IStore } from "@/interfaces/interfaces";
+import { ICart } from "@/interfaces/interfaces";
 
 export interface OrderSummaryProps {
-    cartItemsData: {
-        id: number;
-        documentId: number;
-        quantity: number;
-        store: IStore;
-        user: {
-            documentId: number;
-            id: number;
-        };
-    }[];
+    cartItemsData: ICart[];
 }

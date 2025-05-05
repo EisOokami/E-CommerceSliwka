@@ -1,9 +1,9 @@
-import { Image, Link } from "@/interfaces/interfaces";
+import { IImage, Link } from "@/interfaces/interfaces";
 
 export interface HeaderProps {
     data: {
         id: number;
-        logoImage: Image;
+        logoImage: IImage;
         iconsLink: Link[];
         navigationLinks: Link[];
         logoLink: Link;

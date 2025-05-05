@@ -1,10 +1,10 @@
-import { Image, Link } from "@/interfaces/interfaces";
+import { IImage, Link } from "@/interfaces/interfaces";
 
 export interface FeatureProduct {
     id: number;
     heading: string;
     subHeading: string;
-    image: Image;
+    image: IImage;
     link: Link;
 }
 
