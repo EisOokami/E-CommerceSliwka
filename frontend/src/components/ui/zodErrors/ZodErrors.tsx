@@ -1,7 +1,10 @@
 import { MdErrorOutline } from "react-icons/md";
 
 export function ZodErrors({ error }: Readonly<{ error: string[] }>) {
-    if (!error) return null;
+    if (!error) {
+        return null;
+    }
+
     return error.map((err: string, index: number) => (
         <div
             key={index}
