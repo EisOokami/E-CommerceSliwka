@@ -14,15 +14,26 @@ const config = {
 };
 
 const schemaRegister = z.object({
-    username: z.string().min(3).max(20, {
-        message: "Username must be between 3 and 20 characters",
-    }),
-    email: z.string().email({
-        message: "Please enter a valid email address",
-    }),
-    password: z.string().min(6).max(100, {
-        message: "Password must be between 6 and 100 characters",
-    }),
+    username: z
+        .string()
+        .min(3, "Username must be between 3 and 40 characters")
+        .max(40, "Username must be between 3 and 40 characters")
+        .regex(
+            /^[A-Za-z\s]+$/,
+            "Username must contain only letters and spaces",
+        ),
+    email: z.string().trim().email("Please enter a valid email address"),
+    password: z
+        .string()
+        .min(8, "Password must be between 8 and 100 characters")
+        .max(100, "Password must be between 8 and 100 characters")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/\d/, "Password must contain at least one number")
+        .regex(
+            /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+            "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+        ),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,23 +80,28 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 }
 
 const schemaLogin = z.object({
-    identifier: z.string().min(3, {
-        message: "Identifier must have at least 3 or more characters",
-    }),
+    identifier: z
+        .string()
+        .trim()
+        .min(1, "This field is required")
+        .email("Please enter a valid email address"),
     password: z
         .string()
-        .min(6, {
-            message: "Password must have at least 6 or more characters",
-        })
-        .max(100, {
-            message: "Password must be between 6 and 100 characters",
-        }),
+        .min(8, "Password must be between 8 and 100 characters")
+        .max(100, "Password must be between 8 and 100 characters")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/\d/, "Password must contain at least one number")
+        .regex(
+            /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+            "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+        ),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function loginUserAction(prevState: any, formData: FormData) {
     const validatedFields = schemaLogin.safeParse({
-        identifier: formData.get("identifier"),
+        identifier: formData.get("email"),
         password: formData.get("password"),
     });
 
