@@ -41,7 +41,7 @@ export default function CartItem({
     };
 
     return (
-        <section className="flex items-center gap-6 w-full py-8 first:border-none border-t">
+        <section className="flex items-center gap-6 w-full min-h-48 py-8 first:border-none border-t">
             <Image
                 src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.store.image.url}`}
                 alt={
