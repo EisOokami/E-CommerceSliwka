@@ -41,18 +41,18 @@ export default function SignIn() {
                     <div className="relative">
                         <input
                             className="w-full px-4 pt-5 pb-4 text-gray-700 border rounded-lg  appearance-none leading-tight focus:outline-none peer"
-                            id="identifier"
-                            name="identifier"
-                            type="text"
+                            id="email"
+                            name="email"
+                            type="email"
                             placeholder=" "
                         />
                         <label
                             className="absolute left-4 pt-1 text-gray-700 text-sm font-bold transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:left-4 peer-focus:text-sm peer-focus:text-gray-700"
-                            htmlFor="identifier"
+                            htmlFor="email"
                         >
-                            Username/Email
+                            Email
                         </label>
-                        <ZodErrors error={formState?.zodErrors?.identifier} />
+                        <ZodErrors error={formState?.zodErrors?.email} />
                     </div>
                     <div className="relative">
                         <input
