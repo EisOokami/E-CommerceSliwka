@@ -1,9 +1,5 @@
-export interface IData {
-    id: string;
-    username: string;
-    email: string;
-}
+import { IUser } from "@/interfaces/interfaces";
 
 export interface AccountProps {
-    data: IData;
+    data: IUser;
 }
