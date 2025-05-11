@@ -19,6 +19,7 @@
         "react-dom": "^19.0.0",
         "react-hot-toast": "^2.5.2",
         "react-icons": "^5.4.0",
+        "react-photo-view": "^1.2.7",
         "react-responsive-pagination": "^2.10.0",
         "tailwind-merge": "^3.0.1",
         "use-debounce": "^10.0.4",
