@@ -1,7 +1,7 @@
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface CarouselClientProps {
-    productsData: IStore[];
+    productsData: IProduct[];
     options: unknown;
     width: number | `${number}` | undefined;
     height: number | `${number}` | undefined;

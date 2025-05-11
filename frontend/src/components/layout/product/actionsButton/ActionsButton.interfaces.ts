@@ -1,5 +1,5 @@
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface ActionsButtonProps {
-    strapiData: IStore;
+    strapiData: IProduct;
 }

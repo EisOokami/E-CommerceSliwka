@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface ProductsProps {
-    productsData: IStore[];
+    productsData: IProduct[];
     setProductRating: Dispatch<SetStateAction<string>>;
     productsCount: number;
 }

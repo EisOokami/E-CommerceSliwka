@@ -46,7 +46,7 @@ export interface IReviews {
     publicationDate: string;
     images: IImage[] | null;
     user: IUser;
-    store: IStore;
+    product: IProduct;
     lastEdited: string | null;
 }
 
@@ -55,7 +55,7 @@ export interface ICategory {
     category: string;
 }
 
-export interface IStore {
+export interface IProduct {
     id: number;
     documentId: string;
     name: string;
@@ -92,7 +92,7 @@ export interface ICart {
     id: number;
     documentId: string;
     quantity: number;
-    store: IStore;
+    product: IProduct;
     user: {
         documentId: string;
         id: number;
