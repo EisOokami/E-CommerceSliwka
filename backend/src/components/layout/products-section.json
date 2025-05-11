@@ -11,25 +11,25 @@
       "repeatable": true,
       "component": "components.category"
     },
-    "newArrival": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::store.store"
-    },
-    "bestseller": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::store.store"
-    },
-    "featuredProducts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::store.store"
-    },
     "tabs": {
       "type": "component",
       "repeatable": true,
       "component": "components.array"
+    },
+    "newArrival": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "bestseller": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "featuredProducts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
     }
   }
 }

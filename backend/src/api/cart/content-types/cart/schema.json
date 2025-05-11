@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "carts",
+  "info": {
+    "singularName": "cart",
+    "pluralName": "carts",
+    "displayName": "Cart",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "quantity": {
+      "type": "integer"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "carts"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "productsCart"
+    }
+  }
+}

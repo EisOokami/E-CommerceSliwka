@@ -369,6 +369,37 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCartCart extends Struct.CollectionTypeSchema {
+  collectionName: 'carts';
+  info: {
+    description: '';
+    displayName: 'Cart';
+    pluralName: 'carts';
+    singularName: 'cart';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'> &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -440,19 +471,52 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiStoreStore extends Struct.CollectionTypeSchema {
-  collectionName: 'stores';
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: 'orders';
   info: {
-    description: '';
-    displayName: 'Store';
-    pluralName: 'stores';
-    singularName: 'store';
+    displayName: 'Order';
+    pluralName: 'orders';
+    singularName: 'order';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    adress: Schema.Attribute.String;
+    city: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer;
+    state: Schema.Attribute.String;
+    token: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiProductProduct extends Struct.CollectionTypeSchema {
+  collectionName: 'products';
+  info: {
+    displayName: 'Product';
+    pluralName: 'products';
+    singularName: 'product';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     averageRating: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
+    carts: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'>;
     category: Schema.Attribute.Component<'components.category', false>;
     colors: Schema.Attribute.Component<'components.array', true>;
     createdAt: Schema.Attribute.DateTime;
@@ -465,25 +529,69 @@ export interface ApiStoreStore extends Struct.CollectionTypeSchema {
     >;
     discountedPrice: Schema.Attribute.Float;
     finalPrice: Schema.Attribute.Decimal;
-    image: Schema.Attribute.Media<'images'>;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     isDiscount: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::store.store'> &
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product.product'
+    > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     options: Schema.Attribute.Component<'components.array', true>;
-    price: Schema.Attribute.Float & Schema.Attribute.DefaultTo<0>;
+    price: Schema.Attribute.Float;
     productInfo: Schema.Attribute.Component<'components.product-info', false>;
     productSpecs: Schema.Attribute.Component<
       'components.product-specifications',
       true
     >;
     publishedAt: Schema.Attribute.DateTime;
-    reviews: Schema.Attribute.Component<'components.review', true>;
-    sliderImages: Schema.Attribute.Media<'images', true>;
+    reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
+    sliderImages: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiReviewReview extends Struct.CollectionTypeSchema {
+  collectionName: 'reviews';
+  info: {
+    description: '';
+    displayName: 'Review';
+    pluralName: 'reviews';
+    singularName: 'review';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    images: Schema.Attribute.Media<'images', true>;
+    lastEdited: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::review.review'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publicationDate: Schema.Attribute.Date;
+    publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -942,9 +1050,9 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
+    avatar: Schema.Attribute.Media<'images'>;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -962,14 +1070,17 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    orders: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    productsCart: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
+    reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
     role: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.role'
@@ -996,9 +1107,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::cart.cart': ApiCartCart;
       'api::global.global': ApiGlobalGlobal;
       'api::home-page.home-page': ApiHomePageHomePage;
-      'api::store.store': ApiStoreStore;
+      'api::order.order': ApiOrderOrder;
+      'api::product.product': ApiProductProduct;
+      'api::review.review': ApiReviewReview;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

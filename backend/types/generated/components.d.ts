@@ -154,7 +154,7 @@ export interface LayoutDiscounts extends Struct.ComponentSchema {
     displayName: 'Discounts Section';
   };
   attributes: {
-    stores: Schema.Attribute.Relation<'oneToMany', 'api::store.store'>;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
   };
 }
 
@@ -220,10 +220,11 @@ export interface LayoutHeroSection extends Struct.ComponentSchema {
 export interface LayoutProductsCarouselSection extends Struct.ComponentSchema {
   collectionName: 'components_layout_products_carousel_sections';
   info: {
+    description: '';
     displayName: 'Products Carousel Section';
   };
   attributes: {
-    stores: Schema.Attribute.Relation<'oneToMany', 'api::store.store'>;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
   };
 }
 
@@ -234,13 +235,13 @@ export interface LayoutProductsSection extends Struct.ComponentSchema {
     displayName: 'Products Section';
   };
   attributes: {
-    bestseller: Schema.Attribute.Relation<'oneToMany', 'api::store.store'>;
+    bestseller: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     categories: Schema.Attribute.Component<'components.category', true>;
     featuredProducts: Schema.Attribute.Relation<
       'oneToMany',
-      'api::store.store'
+      'api::product.product'
     >;
-    newArrival: Schema.Attribute.Relation<'oneToMany', 'api::store.store'>;
+    newArrival: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     tabs: Schema.Attribute.Component<'components.array', true>;
   };
 }

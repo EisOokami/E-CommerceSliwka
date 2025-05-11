@@ -1,14 +1,14 @@
 /**
- * store controller
+ * product controller
  */
 
 import { factories } from "@strapi/strapi"
 
-export default factories.createCoreController("api::store.store", ({ strapi }) => ({
+export default factories.createCoreController("api::product.product", ({ strapi }) => ({
     async priceRange(ctx) {
         const filters = ctx.query.filters || {};
         const result = await strapi
-            .service("api::store.store")
+            .service("api::product.product")
             .getPriceRange(filters);
 
         ctx.send(result);
@@ -19,7 +19,7 @@ export default factories.createCoreController("api::store.store", ({ strapi }) =
         const queryParams = ctx.query.queryParams;
         const pagination = ctx.query.pagination;
         const result = await strapi
-            .service("api::store.store")
+            .service("api::product.product")
             .getFilteredProducts(filters, queryParams, pagination);
 
         ctx.send(result);
@@ -27,7 +27,7 @@ export default factories.createCoreController("api::store.store", ({ strapi }) =
 
     async productsCount(ctx) {
         const result = await strapi
-            .service("api::store.store")
+            .service("api::product.product")
             .getCount();
 
         ctx.send(result);

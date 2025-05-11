@@ -1,14 +1,15 @@
 {
   "collectionName": "components_layout_products_carousel_sections",
   "info": {
-    "displayName": "Products Carousel Section"
+    "displayName": "Products Carousel Section",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "stores": {
+    "products": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::store.store"
+      "target": "api::product.product"
     }
   }
 }

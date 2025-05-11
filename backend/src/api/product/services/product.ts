@@ -1,12 +1,12 @@
 /**
- * store service
+ * product service
  */
 
-import { factories } from "@strapi/strapi";
+import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService("api::store.store", ({ strapi }) => ({
+export default factories.createCoreService("api::product.product", ({ strapi }) => ({
     async getPriceRange(filters) {
-        const products = await strapi.entityService.findMany("api::store.store", {
+        const products = await strapi.entityService.findMany("api::product.product", {
             filters,
             fields: ["price", "discountedPrice", "isDiscount"],
             limit: 1000,
@@ -32,14 +32,14 @@ export default factories.createCoreService("api::store.store", ({ strapi }) => (
             }),
         }
 
-        const products = await strapi.documents("api::store.store").findMany({
+        const products = await strapi.documents("api::product.product").findMany({
             filters: updatedFilters,
             populate: "*",
             start: (pagination.page - 1) * pagination.pageSize,
             limit: pagination.pageSize
         });
 
-        const count = await strapi.documents("api::store.store").count({
+        const count = await strapi.documents("api::product.product").count({
             filters: updatedFilters,
             populate: "*",
             status: "published"
@@ -51,7 +51,7 @@ export default factories.createCoreService("api::store.store", ({ strapi }) => (
     },
 
     async getCount() {
-        const count = await strapi.documents("api::store.store").count({
+        const count = await strapi.documents("api::product.product").count({
             populate: "*",
             status: "published"
         });
