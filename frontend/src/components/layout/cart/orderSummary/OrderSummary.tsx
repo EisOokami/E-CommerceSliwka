@@ -60,7 +60,7 @@ export default function OrderSummary({
             </div> */}
             <div className="flex justify-between items-center">
                 <span className="font-medium">Subtotal</span>
-                <span className="font-medium">{subtotal}$</span>
+                <span className="font-medium">${subtotal}</span>
             </div>
             <div className="grid gap-2">
                 <div className="flex justify-between items-center">
