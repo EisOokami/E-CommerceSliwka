@@ -1,4 +1,4 @@
-import styles from "./OrderSummary.module.scss";
+// import styles from "./OrderSummary.module.scss";
 import { OrderSummaryProps } from "./OrderSummary.interfaces";
 
 import Button from "@/components/ui/button/Button";
@@ -7,9 +7,9 @@ export default function OrderSummary({
     cartItemsData,
 }: Readonly<OrderSummaryProps>) {
     const subtotal = cartItemsData.reduce((accumulator, currentValue) => {
-        const price = currentValue.store.isDiscount
-            ? (currentValue.store.discountedPrice as number)
-            : currentValue.store.price;
+        const price = currentValue.product.isDiscount
+            ? (currentValue.product.discountedPrice as number)
+            : currentValue.product.price;
 
         return accumulator + price * currentValue.quantity;
     }, 0);
@@ -22,7 +22,7 @@ export default function OrderSummary({
             <h3 className="mb-2 text-xl md:text-2xl xl:text-3xl font-medium">
                 Order Summary
             </h3>
-            <div className={styles["order-summary__input-group"]}>
+            {/* <div className={styles["order-summary__input-group"]}>
                 <label
                     htmlFor="code"
                     className={styles["order-summary__label"]}
@@ -57,7 +57,7 @@ export default function OrderSummary({
                         className="absolute right-4 top-4 px-4 md:px-5 py-1 text-sm md:text-base font-medium"
                     />
                 </div>
-            </div>
+            </div> */}
             <div className="flex justify-between items-center">
                 <span className="font-medium">Subtotal</span>
                 <span className="font-medium">{subtotal}$</span>

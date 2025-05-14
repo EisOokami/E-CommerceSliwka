@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CatalogProps } from "./Catalog.interfaces";
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 import AccordionContainer from "@/components/layout/catalog/accordionContainer/AccordionContainer";
 import Products from "@/components/layout/catalog/products/Products";
@@ -16,7 +16,7 @@ export default function Catalog({
     productsCount,
     setProductsCount,
 }: CatalogProps) {
-    const [filteredProducts, setFilteredProducts] = useState<IStore[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const [productRating, setProductRating] = useState<string>("all");
 
     return (

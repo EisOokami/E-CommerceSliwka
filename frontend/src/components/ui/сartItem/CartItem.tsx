@@ -20,12 +20,12 @@ export default function CartItem({
     );
 
     const handleAddQuantityToProduct = () => {
-        addQuantityToProductAction(cartItem.store.documentId);
+        addQuantityToProductAction(cartItem.product.documentId);
         setProductQuantity((prevState) => prevState + 1);
     };
 
     const handleRemoveQuantityToProduct = () => {
-        removeQuantityToProductAction(cartItem.store.documentId);
+        removeQuantityToProductAction(cartItem.product.documentId);
         setProductQuantity((prevState) => {
             if (prevState === 1) {
                 return prevState;
@@ -36,16 +36,17 @@ export default function CartItem({
     };
 
     const handleDeleteProductFromCart = () => {
-        deleteProductFromCartAction(cartItem.store.documentId);
+        deleteProductFromCartAction(cartItem.product.documentId);
         setDeletedProducts((prevState) => [...prevState, cartItem.documentId]);
     };
 
     return (
         <section className="flex items-center gap-6 w-full min-h-48 py-8 first:border-none border-t">
             <Image
-                src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.store.image.url}`}
+                src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.product.image.url}`}
                 alt={
-                    cartItem.store.image.alternativeText ?? cartItem.store.name
+                    cartItem.product.image.alternativeText ??
+                    cartItem.product.name
                 }
                 width={100}
                 height={100}
@@ -54,10 +55,10 @@ export default function CartItem({
             <div className="grid xl:flex items-center gap-2 w-full">
                 <div className="md:flex-1 grid gap-2">
                     <h6 className="text-base lg:text-xl text-pretty font-medium">
-                        {cartItem.store.name}
+                        {cartItem.product.name}
                     </h6>
                     <span className="text-sm lg:text-base">
-                        #{cartItem.store.documentId}
+                        #{cartItem.product.documentId}
                     </span>
                 </div>
                 <div className="flex justify-start items-center gap-2 md:gap-6">
@@ -74,9 +75,9 @@ export default function CartItem({
                     </div>
                     <h5 className="text-xl lg:text-2xl font-medium">
                         $
-                        {cartItem.store.isDiscount
-                            ? cartItem.store.discountedPrice
-                            : cartItem.store.price}
+                        {cartItem.product.isDiscount
+                            ? cartItem.product.discountedPrice
+                            : cartItem.product.price}
                     </h5>
                     <button onClick={handleDeleteProductFromCart}>
                         <IoCloseOutline className="text-3xl" />

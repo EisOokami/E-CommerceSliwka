@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface IAccordionItems {
     header: string;
@@ -22,7 +22,7 @@ export interface IFilterParams {
 }
 
 export interface AccordionContainerProps {
-    setFilteredProducts: Dispatch<SetStateAction<IStore[]>>;
+    setFilteredProducts: Dispatch<SetStateAction<IProduct[]>>;
     productRating: string;
     limit: number;
     currentPage: number;

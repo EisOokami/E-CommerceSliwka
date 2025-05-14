@@ -1,4 +1,4 @@
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface ICategories {
     id: number;
@@ -15,7 +15,7 @@ export interface ProductsProps {
     __component: string;
     categories: ICategories[];
     tabs: ITabs[];
-    newArrival: IStore[];
-    bestseller: IStore[];
-    featuredProducts: IStore[];
+    newArrival: IProduct[];
+    bestseller: IProduct[];
+    featuredProducts: IProduct[];
 }

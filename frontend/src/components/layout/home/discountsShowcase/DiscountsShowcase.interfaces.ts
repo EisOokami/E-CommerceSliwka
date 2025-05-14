@@ -1,7 +1,7 @@
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface DiscountsShowcaseProps {
     id: number;
     __component: string;
-    stores: IStore[];
+    products: IProduct[];
 }

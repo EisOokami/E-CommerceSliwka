@@ -16,7 +16,7 @@ import { TbDotsCircleHorizontal } from "react-icons/tb";
 import { ProductsProps } from "./Products.interfaces";
 
 import Card from "@/components/ui/card/Card";
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 const initialCategoriesData: { [key: string]: IconType } = {
     smartphones: IoPhonePortraitOutline,
@@ -32,7 +32,7 @@ const initialCategoriesData: { [key: string]: IconType } = {
 export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
     const [activeTab, setActiveTab] = useState<number>(0);
     const [activeCategory, setActiveCategory] = useState<string>("all");
-    const [productsData, setProductsData] = useState<IStore[]>([]);
+    const [productsData, setProductsData] = useState<IProduct[]>([]);
 
     const { categories, tabs, newArrival, bestseller, featuredProducts } = data;
     const tabsData = useMemo(

@@ -35,7 +35,7 @@ export default function ProductsCarousel({
 }: Readonly<{ data: ProductsCarouselProps }>) {
     const [screenWidth, setScreenWidth] = useState<number>(750);
 
-    const { stores } = data;
+    const { products } = data;
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -56,7 +56,7 @@ export default function ProductsCarousel({
         <section>
             {screenWidth < 750 && (
                 <CarouselClient
-                    productsData={stores}
+                    productsData={products}
                     options={initialOptionsMobile}
                     width={350}
                     height={350}
@@ -64,7 +64,7 @@ export default function ProductsCarousel({
             )}
             {screenWidth > 750 && screenWidth < 1500 && (
                 <CarouselClient
-                    productsData={stores}
+                    productsData={products}
                     options={initialOptionsLaptop}
                     width={350}
                     height={350}
@@ -72,7 +72,7 @@ export default function ProductsCarousel({
             )}
             {screenWidth > 1500 && (
                 <CarouselClient
-                    productsData={stores}
+                    productsData={products}
                     options={initialOptionsDesktop}
                     width={350}
                     height={350}

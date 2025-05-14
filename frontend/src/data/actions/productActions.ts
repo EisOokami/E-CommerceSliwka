@@ -30,7 +30,7 @@ export async function addProductToCartAction(documentId: string) {
     const payload = {
         data: {
             quantity: 1,
-            store: {
+            product: {
                 connect: [{ documentId: documentId }],
             },
             user: user.data.id,
@@ -144,7 +144,7 @@ export async function addReviewToProductAction(
             images: uploadedImages
                 ? uploadedImages.map((img: { id: string }) => img.id)
                 : null,
-            store: {
+            product: {
                 connect: [{ documentId: validatedFields.data.documentId }],
             },
         },
@@ -260,7 +260,7 @@ export async function editReviewAction(
             images: updatedImages.length
                 ? updatedImages.map((img: { id: string }) => img.id)
                 : null,
-            store: {
+            product: {
                 connect: [{ documentId: validatedFields.data.documentId }],
             },
         },

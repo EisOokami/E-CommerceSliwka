@@ -7,14 +7,14 @@ import {
     getProductsCategory,
     getProductsCount,
     getProductsPriceRange,
-    getStoreProductsData,
+    getProductProductsData,
 } from "@/data/loaders";
 import {
     AccordionContainerProps,
     IAccordionItems,
     IFilterParams,
 } from "./AccordionContainer.interfaces";
-import { IStore } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 import Accordion from "@/components/ui/accordion/Accordion";
 
@@ -103,7 +103,7 @@ export default function AccordionContainer({
             };
 
             let result: {
-                products?: IStore[];
+                products?: IProduct[];
                 totalPages?: number;
                 productsCount?: number;
             } = {};
@@ -121,7 +121,7 @@ export default function AccordionContainer({
             }
 
             if (Object.values(updatedParams).every((v) => v === null)) {
-                const { products, totalPages } = await getStoreProductsData(
+                const { products, totalPages } = await getProductProductsData(
                     currentPage,
                     limit,
                 );
@@ -132,10 +132,10 @@ export default function AccordionContainer({
                 result.productsCount = productsCount;
             }
 
-            const filtersByCategory: IStore[] = await getFiltersByCategory(
+            const filtersByCategory: IProduct[] = await getFiltersByCategory(
                 filterParams.category,
             );
-            const productsCategory: IStore[] = await getProductsCategory();
+            const productsCategory: IProduct[] = await getProductsCategory();
 
             const categoryAccordionItems: IAccordionItems[] = [
                 {
