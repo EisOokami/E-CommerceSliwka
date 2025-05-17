@@ -61,7 +61,7 @@ export async function getHomePageData() {
                     },
                     "layout.discounts": {
                         populate: {
-                            stores: {
+                            products: {
                                 populate: {
                                     image: {
                                         fields: ["url", "alternativeText"],
@@ -96,7 +96,7 @@ export async function getHomePageData() {
                                             user: {
                                                 populate: "*",
                                             },
-                                            store: {
+                                            product: {
                                                 populate: "*",
                                             },
                                             images: {
@@ -107,13 +107,16 @@ export async function getHomePageData() {
                                             },
                                         },
                                     },
+                                    wishlist: {
+                                        populate: "*",
+                                    },
                                 },
                             },
                         },
                     },
                     "layout.products-carousel-section": {
                         populate: {
-                            stores: {
+                            products: {
                                 populate: {
                                     image: {
                                         fields: ["url", "alternativeText"],
@@ -148,7 +151,7 @@ export async function getHomePageData() {
                                             user: {
                                                 populate: "*",
                                             },
-                                            store: {
+                                            product: {
                                                 populate: "*",
                                             },
                                             images: {
@@ -206,7 +209,7 @@ export async function getHomePageData() {
                                             user: {
                                                 populate: "*",
                                             },
-                                            store: {
+                                            product: {
                                                 populate: "*",
                                             },
                                             images: {
@@ -216,6 +219,9 @@ export async function getHomePageData() {
                                                 ],
                                             },
                                         },
+                                    },
+                                    wishlist: {
+                                        populate: "*",
                                     },
                                 },
                             },
@@ -254,7 +260,7 @@ export async function getHomePageData() {
                                             user: {
                                                 populate: "*",
                                             },
-                                            store: {
+                                            product: {
                                                 populate: "*",
                                             },
                                             images: {
@@ -264,6 +270,9 @@ export async function getHomePageData() {
                                                 ],
                                             },
                                         },
+                                    },
+                                    wishlist: {
+                                        populate: "*",
                                     },
                                 },
                             },
@@ -302,7 +311,7 @@ export async function getHomePageData() {
                                             user: {
                                                 populate: "*",
                                             },
-                                            store: {
+                                            product: {
                                                 populate: "*",
                                             },
                                             images: {
@@ -312,6 +321,9 @@ export async function getHomePageData() {
                                                 ],
                                             },
                                         },
+                                    },
+                                    wishlist: {
+                                        populate: "*",
                                     },
                                 },
                             },
@@ -364,11 +376,11 @@ export async function getGlobalPageMetadata() {
     return await fetchData(url.href);
 }
 
-export async function getStoreProductsData(
+export async function getProductProductsData(
     page: number = 1,
     limit: number = 8,
 ) {
-    const url = new URL("/api/stores", baseUrl);
+    const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
         populate: {
@@ -409,7 +421,7 @@ export async function getStoreProductsData(
                     user: {
                         populate: "*",
                     },
-                    store: {
+                    product: {
                         populate: "*",
                     },
                     images: {
@@ -432,8 +444,8 @@ export async function getStoreProductsData(
     };
 }
 
-export async function getStoreProductData(documentId: string) {
-    const url = new URL("/api/stores", baseUrl);
+export async function getProductProductData(documentId: string) {
+    const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
         populate: {
@@ -474,7 +486,7 @@ export async function getStoreProductData(documentId: string) {
                     user: {
                         populate: "*",
                     },
-                    store: {
+                    product: {
                         populate: "*",
                     },
                     images: {
@@ -504,7 +516,7 @@ export async function getFilteredProductsData(
     page: number = 1,
     limit: number = 8,
 ) {
-    const url = new URL("/api/stores/filtered", baseUrl);
+    const url = new URL("/api/products/filtered", baseUrl);
 
     const filters = {
         ...(category && { category: { category: { $eq: category } } }),
@@ -560,7 +572,7 @@ export async function getFilteredProductsData(
                         user: {
                             populate: "*",
                         },
-                        store: {
+                        product: {
                             populate: "*",
                         },
                         images: {
@@ -589,7 +601,7 @@ export async function getFilteredProductsData(
 }
 
 export async function getFiltersByCategory(category: string | null) {
-    const url = new URL("/api/stores", baseUrl);
+    const url = new URL("/api/products", baseUrl);
 
     const filters = {
         ...(category && { category: { category: { $eq: category } } }),
@@ -621,7 +633,7 @@ export async function getProductsPriceRange(
     options: string[] | null,
     rating: number | null,
 ) {
-    const url = new URL("/api/stores/price-range", baseUrl);
+    const url = new URL("/api/products/price-range", baseUrl);
 
     const filters = {
         ...(category && { category: { category: { $eq: category } } }),
@@ -640,7 +652,7 @@ export async function getProductsPriceRange(
 }
 
 export async function getProductsCategory() {
-    const url = new URL("/api/stores", baseUrl);
+    const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
         populate: {
@@ -656,7 +668,7 @@ export async function getProductsCategory() {
 }
 
 export async function getProductsCount() {
-    const url = new URL("/api/stores/products-count", baseUrl);
+    const url = new URL("/api/products/products-count", baseUrl);
 
     url.search = qs.stringify({
         populate: "*",
@@ -673,7 +685,7 @@ export async function getCartProductsData() {
 
     url.search = qs.stringify({
         populate: {
-            store: {
+            product: {
                 populate: "*",
             },
             user: {
@@ -701,7 +713,7 @@ export async function getCartProductData(documentId: string) {
 
     url.search = qs.stringify({
         populate: {
-            store: {
+            product: {
                 populate: "*",
             },
             user: {
@@ -709,7 +721,7 @@ export async function getCartProductData(documentId: string) {
             },
         },
         filters: {
-            store: {
+            product: {
                 documentId: {
                     $eq: documentId,
                 },
@@ -720,6 +732,108 @@ export async function getCartProductData(documentId: string) {
                 },
             },
         },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getProductsBySearchData(searchValue: string) {
+    const url = new URL("/api/products", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            image: {
+                fields: ["url", "alternativeText"],
+            },
+            sliderImages: {
+                fields: ["url", "alternativeText"],
+            },
+            colors: {
+                populate: true,
+            },
+            options: {
+                populate: true,
+            },
+            productInfo: {
+                populate: true,
+            },
+            productSpecs: {
+                populate: true,
+            },
+            category: {
+                populate: true,
+            },
+            detailedSpecifications: {
+                populate: {
+                    specifications: {
+                        populate: {
+                            specifications: {
+                                populate: true,
+                            },
+                        },
+                    },
+                },
+            },
+            reviews: {
+                populate: {
+                    user: {
+                        populate: "*",
+                    },
+                    product: {
+                        populate: "*",
+                    },
+                    images: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
+            },
+        },
+        filters: {
+            $or: [
+                {
+                    name: {
+                        $containsi: searchValue,
+                    },
+                },
+                {
+                    category: {
+                        category: {
+                            $containsi: searchValue,
+                        },
+                    },
+                },
+            ],
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getWishlistProductsData() {
+    const user = await getUserMeLoader();
+    const url = new URL("/api/wishlists", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            product: {
+                populate: "*",
+            },
+            user: {
+                fields: ["id"],
+            },
+        },
+        filters: {
+            user: {
+                id: {
+                    $eq: user.data.id,
+                },
+            },
+        },
+        sort: ["createdAt:asc"],
     });
 
     const fetchedData = await fetchData(url.href);
