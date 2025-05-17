@@ -73,6 +73,7 @@ export interface IProduct {
     detailedSpecifications: IDetailedSpecifications[];
     averageRating: number;
     reviews: IReviews[];
+    wishlist: IWishlist[];
 }
 
 export interface Link {
@@ -112,10 +113,17 @@ export interface IUser {
     provider: string;
     productsCart: ICart[];
     avatar: IImage;
+    wishlist: IWishlist[];
 }
 
 export interface IUserMeLoader {
     ok: boolean;
     data: IUser | null;
     error: Error | null;
+}
+
+export interface IWishlist {
+    documentId: string;
+    user: IUser;
+    product: IProduct;
 }
