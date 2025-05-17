@@ -554,6 +554,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    wishlist: Schema.Attribute.Relation<'oneToMany', 'api::wishlist.wishlist'>;
   };
 }
 
@@ -585,6 +586,39 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
     publicationDate: Schema.Attribute.Date;
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
+  collectionName: 'wishlists';
+  info: {
+    description: '';
+    displayName: 'Wishlist';
+    pluralName: 'wishlists';
+    singularName: 'wishlist';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::wishlist.wishlist'
+    > &
+      Schema.Attribute.Private;
+    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1094,6 +1128,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    wishlist: Schema.Attribute.Relation<'oneToMany', 'api::wishlist.wishlist'>;
   };
 }
 
@@ -1113,6 +1148,7 @@ declare module '@strapi/strapi' {
       'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::review.review': ApiReviewReview;
+      'api::wishlist.wishlist': ApiWishlistWishlist;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
