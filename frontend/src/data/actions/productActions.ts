@@ -316,3 +316,63 @@ export async function deleteReviewAction(documentIdReview: string) {
 
     return { data: documentIdReview };
 }
+
+export async function addProductToWishlistAction(documentId: string) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        throw new Error("User not found");
+    }
+
+    const query = qs.stringify({
+        populate: "*",
+    });
+
+    const payload = {
+        data: {
+            product: {
+                connect: [{ documentId: documentId }],
+            },
+            user: user.data.id,
+        },
+    };
+
+    const responseData = await mutateData(
+        "POST",
+        `/api/wishlists?${query}`,
+        payload,
+    );
+
+    if (!responseData) {
+        throw new Error("Ops! Something went wrong. Please try again.");
+    }
+
+    if (responseData.error) {
+        console.error(responseData.error);
+        throw new Error("Failed to Add Product to Wishlist.");
+    }
+}
+
+export async function deleteProductFromWishlistAction(
+    documentIdWishlist: string,
+) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        throw new Error("User not found");
+    }
+
+    const responseData = await mutateData(
+        "DELETE",
+        `/api/wishlists/${documentIdWishlist}`,
+    );
+
+    if (!responseData) {
+        throw new Error("Ops! Something went wrong. Please try again.");
+    }
+
+    if (responseData.error) {
+        console.error(responseData.error);
+        throw new Error("Failed to Delete Product from Wishlist.");
+    }
+}
