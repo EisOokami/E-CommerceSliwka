@@ -3,9 +3,10 @@ import { IoCartOutline, IoHeartOutline } from "react-icons/io5";
 import { HeaderIconsProps } from "./HeaderIcons.interfaces";
 
 import ProfileButton from "../profileButton/ProfileButton";
+import Tooltip from "../tooltip/Tooltip";
 
 function selectSocialIcon(url: string) {
-    if (url.includes("favorite")) {
+    if (url.includes("wishlist")) {
         return <IoHeartOutline />;
     }
 
@@ -25,13 +26,21 @@ export default function HeaderIcons({
             {iconsLink.map(({ id, url, text }) => {
                 if (!text.includes("profile")) {
                     return (
-                        <Link key={id} href={url ?? ""}>
-                            {selectSocialIcon(text)}
-                        </Link>
+                        <Tooltip key={id} message={text}>
+                            <Link href={url ?? ""}>
+                                {selectSocialIcon(text)}
+                            </Link>
+                        </Tooltip>
                     );
                 }
 
-                return <ProfileButton key={id} isUserSingIn={isUserSingIn} />;
+                return (
+                    <ProfileButton
+                        key={id}
+                        isUserSingIn={isUserSingIn}
+                        text={text}
+                    />
+                );
             })}
         </div>
     );
