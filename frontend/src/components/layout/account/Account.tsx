@@ -7,6 +7,7 @@ import {
     updateProfileAction,
 } from "@/data/actions/profileActions";
 import { RiImageAddFill } from "react-icons/ri";
+import { IoPersonOutline } from "react-icons/io5";
 import { AccountProps } from "./Account.interfaces";
 
 import Button from "@/components/ui/button/Button";
@@ -46,9 +47,12 @@ export default function Account({ data }: Readonly<AccountProps>) {
     return (
         <section className="container mx-auto px-3 py-10 md:px-5">
             <div className="grid gap-7">
-                <h1 className="text-2xl md:text-3xl xl:text-4xl font-medium">
-                    Account Settings
-                </h1>
+                <div className="flex items-center gap-1">
+                    <IoPersonOutline className="mt-1 text-2xl" />
+                    <h1 className="text-2xl md:text-3xl xl:text-4xl font-medium">
+                        Account Settings
+                    </h1>
+                </div>
                 <form className="grid gap-5" action={formAction} noValidate>
                     <div className="grid md:flex md:items-start gap-5">
                         <div className="grid place-items-center gap-3 w-full md:w-auto">
