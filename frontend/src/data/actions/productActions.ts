@@ -321,7 +321,9 @@ export async function addProductToWishlistAction(documentId: string) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
-        throw new Error("User not found");
+        console.error("User not found");
+
+        return { error: true };
     }
 
     const query = qs.stringify({
@@ -344,13 +346,19 @@ export async function addProductToWishlistAction(documentId: string) {
     );
 
     if (!responseData) {
-        throw new Error("Ops! Something went wrong. Please try again.");
+        console.error("Ops! Something went wrong. Please try again.");
+
+        return { error: true };
     }
 
     if (responseData.error) {
         console.error(responseData.error);
-        throw new Error("Failed to Add Product to Wishlist.");
+        console.error("Failed to Add Product to Wishlist.");
+
+        return { error: true };
     }
+
+    return { error: false };
 }
 
 export async function deleteProductFromWishlistAction(
@@ -359,7 +367,9 @@ export async function deleteProductFromWishlistAction(
     const user = await getUserMeLoader();
 
     if (!user.ok) {
-        throw new Error("User not found");
+        console.error("User not found");
+
+        return { error: true };
     }
 
     const responseData = await mutateData(
@@ -368,11 +378,17 @@ export async function deleteProductFromWishlistAction(
     );
 
     if (!responseData) {
-        throw new Error("Ops! Something went wrong. Please try again.");
+        console.error("Ops! Something went wrong. Please try again.");
+
+        return { error: true };
     }
 
     if (responseData.error) {
         console.error(responseData.error);
-        throw new Error("Failed to Delete Product from Wishlist.");
+        console.error("Failed to Delete Product from Wishlist.");
+
+        return { error: true };
     }
+
+    return { error: false };
 }
