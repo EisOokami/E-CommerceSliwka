@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getUserMeLoader } from "./data/services/getUserMeLoader";
 
-const protectedRoutes = ["/cart", "/profile"];
+const protectedRoutes = ["/cart", "/profile", "/wishlist"];
 
 function isProtectedRoute(path: string): boolean {
     return protectedRoutes.some((route) => path.startsWith(route));
