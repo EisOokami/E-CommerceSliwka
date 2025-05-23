@@ -1,5 +1,6 @@
-import { IReviews } from "@/interfaces/interfaces";
+import { IReviews, IUserMeLoader } from "@/interfaces/interfaces";
 
 export interface ReviewCommentProps {
     review: IReviews;
+    user: IUserMeLoader;
 }
