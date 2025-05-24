@@ -1,6 +1,6 @@
-import { UtilityLink } from "@/interfaces/interfaces";
+import { IUtilityLink } from "@/interfaces/interfaces";
 
 export interface UtilityLinksProps {
-    utilityLinks: UtilityLink[];
+    utilityLinks: IUtilityLink[];
     styles: { [key: string]: string };
 }

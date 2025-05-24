@@ -76,17 +76,17 @@ export interface IProduct {
     wishlist: IWishlist[];
 }
 
-export interface Link {
+export interface ILink {
     id: number;
     url: string;
     text: string;
     isExternal: boolean;
 }
 
-export interface UtilityLink {
+export interface IUtilityLink {
     id: number;
     title: string;
-    links: Link[];
+    links: ILink[];
 }
 
 export interface ICart {

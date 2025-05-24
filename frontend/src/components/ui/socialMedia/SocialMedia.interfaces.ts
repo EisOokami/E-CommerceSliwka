@@ -1,6 +1,6 @@
-import { Link } from "@/interfaces/interfaces";
+import { ILink } from "@/interfaces/interfaces";
 
 export interface SocialMediaProps {
-    socialLinks: Link[];
+    socialLinks: ILink[];
     styles: { [key: string]: string };
 }

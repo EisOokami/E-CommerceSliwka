@@ -1,12 +1,12 @@
-import { IImage, Link } from "@/interfaces/interfaces";
+import { IImage, ILink } from "@/interfaces/interfaces";
 
 export interface HeaderProps {
     data: {
         id: number;
         logoImage: IImage;
-        iconsLink: Link[];
-        navigationLinks: Link[];
-        logoLink: Link;
+        iconsLink: ILink[];
+        navigationLinks: ILink[];
+        logoLink: ILink;
     };
     isUserSingIn: boolean;
 }
