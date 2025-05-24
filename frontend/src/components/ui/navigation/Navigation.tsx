@@ -6,8 +6,13 @@ import { NavigationProps } from "./Navigation.interfaces";
 
 export default function Navigation({
     navigationLinks,
+    setIsOpen,
 }: Readonly<NavigationProps>) {
     const currentPath = usePathname();
+
+    const handleCloseMenu = () => {
+        setIsOpen(false);
+    };
 
     return (
         <nav className="text-center grid gap-2 md:flex md:items-center md:gap-10">
@@ -20,6 +25,7 @@ export default function Navigation({
                             ? "text-black"
                             : "text-gray-500 hover:text-gray-800 transition"
                     }`}
+                    onClick={handleCloseMenu}
                 >
                     {text}
                 </Link>

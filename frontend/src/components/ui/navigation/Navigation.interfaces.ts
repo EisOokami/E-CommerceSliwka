@@ -1,5 +1,7 @@
-import { Link } from "@/interfaces/interfaces";
+import { ILink } from "@/interfaces/interfaces";
+import { Dispatch, SetStateAction } from "react";
 
 export interface NavigationProps {
-    navigationLinks: Link[];
+    navigationLinks: ILink[];
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
