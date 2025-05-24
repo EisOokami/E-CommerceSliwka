@@ -25,7 +25,7 @@ export default function Button({
                 <Link
                     href={href}
                     className={twMerge(
-                        `w-fit px-10 py-3 text-center border rounded-md ${styleTheme} ${className}`,
+                        `w-fit px-10 py-3 text-sm md:text-base text-center border rounded-md ${styleTheme} ${className}`,
                     )}
                 >
                     {text}
@@ -34,7 +34,7 @@ export default function Button({
                 <button
                     onClick={onClick}
                     className={twMerge(
-                        `w-fit px-10 py-3 border rounded-md ${styleTheme} ${className}`,
+                        `w-fit px-10 py-3 text-sm md:text-base border rounded-md ${styleTheme} ${className}`,
                     )}
                     type={type}
                 >
