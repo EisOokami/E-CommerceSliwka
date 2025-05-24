@@ -6,9 +6,12 @@ import { logoutAction } from "@/data/actions/authActions";
 import useClickOutside from "@/hooks/UseClickOutside";
 import { IoPersonOutline, IoLogOutOutline } from "react-icons/io5";
 import { ProfileButtonProps } from "./ProfileButton.interfaces";
+import Tooltip from "../tooltip/Tooltip";
 
 export default function ProfileButton({
     isUserSingIn,
+    text,
+    handleCloseMenu,
 }: Readonly<ProfileButtonProps>) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -16,65 +19,110 @@ export default function ProfileButton({
 
     useClickOutside(dropdownRef, () => setIsOpen(false), [btnRef]);
 
-    const handleIsOpen = () => {
+    const handleOpenDropdown = () => {
         setIsOpen(!isOpen);
     };
 
     return (
         <div className="relative ">
-            <button
-                ref={btnRef}
-                onClick={handleIsOpen}
-                className="flex items-center"
-            >
-                <IoPersonOutline />
-            </button>
-            {isOpen && isUserSingIn && (
-                <div
-                    ref={dropdownRef}
-                    className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
-                >
-                    <button className="w-full text-left" onClick={handleIsOpen}>
-                        <Link
-                            href="/account"
-                            className="block w-full px-5 py-2 text-lg text-gray-700"
-                            onClick={handleIsOpen}
-                        >
-                            Account settings
-                        </Link>
+            {!isOpen && (
+                <Tooltip message={text}>
+                    <button
+                        ref={btnRef}
+                        onClick={handleOpenDropdown}
+                        className="flex items-center"
+                    >
+                        <IoPersonOutline />
                     </button>
-                    <form action={logoutAction} onSubmit={handleIsOpen}>
+                </Tooltip>
+            )}
+            {isOpen && isUserSingIn && (
+                <>
+                    <button
+                        ref={btnRef}
+                        onClick={handleOpenDropdown}
+                        className="flex items-center"
+                    >
+                        <IoPersonOutline />
+                    </button>
+                    <div
+                        ref={dropdownRef}
+                        className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
+                    >
                         <button
-                            type="submit"
-                            className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700"
+                            className="w-full text-left"
+                            onClick={() => {
+                                handleOpenDropdown();
+                                handleCloseMenu();
+                            }}
                         >
-                            Sign out <IoLogOutOutline className="text-lg" />
+                            <Link
+                                href="/account"
+                                className="block w-full px-5 py-2 text-lg text-gray-700"
+                            >
+                                Account settings
+                            </Link>
                         </button>
-                    </form>
-                </div>
+                        <form
+                            action={logoutAction}
+                            onSubmit={() => {
+                                handleOpenDropdown();
+                                handleCloseMenu();
+                            }}
+                        >
+                            <button
+                                type="submit"
+                                className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700"
+                            >
+                                Sign out <IoLogOutOutline className="text-lg" />
+                            </button>
+                        </form>
+                    </div>
+                </>
             )}
             {isOpen && !isUserSingIn && (
-                <div
-                    ref={dropdownRef}
-                    className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
-                >
+                <>
                     <button
-                        className="w-full px-5 py-2 text-left"
-                        onClick={handleIsOpen}
+                        ref={btnRef}
+                        onClick={handleOpenDropdown}
+                        className="flex items-center"
                     >
-                        <Link href="/signIn" className="text-lg text-gray-700">
-                            Sign In
-                        </Link>
+                        <IoPersonOutline />
                     </button>
-                    <button
-                        className="w-full px-5 py-2 text-left"
-                        onClick={handleIsOpen}
+                    <div
+                        ref={dropdownRef}
+                        className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
                     >
-                        <Link href="/signUp" className="text-lg text-gray-700">
-                            Sign Up
-                        </Link>
-                    </button>
-                </div>
+                        <button
+                            className="w-full text-left"
+                            onClick={() => {
+                                handleOpenDropdown();
+                                handleCloseMenu();
+                            }}
+                        >
+                            <Link
+                                href="/signIn"
+                                className="block w-full px-5 py-2 text-lg text-gray-700"
+                            >
+                                Sign In
+                            </Link>
+                        </button>
+                        <button
+                            className="w-full text-left"
+                            onClick={() => {
+                                handleOpenDropdown();
+                                handleCloseMenu();
+                            }}
+                        >
+                            <Link
+                                href="/signUp"
+                                className="block w-full px-5 py-2 text-lg text-gray-700"
+                            >
+                                Sign Up
+                            </Link>
+                        </button>
+                    </div>
+                </>
             )}
         </div>
     );
