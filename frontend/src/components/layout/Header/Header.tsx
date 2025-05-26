@@ -40,13 +40,17 @@ export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
                     />
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-center">
-                    <Navigation navigationLinks={navigationLinks} />
+                    <Navigation
+                        navigationLinks={navigationLinks}
+                        setIsOpen={setIsOpen}
+                    />
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-end items-center gap-5">
-                    <SearchBar />
+                    <SearchBar setIsOpenMenu={setIsOpen} />
                     <HeaderIcons
                         iconsLink={iconsLink}
                         isUserSingIn={isUserSingIn}
+                        setIsOpen={setIsOpen}
                     />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
@@ -61,11 +65,15 @@ export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
                         ref={containerNavbarMenu}
                         className="grid gap-5 p-5 bg-white"
                     >
-                        <Navigation navigationLinks={navigationLinks} />
-                        <SearchBar />
+                        <Navigation
+                            navigationLinks={navigationLinks}
+                            setIsOpen={setIsOpen}
+                        />
+                        <SearchBar setIsOpenMenu={setIsOpen} />
                         <HeaderIcons
                             iconsLink={iconsLink}
                             isUserSingIn={isUserSingIn}
+                            setIsOpen={setIsOpen}
                         />
                     </div>
                 </div>
