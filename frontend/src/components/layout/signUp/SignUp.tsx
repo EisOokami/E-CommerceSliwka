@@ -23,10 +23,10 @@ export default function SignUp() {
             <section className="hidden md:block w-1/2 bg-gray-100">
                 <div></div>
             </section>
-            <section className="grid place-items-center w-full md:w-1/2 container mx-auto px-3 md:px-5">
+            <section className="grid content-center md:place-items-center w-full md:w-1/2 container mx-auto px-3 md:px-5">
                 <form
                     action={formAction}
-                    className="grid gap-6 w-2/3 p-5"
+                    className="grid gap-6 md:w-2/3 md:p-5"
                     noValidate
                 >
                     <div className="grid gap-1">
