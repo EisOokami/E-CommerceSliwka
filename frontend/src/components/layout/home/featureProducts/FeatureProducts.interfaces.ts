@@ -1,11 +1,11 @@
-import { IImage, Link } from "@/interfaces/interfaces";
+import { IImage, IProduct } from "@/interfaces/interfaces";
 
 export interface FeatureProduct {
     id: number;
     heading: string;
     subHeading: string;
     image: IImage;
-    link: Link;
+    product: IProduct;
 }
 
 export interface FeatureProductsProps {
@@ -13,5 +13,5 @@ export interface FeatureProductsProps {
     __component: string;
     title: string;
     description: string;
-    featureproduct: FeatureProduct[];
+    featureProduct: FeatureProduct[];
 }
