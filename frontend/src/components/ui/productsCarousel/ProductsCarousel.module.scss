@@ -1,0 +1,47 @@
+.embla__container {
+    display: flex;
+    margin-left: calc(1rem * -1);
+}
+
+.embla__slide {
+    flex: 0 0 80%;
+    min-width: 0;
+    padding-left: 1rem;
+    transform: translate3d(0, 0, 0);
+}
+
+@media screen and (min-width: 550px) {
+    .embla__slide {
+        flex: 0 0 50%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .embla__slide {
+        flex: 0 0 40%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .embla__slide {
+        flex: 0 0 35%;
+    }
+}
+
+@media screen and (min-width: 1520px) {
+    .embla__slide {
+        flex: 0 0 30%;
+    }
+}
+
+@media screen and (min-width: 1720px) {
+    .embla__slide {
+        flex: 0 0 25%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .embla__slide {
+        flex: 0 0 20%;
+    }
+}
