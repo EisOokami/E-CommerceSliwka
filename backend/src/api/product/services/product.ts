@@ -32,9 +32,30 @@ export default factories.createCoreService("api::product.product", ({ strapi }) 
             }),
         }
 
+        const populateFields = {
+            image: true,
+            sliderImages: true,
+            colors: { populate: "*" },
+            options: { populate: "*" },
+            productInfo: { populate: "*" },
+            productSpecs: { populate: "*" },
+            category: { populate: "*" },
+            detailedSpecifications: {
+                populate: {
+                    specifications: {
+                        populate: {
+                            specifications: {
+                                populate: "*",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
         const products = await strapi.documents("api::product.product").findMany({
             filters: updatedFilters,
-            populate: "*",
+            populate: populateFields,
             start: (pagination.page - 1) * pagination.pageSize,
             limit: pagination.pageSize
         });

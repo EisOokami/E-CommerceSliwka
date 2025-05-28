@@ -18,6 +18,7 @@ export default factories.createCoreController("api::product.product", ({ strapi 
         const filters = ctx.query.filters || {};
         const queryParams = ctx.query.queryParams;
         const pagination = ctx.query.pagination;
+
         const result = await strapi
             .service("api::product.product")
             .getFilteredProducts(filters, queryParams, pagination);

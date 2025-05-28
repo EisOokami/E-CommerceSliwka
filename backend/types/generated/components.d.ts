@@ -51,12 +51,13 @@ export interface ComponentsDetailedSpecifications
 export interface ComponentsFeatureProduct extends Struct.ComponentSchema {
   collectionName: 'components_components_feature_products';
   info: {
+    description: '';
     displayName: 'FeatureProduct';
   };
   attributes: {
     heading: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
-    link: Schema.Attribute.Component<'components.link', false>;
+    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
     subHeading: Schema.Attribute.Text;
   };
 }
@@ -166,7 +167,7 @@ export interface LayoutFeatureProductsSection extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    featureproduct: Schema.Attribute.Component<
+    featureProduct: Schema.Attribute.Component<
       'components.feature-product',
       true
     >;
@@ -212,7 +213,7 @@ export interface LayoutHeroSection extends Struct.ComponentSchema {
   attributes: {
     heading: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
-    link: Schema.Attribute.Component<'components.link', false>;
+    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
     subHeading: Schema.Attribute.Text;
   };
 }

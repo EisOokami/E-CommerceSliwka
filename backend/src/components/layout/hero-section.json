@@ -20,10 +20,10 @@
         "images"
       ]
     },
-    "link": {
-      "type": "component",
-      "repeatable": false,
-      "component": "components.link"
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
     }
   }
 }

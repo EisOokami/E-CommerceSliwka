@@ -507,6 +507,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
+    description: '';
     displayName: 'Product';
     pluralName: 'products';
     singularName: 'product';
@@ -529,7 +530,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     >;
     discountedPrice: Schema.Attribute.Float;
     finalPrice: Schema.Attribute.Decimal;
-    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    image: Schema.Attribute.Media<'images'>;
     isDiscount: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -547,10 +548,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     >;
     publishedAt: Schema.Attribute.DateTime;
     reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
-    sliderImages: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
+    sliderImages: Schema.Attribute.Media<'images', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
