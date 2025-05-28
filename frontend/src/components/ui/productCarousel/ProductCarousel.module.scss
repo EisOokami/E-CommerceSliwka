@@ -1,0 +1,92 @@
+.embla {
+    position: relative;
+    max-width: 1000px;
+}
+
+.embla__viewport {
+    overflow: hidden;
+}
+
+.embla__container {
+    display: flex;
+    margin-left: -10px;
+}
+
+.embla__slide {
+    min-width: 100%;
+    padding-left: 10px;
+}
+
+.embla__slide__images {
+    width: 500px;
+    height: 400px;
+    margin: auto;
+    object-fit: contain;
+}
+
+.embla-thumbs__viewport {
+    overflow: hidden;
+}
+
+.embla-thumbs__container {
+    display: flex;
+    flex-direction: row;
+    margin-left: calc(0.8rem * -1);
+}
+
+.embla-thumbs__slide {
+    flex: 0 0 22%;
+    min-width: 0;
+    padding-left: 0.8rem;
+    opacity: 0.5;
+}
+
+.embla-thumbs__slide--selected {
+    opacity: 1;
+}
+
+.embla__slide__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 6rem;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 500px) {
+    .embla__slide__images {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .embla {
+        max-width: 300px;
+    }
+
+    .embla-thumbs__slide {
+        flex: 0 0 30%;
+    }
+}
+
+@media screen and (min-width: 1023px) {
+    .embla {
+        max-width: 400px;
+    }
+
+    .embla-thumbs__slide {
+        flex: 0 0 25%;
+    }
+}
+
+@media screen and (min-width: 1439px) {
+    .embla {
+        max-width: 600px;
+    }
+
+    .embla-thumbs__slide {
+        flex: 0 0 25%;
+    }
+}
