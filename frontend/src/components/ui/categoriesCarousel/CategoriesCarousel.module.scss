@@ -1,0 +1,30 @@
+.embla {
+    min-width: 100%;
+}
+
+.embla__viewport {
+    overflow: hidden;
+}
+
+.embla__container {
+    display: flex;
+    gap: 2rem;
+}
+
+.embla__slide {
+    flex: 0 0 40%;
+    min-width: 0;
+    transform: translate3d(0, 0, 0);
+}
+
+@media screen and (min-width: 600px) {
+    .embla__slide {
+        flex: 0 0 25%;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .embla__slide {
+        flex: 0 0 15%;
+    }
+}
