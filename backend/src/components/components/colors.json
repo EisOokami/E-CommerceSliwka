@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_components_colors",
+  "info": {
+    "displayName": "Colors"
+  },
+  "options": {},
+  "attributes": {
+    "hexColor": {
+      "type": "string",
+      "default": "#",
+      "maxLength": 7
+    },
+    "nameColor": {
+      "type": "string"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    }
+  }
+}

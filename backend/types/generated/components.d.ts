@@ -33,6 +33,22 @@ export interface ComponentsCategory extends Struct.ComponentSchema {
   };
 }
 
+export interface ComponentsColors extends Struct.ComponentSchema {
+  collectionName: 'components_components_colors';
+  info: {
+    displayName: 'Colors';
+  };
+  attributes: {
+    hexColor: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 7;
+      }> &
+      Schema.Attribute.DefaultTo<'#'>;
+    nameColor: Schema.Attribute.String;
+    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
+  };
+}
+
 export interface ComponentsDetailedSpecifications
   extends Struct.ComponentSchema {
   collectionName: 'components_components_detailed_specifications';
@@ -252,6 +268,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'components.array': ComponentsArray;
       'components.category': ComponentsCategory;
+      'components.colors': ComponentsColors;
       'components.detailed-specifications': ComponentsDetailedSpecifications;
       'components.feature-product': ComponentsFeatureProduct;
       'components.link': ComponentsLink;

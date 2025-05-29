@@ -36,11 +36,6 @@
     "description": {
       "type": "text"
     },
-    "colors": {
-      "type": "component",
-      "repeatable": true,
-      "component": "components.array"
-    },
     "options": {
       "type": "component",
       "repeatable": true,
@@ -97,6 +92,12 @@
       "relation": "oneToMany",
       "target": "api::wishlist.wishlist",
       "mappedBy": "product"
+    },
+    "colors": {
+      "displayName": "Colors",
+      "type": "component",
+      "repeatable": true,
+      "component": "components.colors"
     }
   }
 }

@@ -519,7 +519,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     averageRating: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     carts: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'>;
     category: Schema.Attribute.Component<'components.category', false>;
-    colors: Schema.Attribute.Component<'components.array', true>;
+    colors: Schema.Attribute.Component<'components.colors', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
