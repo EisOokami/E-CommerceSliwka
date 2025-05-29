@@ -4,7 +4,7 @@ import Button from "@/components/ui/button/Button";
 import StrapiImage from "@/components/ui/strapiImage/StrapiImage";
 
 export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
-    const { heading, subHeading, image, link } = data;
+    const { heading, subHeading, image, product } = data;
     const imageURL = process.env.NEXT_PUBLIC_DB_URL + image.url;
 
     return (
@@ -21,9 +21,9 @@ export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
                         {subHeading}
                     </p>
                     <Button
-                        href={link.url}
+                        href={`catalog/${product.documentId}`}
                         theme="light"
-                        text={link.text}
+                        text="Shop now"
                         isLink
                     />
                 </div>
