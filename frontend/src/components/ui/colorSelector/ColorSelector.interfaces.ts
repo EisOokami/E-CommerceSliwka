@@ -1,5 +1,5 @@
-import { IArray } from "@/interfaces/interfaces";
+import { IColors } from "@/interfaces/interfaces";
 
 export interface ColorSelectorProps {
-    colorsData: IArray[];
+    colorsData: IColors[];
 }
