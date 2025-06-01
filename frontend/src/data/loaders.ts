@@ -40,20 +40,20 @@ export async function getHomePageData() {
                             image: {
                                 fields: ["url", "alternativeText"],
                             },
-                            link: {
-                                populate: true,
+                            product: {
+                                fields: ["slug"],
                             },
                         },
                     },
                     "layout.feature-products-section": {
                         populate: {
-                            featureproduct: {
+                            featureProduct: {
                                 populate: {
                                     image: {
                                         fields: ["url", "alternativeText"],
                                     },
-                                    link: {
-                                        populate: true,
+                                    product: {
+                                        fields: ["slug"],
                                     },
                                 },
                             },
@@ -66,50 +66,6 @@ export async function getHomePageData() {
                                     image: {
                                         fields: ["url", "alternativeText"],
                                     },
-                                    sliderImages: {
-                                        fields: ["url", "alternativeText"],
-                                    },
-                                    colors: {
-                                        populate: true,
-                                    },
-                                    options: {
-                                        populate: true,
-                                    },
-                                    productInfo: {
-                                        populate: true,
-                                    },
-                                    productSpecs: {
-                                        populate: true,
-                                    },
-                                    category: {
-                                        populate: true,
-                                    },
-                                    detailedSpecifications: {
-                                        populate: {
-                                            specifications: {
-                                                populate: true,
-                                            },
-                                        },
-                                    },
-                                    reviews: {
-                                        populate: {
-                                            user: {
-                                                populate: "*",
-                                            },
-                                            product: {
-                                                populate: "*",
-                                            },
-                                            images: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
-                                            },
-                                        },
-                                    },
-                                    wishlist: {
-                                        populate: "*",
-                                    },
                                 },
                             },
                         },
@@ -120,47 +76,6 @@ export async function getHomePageData() {
                                 populate: {
                                     image: {
                                         fields: ["url", "alternativeText"],
-                                    },
-                                    sliderImages: {
-                                        fields: ["url", "alternativeText"],
-                                    },
-                                    colors: {
-                                        populate: true,
-                                    },
-                                    options: {
-                                        populate: true,
-                                    },
-                                    productInfo: {
-                                        populate: true,
-                                    },
-                                    productSpecs: {
-                                        populate: true,
-                                    },
-                                    category: {
-                                        populate: true,
-                                    },
-                                    detailedSpecifications: {
-                                        populate: {
-                                            specifications: {
-                                                populate: true,
-                                            },
-                                        },
-                                    },
-                                    reviews: {
-                                        populate: {
-                                            user: {
-                                                populate: "*",
-                                            },
-                                            product: {
-                                                populate: "*",
-                                            },
-                                            images: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
-                                            },
-                                        },
                                     },
                                 },
                             },
@@ -179,49 +94,8 @@ export async function getHomePageData() {
                                     image: {
                                         fields: ["url", "alternativeText"],
                                     },
-                                    sliderImages: {
-                                        fields: ["url", "alternativeText"],
-                                    },
-                                    colors: {
-                                        populate: true,
-                                    },
-                                    options: {
-                                        populate: true,
-                                    },
-                                    productInfo: {
-                                        populate: true,
-                                    },
-                                    productSpecs: {
-                                        populate: true,
-                                    },
                                     category: {
                                         populate: true,
-                                    },
-                                    detailedSpecifications: {
-                                        populate: {
-                                            specifications: {
-                                                populate: true,
-                                            },
-                                        },
-                                    },
-                                    reviews: {
-                                        populate: {
-                                            user: {
-                                                populate: "*",
-                                            },
-                                            product: {
-                                                populate: "*",
-                                            },
-                                            images: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
-                                            },
-                                        },
-                                    },
-                                    wishlist: {
-                                        populate: "*",
                                     },
                                 },
                             },
@@ -230,49 +104,8 @@ export async function getHomePageData() {
                                     image: {
                                         fields: ["url", "alternativeText"],
                                     },
-                                    sliderImages: {
-                                        fields: ["url", "alternativeText"],
-                                    },
-                                    colors: {
-                                        populate: true,
-                                    },
-                                    options: {
-                                        populate: true,
-                                    },
-                                    productInfo: {
-                                        populate: true,
-                                    },
-                                    productSpecs: {
-                                        populate: true,
-                                    },
                                     category: {
                                         populate: true,
-                                    },
-                                    detailedSpecifications: {
-                                        populate: {
-                                            specifications: {
-                                                populate: true,
-                                            },
-                                        },
-                                    },
-                                    reviews: {
-                                        populate: {
-                                            user: {
-                                                populate: "*",
-                                            },
-                                            product: {
-                                                populate: "*",
-                                            },
-                                            images: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
-                                            },
-                                        },
-                                    },
-                                    wishlist: {
-                                        populate: "*",
                                     },
                                 },
                             },
@@ -281,49 +114,8 @@ export async function getHomePageData() {
                                     image: {
                                         fields: ["url", "alternativeText"],
                                     },
-                                    sliderImages: {
-                                        fields: ["url", "alternativeText"],
-                                    },
-                                    colors: {
-                                        populate: true,
-                                    },
-                                    options: {
-                                        populate: true,
-                                    },
-                                    productInfo: {
-                                        populate: true,
-                                    },
-                                    productSpecs: {
-                                        populate: true,
-                                    },
                                     category: {
                                         populate: true,
-                                    },
-                                    detailedSpecifications: {
-                                        populate: {
-                                            specifications: {
-                                                populate: true,
-                                            },
-                                        },
-                                    },
-                                    reviews: {
-                                        populate: {
-                                            user: {
-                                                populate: "*",
-                                            },
-                                            product: {
-                                                populate: "*",
-                                            },
-                                            images: {
-                                                fields: [
-                                                    "url",
-                                                    "alternativeText",
-                                                ],
-                                            },
-                                        },
-                                    },
-                                    wishlist: {
-                                        populate: "*",
                                     },
                                 },
                             },
@@ -376,10 +168,7 @@ export async function getGlobalPageMetadata() {
     return await fetchData(url.href);
 }
 
-export async function getProductProductsData(
-    page: number = 1,
-    limit: number = 8,
-) {
+export async function getProductsData(page: number = 1, limit: number = 8) {
     const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
@@ -419,10 +208,15 @@ export async function getProductProductsData(
             reviews: {
                 populate: {
                     user: {
-                        populate: "*",
+                        populate: {
+                            avatar: {
+                                fields: ["url", "alternativeText"],
+                            },
+                        },
+                        fields: ["username"],
                     },
                     product: {
-                        populate: "*",
+                        fields: ["documentId"],
                     },
                     images: {
                         fields: ["url", "alternativeText"],
@@ -444,8 +238,13 @@ export async function getProductProductsData(
     };
 }
 
-export async function getProductProductData(documentId: string) {
+export async function getProductData(documentId: string | null, slug?: string) {
     const url = new URL("/api/products", baseUrl);
+
+    const filters = {
+        ...(documentId && { documentId: { $eq: documentId } }),
+        ...(slug && { slug: { $eq: slug } }),
+    };
 
     url.search = qs.stringify({
         populate: {
@@ -484,10 +283,15 @@ export async function getProductProductData(documentId: string) {
             reviews: {
                 populate: {
                     user: {
-                        populate: "*",
+                        populate: {
+                            avatar: {
+                                fields: ["url", "alternativeText"],
+                            },
+                        },
+                        fields: ["username"],
                     },
                     product: {
-                        populate: "*",
+                        fields: ["documentId"],
                     },
                     images: {
                         fields: ["url", "alternativeText"],
@@ -495,11 +299,7 @@ export async function getProductProductData(documentId: string) {
                 },
             },
         },
-        filters: {
-            documentId: {
-                $eq: documentId,
-            },
-        },
+        filters,
     });
 
     const fetchedData = await fetchData(url.href);
@@ -521,7 +321,7 @@ export async function getFilteredProductsData(
     const filters = {
         ...(category && { category: { category: { $eq: category } } }),
         ...(colors &&
-            colors.length > 0 && { colors: { item: { $in: colors } } }),
+            colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
         ...(options &&
             options.length > 0 && { options: { item: { $in: options } } }),
         ...(rating && { averageRating: { $gte: rating } }),
@@ -570,10 +370,15 @@ export async function getFilteredProductsData(
                 reviews: {
                     populate: {
                         user: {
-                            populate: "*",
+                            populate: {
+                                avatar: {
+                                    fields: ["url", "alternativeText"],
+                                },
+                            },
+                            fields: ["username"],
                         },
                         product: {
-                            populate: "*",
+                            fields: ["documentId"],
                         },
                         images: {
                             fields: ["url", "alternativeText"],
@@ -638,7 +443,7 @@ export async function getProductsPriceRange(
     const filters = {
         ...(category && { category: { category: { $eq: category } } }),
         ...(colors &&
-            colors.length > 0 && { colors: { item: { $in: colors } } }),
+            colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
         ...(options &&
             options.length > 0 && { options: { item: { $in: options } } }),
         ...(rating && { averageRating: { $gte: rating } }),
@@ -686,7 +491,11 @@ export async function getCartProductsData() {
     url.search = qs.stringify({
         populate: {
             product: {
-                populate: "*",
+                populate: {
+                    image: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
             },
             user: {
                 fields: ["id"],
@@ -714,7 +523,13 @@ export async function getCartProductData(documentId: string) {
     url.search = qs.stringify({
         populate: {
             product: {
-                populate: "*",
+                populate: {
+                    populate: {
+                        image: {
+                            fields: ["url", "alternativeText"],
+                        },
+                    },
+                },
             },
             user: {
                 fields: ["id"],
@@ -747,47 +562,8 @@ export async function getProductsBySearchData(searchValue: string) {
             image: {
                 fields: ["url", "alternativeText"],
             },
-            sliderImages: {
-                fields: ["url", "alternativeText"],
-            },
-            colors: {
-                populate: true,
-            },
-            options: {
-                populate: true,
-            },
-            productInfo: {
-                populate: true,
-            },
-            productSpecs: {
-                populate: true,
-            },
             category: {
                 populate: true,
-            },
-            detailedSpecifications: {
-                populate: {
-                    specifications: {
-                        populate: {
-                            specifications: {
-                                populate: true,
-                            },
-                        },
-                    },
-                },
-            },
-            reviews: {
-                populate: {
-                    user: {
-                        populate: "*",
-                    },
-                    product: {
-                        populate: "*",
-                    },
-                    images: {
-                        fields: ["url", "alternativeText"],
-                    },
-                },
             },
         },
         filters: {
@@ -815,12 +591,24 @@ export async function getProductsBySearchData(searchValue: string) {
 
 export async function getWishlistProductsData() {
     const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        return [];
+    }
+
     const url = new URL("/api/wishlists", baseUrl);
 
     url.search = qs.stringify({
         populate: {
             product: {
-                populate: "*",
+                populate: {
+                    image: {
+                        fields: ["url", "alternativeText"],
+                    },
+                    category: {
+                        populate: true,
+                    },
+                },
             },
             user: {
                 fields: ["id"],
@@ -839,4 +627,49 @@ export async function getWishlistProductsData() {
     const fetchedData = await fetchData(url.href);
 
     return fetchedData.data;
+}
+
+export async function getWishlistProductData(documentId: string) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        return [];
+    }
+
+    const url = new URL("/api/wishlists", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            product: {
+                populate: {
+                    image: {
+                        fields: ["url", "alternativeText"],
+                    },
+                    category: {
+                        populate: true,
+                    },
+                },
+            },
+            user: {
+                fields: ["id"],
+            },
+        },
+        filters: {
+            product: {
+                documentId: {
+                    $eq: documentId,
+                },
+            },
+            user: {
+                id: {
+                    $eq: user.data.id,
+                },
+            },
+        },
+        sort: ["createdAt:asc"],
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data[0];
 }
