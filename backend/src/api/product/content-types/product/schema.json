@@ -93,6 +93,10 @@
       "target": "api::wishlist.wishlist",
       "mappedBy": "product"
     },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
     "colors": {
       "displayName": "Colors",
       "type": "component",

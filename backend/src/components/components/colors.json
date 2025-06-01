@@ -5,18 +5,17 @@
   },
   "options": {},
   "attributes": {
-    "hexColor": {
-      "type": "string",
-      "default": "#",
-      "maxLength": 7
-    },
-    "nameColor": {
+    "colorName": {
       "type": "string"
     },
-    "product": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product.product"
+    "colorHex": {
+      "type": "string",
+      "default": "#",
+      "maxLength": 7,
+      "minLength": 4
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }

@@ -39,13 +39,14 @@ export interface ComponentsColors extends Struct.ComponentSchema {
     displayName: 'Colors';
   };
   attributes: {
-    hexColor: Schema.Attribute.String &
+    colorHex: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 7;
+        minLength: 4;
       }> &
       Schema.Attribute.DefaultTo<'#'>;
-    nameColor: Schema.Attribute.String;
-    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
+    colorName: Schema.Attribute.String;
+    slug: Schema.Attribute.String;
   };
 }
 

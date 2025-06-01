@@ -35,11 +35,7 @@ export default factories.createCoreService("api::product.product", ({ strapi }) 
         const populateFields = {
             image: true,
             sliderImages: true,
-            colors: {
-                populate: {
-                    product: true
-                }
-            },
+            colors: { populate: "*" },
             options: { populate: "*" },
             productInfo: { populate: "*" },
             productSpecs: { populate: "*" },
