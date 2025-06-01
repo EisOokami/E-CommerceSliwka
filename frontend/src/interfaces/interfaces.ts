@@ -55,6 +55,13 @@ export interface ICategory {
     category: string;
 }
 
+export interface IColors {
+    id: number;
+    colorHex: string;
+    colorName: string;
+    slug: string;
+}
+
 export interface IProduct {
     id: number;
     documentId: string;
@@ -66,7 +73,7 @@ export interface IProduct {
     category: ICategory;
     image: IImage;
     sliderImages: IImage[];
-    colors: IArray[];
+    colors: IColors[];
     options: IArray[];
     productInfo: IProductInfo;
     productSpecs: IProductSpecs[];
@@ -74,6 +81,7 @@ export interface IProduct {
     averageRating: number;
     reviews: IReviews[];
     wishlist: IWishlist[];
+    slug: string;
 }
 
 export interface ILink {
