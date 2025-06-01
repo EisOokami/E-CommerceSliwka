@@ -14,7 +14,11 @@ export async function addProductToCartAction(documentId: string) {
 
     if (!user.ok) {
         console.error("User not found");
-        return { ok: false, message: "User not found" };
+
+        return {
+            ok: false,
+            message: "Please sign in or sign up to add product to your cart",
+        };
     }
 
     const productCart = await getCartProductData(documentId);
@@ -44,17 +48,22 @@ export async function addProductToCartAction(documentId: string) {
     );
 
     if (!responseData) {
-        console.error("Ops! Something went wrong. Please try again.");
+        console.error("Ops! Something went wrong. Please try again or later.");
+
         return {
             ok: false,
-            message: "Ops! Something went wrong. Please try again",
+            message: "Ops! Something went wrong. Please try again or later",
         };
     }
 
     if (responseData.error) {
         console.error(responseData.error);
         console.error("Failed to Add Product to Cart.");
-        return { ok: false, message: "Failed to add product to cart" };
+
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
     }
 
     return { ok: true, message: "Product add to cart" };
@@ -76,6 +85,7 @@ const schemaAddReview = z.object({
         message: "Please select a rating",
     }),
     documentId: z.string(),
+    slug: z.string(),
     images: z
         .any()
         .optional()
@@ -116,6 +126,7 @@ export async function addReviewToProductAction(
         description: formData.get("description"),
         rating: formData.get("rating"),
         documentId: formData.get("documentId"),
+        slug: formData.get("slug"),
         images: filteredImages,
     });
 
@@ -174,7 +185,7 @@ export async function addReviewToProductAction(
         };
     }
 
-    redirect(`/catalog/${validatedFields.data.documentId}`);
+    redirect(`/catalog/${validatedFields.data.slug}`);
 }
 
 const schemaEditReview = z.object({
@@ -185,6 +196,7 @@ const schemaEditReview = z.object({
         message: "Please select a rating",
     }),
     documentId: z.string(),
+    slug: z.string(),
     images: z
         .any()
         .optional()
@@ -228,6 +240,7 @@ export async function editReviewAction(
         description: formData.get("description"),
         rating: formData.get("rating"),
         documentId: formData.get("documentId"),
+        slug: formData.get("slug"),
         images: filteredImages,
     });
 
@@ -290,7 +303,7 @@ export async function editReviewAction(
         };
     }
 
-    redirect(`/catalog/${validatedFields.data.documentId}`);
+    redirect(`/catalog/${validatedFields.data.slug}`);
 }
 
 export async function deleteReviewAction(documentIdReview: string) {
@@ -323,7 +336,11 @@ export async function addProductToWishlistAction(documentId: string) {
     if (!user.ok) {
         console.error("User not found");
 
-        return { error: true };
+        return {
+            ok: false,
+            message:
+                "Please sign in or sign up to add product to your wishlist",
+        };
     }
 
     const query = qs.stringify({
@@ -348,17 +365,23 @@ export async function addProductToWishlistAction(documentId: string) {
     if (!responseData) {
         console.error("Ops! Something went wrong. Please try again.");
 
-        return { error: true };
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
     }
 
     if (responseData.error) {
         console.error(responseData.error);
         console.error("Failed to Add Product to Wishlist.");
 
-        return { error: true };
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
     }
 
-    return { error: false };
+    return { ok: true, message: "Product add to wishlist" };
 }
 
 export async function deleteProductFromWishlistAction(
@@ -369,7 +392,11 @@ export async function deleteProductFromWishlistAction(
     if (!user.ok) {
         console.error("User not found");
 
-        return { error: true };
+        return {
+            ok: false,
+            message:
+                "Please sign in or sign up to delete product from your wishlist",
+        };
     }
 
     const responseData = await mutateData(
@@ -380,15 +407,21 @@ export async function deleteProductFromWishlistAction(
     if (!responseData) {
         console.error("Ops! Something went wrong. Please try again.");
 
-        return { error: true };
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
     }
 
     if (responseData.error) {
         console.error(responseData.error);
         console.error("Failed to Delete Product from Wishlist.");
 
-        return { error: true };
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
     }
 
-    return { error: false };
+    return { ok: true, message: "Product delete from wishlist" };
 }
