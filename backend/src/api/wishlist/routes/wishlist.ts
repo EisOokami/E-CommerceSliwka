@@ -4,4 +4,10 @@
 
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreRouter('api::wishlist.wishlist');
+export default factories.createCoreRouter('api::wishlist.wishlist', {
+    config: {
+        create: {
+            policies: ["global::limit-user-wishlist"],
+        },
+    }
+});
