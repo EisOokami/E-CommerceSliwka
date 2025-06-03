@@ -60,9 +60,14 @@ export async function addProductToCartAction(documentId: string) {
         console.error(responseData.error);
         console.error("Failed to Add Product to Cart.");
 
+        const message =
+            responseData.error.details === "PostLimitReached"
+                ? responseData.error.message
+                : "Ops! Something went wrong. Please try again or later";
+
         return {
             ok: false,
-            message: "Ops! Something went wrong. Please try again or later",
+            message: message,
         };
     }
 
@@ -177,11 +182,16 @@ export async function addReviewToProductAction(
     }
 
     if (responseData.error) {
+        const message =
+            responseData.error.details === "PostLimitReached"
+                ? responseData.error.message
+                : "Failed to Add Review to Product.";
+
         return {
             ...prevState,
             strapiErrors: responseData.error,
             zodErrors: null,
-            message: "Failed to Add Review to Product.",
+            message: message,
         };
     }
 
@@ -375,9 +385,14 @@ export async function addProductToWishlistAction(documentId: string) {
         console.error(responseData.error);
         console.error("Failed to Add Product to Wishlist.");
 
+        const message =
+            responseData.error.details === "PostLimitReached"
+                ? responseData.error.message
+                : "Ops! Something went wrong. Please try again or later";
+
         return {
             ok: false,
-            message: "Ops! Something went wrong. Please try again or later",
+            message: message,
         };
     }
 
