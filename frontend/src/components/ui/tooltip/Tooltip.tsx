@@ -16,7 +16,7 @@ export default function Tooltip({ message, children }: TooltipProps) {
                 {children}
             </span>
             <div
-                className={`absolute top-full flex flex-col items-center  group-hover:flex mt-1 whitespace-nowrap capitalize ${
+                className={`absolute top-full flex flex-col items-center group-hover:flex mt-1 whitespace-nowrap capitalize ${
                     !show ? "hidden" : null
                 }`}
             >
