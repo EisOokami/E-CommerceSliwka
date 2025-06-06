@@ -67,8 +67,10 @@ export default function Account({ data }: Readonly<AccountProps>) {
                                             ? URL.createObjectURL(
                                                   imageFromUpload[0],
                                               )
-                                            : process.env.NEXT_PUBLIC_DB_URL +
+                                            : data.avatar
+                                            ? process.env.NEXT_PUBLIC_DB_URL +
                                               data.avatar.url
+                                            : "/avatar.png"
                                     }
                                     alt="avatar"
                                     width={300}
@@ -137,7 +139,7 @@ export default function Account({ data }: Readonly<AccountProps>) {
                             <div className="relative place-self-center max-w-[1000px] w-full">
                                 <input
                                     className="max-w-[1000px] w-full px-4 pt-5 pb-4 text-gray-700 border rounded-lg appearance-none leading-tight focus:outline-none peer"
-                                    id="password"
+                                    id="reset-password"
                                     name="reset-password"
                                     type="password"
                                     placeholder=" "
