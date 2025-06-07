@@ -146,6 +146,7 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
                         name="documentId"
                         value={strapiData.documentId}
                     />
+                    <input type="hidden" name="slug" value={strapiData.slug} />
                     <Button
                         text="Send review"
                         theme="dark"
