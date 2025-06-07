@@ -115,7 +115,12 @@ export default function ReviewComment({
             }
         >
             <Image
-                src={process.env.NEXT_PUBLIC_DB_URL + review.user.avatar.url}
+                src={
+                    review.user.avatar
+                        ? process.env.NEXT_PUBLIC_DB_URL +
+                          review.user.avatar.url
+                        : "/avatar.png"
+                }
                 width={70}
                 height={70}
                 alt={review.user.username}
@@ -228,6 +233,11 @@ export default function ReviewComment({
                         type="hidden"
                         name="documentId"
                         value={review.product.documentId}
+                    />
+                    <input
+                        type="hidden"
+                        name="slug"
+                        value={review.product.slug}
                     />
                     <ZodErrors error={formState?.zodErrors?.description} />
                     <ZodErrors error={formState?.zodErrors?.rating} />
