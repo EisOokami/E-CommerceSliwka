@@ -1,6 +1,8 @@
-import { RatingSelectProps } from "./RatingSelect.interfaces";
+import useCatalogStore from "@/stores/catalog";
 
-export default function RatingSelect({ setProductRating }: RatingSelectProps) {
+export default function RatingSelect() {
+    const setProductRating = useCatalogStore((state) => state.setProductRating);
+
     const handleUpdateProductRating = (value: string) => {
         setProductRating(value);
     };
