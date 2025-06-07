@@ -31,7 +31,7 @@ export default function ProductsCarouselSlide({
                     </div>
                 </div>
                 <Button
-                    href={`/catalog/${product.documentId}`}
+                    href={`/catalog/${product.slug}`}
                     theme="dark"
                     text="Shop now"
                     inline
