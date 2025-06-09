@@ -7,11 +7,13 @@ import { getProductsBySearchData } from "@/data/loaders";
 import useClickOutside from "@/hooks/UseClickOutside";
 import { IoIosSearch } from "react-icons/io";
 import { IProduct } from "@/interfaces/interfaces";
-import { SearchBarProps } from "./SearchBar.interfaces";
+import { SearchBarHeaderProps } from "./SearchBarHeader.interfaces";
 
 import SearchItem from "../searchItem/SearchItem";
 
-export default function SearchBar({ setIsOpenMenu }: SearchBarProps) {
+export default function SearchBarHeader({
+    setIsOpenMenu,
+}: SearchBarHeaderProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [products, setProducts] = useState<IProduct[]>([]);
     const searchBarRef = useRef(null);
@@ -26,11 +28,16 @@ export default function SearchBar({ setIsOpenMenu }: SearchBarProps) {
     );
 
     const handleChangeInputValue = useDebouncedCallback(async (value) => {
-        if (!value.trim()) {
+        const trimmedValue = value.trim();
+        const isValid = /^[a-zA-Z0-9'",.\- ]+$/.test(trimmedValue);
+
+        if (!trimmedValue || !isValid) {
             return;
         }
 
-        const productsData: IProduct[] = await getProductsBySearchData(value);
+        const productsData: IProduct[] = await getProductsBySearchData(
+            trimmedValue,
+        );
 
         setProducts(productsData);
         setIsOpen(true);
