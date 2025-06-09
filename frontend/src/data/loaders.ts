@@ -308,6 +308,7 @@ export async function getProductData(documentId: string | null, slug?: string) {
 }
 
 export async function getFilteredProductsData(
+    search: string | null,
     category: string | null,
     price: number[] | null,
     colors: string[] | null,
@@ -319,6 +320,7 @@ export async function getFilteredProductsData(
     const url = new URL("/api/products/filtered", baseUrl);
 
     const filters = {
+        ...(search && { name: { $containsi: search } }),
         ...(category && { category: { category: { $eq: category } } }),
         ...(colors &&
             colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
@@ -433,6 +435,7 @@ export async function getFiltersByCategory(category: string | null) {
 }
 
 export async function getProductsPriceRange(
+    search: string | null,
     category: string | null,
     colors: string[] | null,
     options: string[] | null,
@@ -441,6 +444,7 @@ export async function getProductsPriceRange(
     const url = new URL("/api/products/price-range", baseUrl);
 
     const filters = {
+        ...(search && { name: { $containsi: search } }),
         ...(category && { category: { category: { $eq: category } } }),
         ...(colors &&
             colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
