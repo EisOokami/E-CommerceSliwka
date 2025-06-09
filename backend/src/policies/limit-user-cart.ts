@@ -8,7 +8,7 @@ export default async (policyContext, config, { strapi }) => {
         filters: { user: userId },
     });
 
-    if (postCount >= 5) {
+    if (postCount > 5) {
         throw new PolicyError("You can add a maximum of 5 products to your cart", 'PostLimitReached')
     }
 
