@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import useCatalogStore from "@/stores/catalog";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
-import { PaginationProps } from "./Pagination.interfaces";
 
-export default function Pagination({
-    currentPage,
-    setCurrentPage,
-    totalPages,
-}: PaginationProps) {
+export default function Pagination() {
+    const currentPage = useCatalogStore((state) => state.currentPage);
+    const setCurrentPage = useCatalogStore((state) => state.setCurrentPage);
+    const totalPages = useCatalogStore((state) => state.totalPages);
     const [screenWidth, setScreenWidth] = useState<number>(500);
 
     useEffect(() => {
