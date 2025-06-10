@@ -24,7 +24,7 @@ export default function ProfileButton({
     };
 
     return (
-        <div className="relative ">
+        <div className="relative">
             {!isOpen && (
                 <Tooltip message={text}>
                     <button
