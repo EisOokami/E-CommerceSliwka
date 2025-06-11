@@ -5,15 +5,13 @@ import {
     Accordion as AccordionWrapper,
     AccordionItem as Item,
 } from "@szhsin/react-accordion";
+import { useDebouncedCallback } from "use-debounce";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";
 import { IoFilter } from "react-icons/io5";
 import {
     AccordionContainerProps,
     AccordionItemProps,
 } from "./Accordion.interfaces";
-
-import SearchBar from "../searchBar/SearchBar";
-import { useDebouncedCallback } from "use-debounce";
 
 const AccordionItem = ({ header, ...rest }: Readonly<AccordionItemProps>) => (
     <Item
@@ -162,7 +160,6 @@ export default function Accordion({
                                         header,
                                         content,
                                         type,
-                                        searchBar,
                                         setState,
                                         defaultChecked,
                                         rangeText,
@@ -170,7 +167,6 @@ export default function Accordion({
                                     i,
                                 ) => (
                                     <AccordionItem key={i} header={header}>
-                                        {searchBar && <SearchBar />}
                                         {type === "checkbox" &&
                                             content.map(
                                                 (option, i) =>

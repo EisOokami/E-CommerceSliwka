@@ -10,7 +10,6 @@ export interface AccordionContainerProps {
         header: string;
         content: string[] | number[] | [];
         type: "checkbox" | "range" | "radio";
-        searchBar?: boolean;
         setState:
             | Dispatch<SetStateAction<{ [key: string]: string[] }>>
             | Dispatch<SetStateAction<{ [key: string]: number[] }>>;
