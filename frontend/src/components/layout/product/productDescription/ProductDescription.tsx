@@ -13,12 +13,12 @@ export default function ProductDescription({
         <p className="text-gray-700">
             {showMore || !isShowMore ? descr : descr.slice(0, 250)}{" "}
             {isShowMore && descr.length > 250 && (
-                <a
+                <button
                     className="text-black underline cursor-pointer"
                     onClick={() => setShowMore(!showMore)}
                 >
                     {showMore ? "less..." : "more..."}
-                </a>
+                </button>
             )}
         </p>
     );
