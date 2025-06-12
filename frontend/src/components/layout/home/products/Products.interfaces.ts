@@ -1,20 +1,10 @@
-import { IProduct } from "@/interfaces/interfaces";
-
-export interface ICategories {
-    id: number;
-    category: string;
-}
-
-export interface ITabs {
-    id: number;
-    item: string;
-}
+import { IArray, ICategory, IProduct } from "@/interfaces/interfaces";
 
 export interface ProductsProps {
     id: number;
     __component: string;
-    categories: ICategories[];
-    tabs: ITabs[];
+    categories: ICategory[];
+    tabs: IArray[];
     newArrival: IProduct[];
     bestseller: IProduct[];
     featuredProducts: IProduct[];
