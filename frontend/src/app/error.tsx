@@ -12,7 +12,7 @@ export default function Error({
     }, [error]);
 
     return (
-        <div className="w-full h-svh pb-32 grid justify-items-center content-center text-center">
+        <div className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
             <h3 className="font-bold text-xl md:text-4xl">
                 Oops! Something went wrong.
             </h3>
