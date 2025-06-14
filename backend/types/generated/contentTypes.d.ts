@@ -474,6 +474,7 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
 export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   collectionName: 'orders';
   info: {
+    description: '';
     displayName: 'Order';
     pluralName: 'orders';
     singularName: 'order';
@@ -482,8 +483,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    adress: Schema.Attribute.String;
-    city: Schema.Attribute.String;
+    cartItems: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -491,9 +491,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    quantity: Schema.Attribute.Integer;
-    state: Schema.Attribute.String;
-    token: Schema.Attribute.String;
+    stripeId: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

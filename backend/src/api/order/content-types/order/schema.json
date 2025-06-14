@@ -4,25 +4,17 @@
   "info": {
     "singularName": "order",
     "pluralName": "orders",
-    "displayName": "Order"
+    "displayName": "Order",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "attributes": {
-    "adress": {
-      "type": "string"
+    "cartItems": {
+      "type": "json"
     },
-    "city": {
-      "type": "string"
-    },
-    "state": {
-      "type": "string"
-    },
-    "quantity": {
-      "type": "integer"
-    },
-    "token": {
+    "stripeId": {
       "type": "string"
     },
     "user": {

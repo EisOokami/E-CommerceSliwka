@@ -79,12 +79,6 @@
       "target": "api::review.review",
       "mappedBy": "user"
     },
-    "orders": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order.order",
-      "mappedBy": "user"
-    },
     "productsCart": {
       "type": "relation",
       "relation": "oneToMany",
@@ -95,6 +89,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::wishlist.wishlist",
+      "mappedBy": "user"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
       "mappedBy": "user"
     }
   }
