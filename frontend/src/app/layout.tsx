@@ -51,7 +51,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-            <body>
+            <body className="h-svh flex flex-col">
                 <Header data={globalData.data.header} isUserSingIn={user.ok} />
                 {children}
                 <Footer data={globalData.data.footer} />
