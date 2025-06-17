@@ -30,7 +30,7 @@ export default function SearchItem({
                 <h3 className="text-sm font-medium">{productData.name}</h3>
                 <p className="text-sm text-gray-500">
                     $
-                    {productData.isDiscount
+                    {productData.isDiscount && productData.discountedPrice
                         ? productData.discountedPrice
                         : productData.price}
                 </p>
