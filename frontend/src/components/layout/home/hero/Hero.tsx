@@ -21,7 +21,7 @@ export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
                         {subHeading}
                     </p>
                     <Button
-                        href={`catalog/${product.documentId}`}
+                        href={`catalog/${product.slug}`}
                         theme="light"
                         text="Shop now"
                         isLink
