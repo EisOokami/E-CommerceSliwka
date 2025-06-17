@@ -57,9 +57,20 @@ export interface ICategory {
 
 export interface IColors {
     id: number;
+    documentId: string;
     colorHex: string;
     colorName: string;
-    slug: string;
+    priceDifference: number;
+    product: IProduct;
+}
+
+export interface IOptions {
+    id: number;
+    documentId: string;
+    value: string;
+    priceDifference: number;
+    isStock: boolean;
+    product: IProduct;
 }
 
 export interface IProduct {
@@ -73,8 +84,8 @@ export interface IProduct {
     category: ICategory;
     image: IImage;
     sliderImages: IImage[];
-    colors: IColors[];
-    options: IArray[];
+    colors: IColors[] | null;
+    options: IOptions[] | null;
     productInfo: IProductInfo;
     productSpecs: IProductSpecs[];
     detailedSpecifications: IDetailedSpecifications[];
@@ -106,6 +117,8 @@ export interface ICart {
         documentId: string;
         id: number;
     };
+    option: IOptions | null;
+    color: IColors | null;
 }
 
 export interface IUser {
