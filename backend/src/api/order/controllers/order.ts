@@ -26,15 +26,43 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
                         },
                     }
                 });
+                const color = item.color ? await strapi.documents("api::color.color").findOne({
+                    documentId: item.color.documentId,
+                }) : null;
+                const option = item.option ? await strapi.documents("api::option.option").findOne({
+                    documentId: item.option.documentId,
+                }) : null;
+
+                const optionPrice = option
+                    ? option.priceDifference
+                    : 0;
+                const colorPrice = color
+                    ? color.priceDifference
+                    : 0;
 
                 return {
                     price_data: {
                         currency: "usd",
                         product_data: {
                             name: product.name,
+                            description: 
+                                (option ? `Option: ${option.value} ` : "") + 
+                                (color ? `Color: ${color.colorName}` : ""),
                             images: [`${process.env.IMAGES_HOST}${product.image.url}`]
                         },
-                        unit_amount: product.discountedPrice ? product.discountedPrice * 100 : product.price * 100
+                        unit_amount: 
+                            product.isDiscount && 
+                            product.discountedPrice 
+                                ? (
+                                    product.discountedPrice +
+                                    optionPrice +
+                                    colorPrice
+                                  ) * 100 
+                                : (
+                                    product.price +
+                                    optionPrice +
+                                    colorPrice
+                                  ) * 100 
                     },
                     quantity: item.quantity
                 }
@@ -62,8 +90,13 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
                 }
             });
 
+            const timestamp = Date.now().toString(36);
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const orderId = `ORD-${timestamp}-${random}`;
+
             await strapi.documents("api::order.order").create({
                 data: {
+                    orderId,
                     cartItems,
                     stripeId: session.id,
                     user: ctx.state.user.documentId
@@ -78,4 +111,20 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
             return err
         }
     },
+
+    async setStatus(ctx) {
+        const user = ctx.state.user
+
+        if (!user) {
+            return ctx.unauthorized("You are not authorized!");
+        }
+
+        const { isSuccess, deliveryStatus } = ctx.request.body.data;
+
+        const result = await strapi
+            .service("api::order.order")
+            .setStatus(user, isSuccess, deliveryStatus);
+
+        ctx.send(result);
+    }
 }));

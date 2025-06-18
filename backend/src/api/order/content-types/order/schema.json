@@ -10,12 +10,34 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
-    "cartItems": {
-      "type": "json"
-    },
     "stripeId": {
       "type": "string"
+    },
+    "orderId": {
+      "type": "string"
+    },
+    "isSuccess": {
+      "type": "boolean"
+    },
+    "deliveryStatus": {
+      "type": "enumeration",
+      "enum": [
+        "Delivered",
+        "Shipped",
+        "Processing",
+        "Cancelled"
+      ]
+    },
+    "estimatedDelivery": {
+      "type": "date"
+    },
+    "trackingNumber": {
+      "type": "string"
+    },
+    "cartItems": {
+      "type": "json"
     },
     "user": {
       "type": "relation",
