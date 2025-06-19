@@ -2,7 +2,7 @@ import Button from "@/components/ui/button/Button";
 
 export default function NotFoundRoot() {
     return (
-        <div className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
+        <main className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
             <h3 className="font-bold text-xl md:text-4xl">
                 Whoops, that page is gone.
             </h3>
@@ -17,6 +17,6 @@ export default function NotFoundRoot() {
                 inline
                 isLink
             />
-        </div>
+        </main>
     );
 }
