@@ -12,7 +12,7 @@ export default function Error({
     }, [error]);
 
     return (
-        <div className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
+        <main className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
             <h3 className="font-bold text-xl md:text-4xl">
                 Oops! Something went wrong.
             </h3>
@@ -22,6 +22,6 @@ export default function Error({
             <h1 className="text-[200px] md:text-[300px] xl:text-[400px] font-bold text-gray-300">
                 404
             </h1>
-        </div>
+        </main>
     );
 }
