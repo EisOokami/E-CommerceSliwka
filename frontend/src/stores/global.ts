@@ -1,19 +1,19 @@
 import { create } from "zustand";
 
 interface IGlobalStore {
-    productsInCartCount: number;
+    productsInCartCount: number | null;
     setProductsInCartCount: (newProductsInCartCount: number) => void;
-    productsInWishlistCount: number;
+    productsInWishlistCount: number | null;
     setProductsInWishlistCount: (newProductsInWishlistCount: number) => void;
 }
 
 const useGlobalStore = create<IGlobalStore>((set) => ({
-    productsInCartCount: 0,
+    productsInCartCount: null,
     setProductsInCartCount: (newProductsInCartCount) =>
         set(() => ({
             productsInCartCount: newProductsInCartCount,
         })),
-    productsInWishlistCount: 0,
+    productsInWishlistCount: null,
     setProductsInWishlistCount: (newProductsInWishlistCount) =>
         set(() => ({
             productsInWishlistCount: newProductsInWishlistCount,
