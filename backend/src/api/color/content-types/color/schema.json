@@ -24,6 +24,13 @@
     "priceDifference": {
       "type": "decimal"
     },
+    "sliderImages": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "product": {
       "type": "relation",
       "relation": "manyToOne",
