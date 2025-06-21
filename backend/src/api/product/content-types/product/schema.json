@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "image": {
       "type": "media",
@@ -22,13 +23,9 @@
     "name": {
       "type": "string"
     },
-    "price": {
-      "type": "float"
-    },
     "sliderImages": {
       "type": "media",
       "multiple": true,
-      "required": false,
       "allowedTypes": [
         "images"
       ]
@@ -36,44 +33,46 @@
     "description": {
       "type": "text"
     },
-    "options": {
-      "type": "component",
-      "repeatable": true,
-      "component": "components.array"
-    },
-    "productInfo": {
-      "type": "component",
-      "repeatable": false,
-      "component": "components.product-info"
-    },
-    "productSpecs": {
-      "type": "component",
-      "repeatable": true,
-      "component": "components.product-specifications"
-    },
-    "discountedPrice": {
+    "price": {
       "type": "float"
     },
     "isDiscount": {
       "type": "boolean",
       "default": false
     },
-    "detailedSpecifications": {
-      "type": "component",
-      "repeatable": true,
-      "component": "components.detailed-specifications"
+    "discountedPrice": {
+      "type": "float"
     },
-    "category": {
-      "type": "component",
-      "repeatable": false,
-      "component": "components.category"
+    "finalPrice": {
+      "type": "decimal"
     },
     "averageRating": {
       "type": "decimal",
       "default": 0
     },
-    "finalPrice": {
-      "type": "decimal"
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "category": {
+      "type": "component",
+      "component": "components.category",
+      "repeatable": false
+    },
+    "productInfo": {
+      "type": "component",
+      "component": "components.product-info",
+      "repeatable": false
+    },
+    "productSpecs": {
+      "type": "component",
+      "component": "components.product-specifications",
+      "repeatable": true
+    },
+    "detailedSpecifications": {
+      "type": "component",
+      "component": "components.detailed-specifications",
+      "repeatable": true
     },
     "reviews": {
       "type": "relation",
@@ -93,15 +92,17 @@
       "target": "api::wishlist.wishlist",
       "mappedBy": "product"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "name"
+    "options": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::option.option",
+      "mappedBy": "product"
     },
     "colors": {
-      "displayName": "Colors",
-      "type": "component",
-      "repeatable": true,
-      "component": "components.colors"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::color.color",
+      "mappedBy": "product"
     }
   }
 }

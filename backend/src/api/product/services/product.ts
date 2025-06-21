@@ -13,7 +13,7 @@ export default factories.createCoreService("api::product.product", ({ strapi }) 
         });
     
         const prices = products.map((product) =>
-            product.isDiscount ? product.discountedPrice : product.price
+            product.isDiscount && product.discountedPrice ? product.discountedPrice : product.price
         );
         
         const minPrice = Math.min(...prices);
@@ -35,18 +35,16 @@ export default factories.createCoreService("api::product.product", ({ strapi }) 
         const populateFields = {
             image: true,
             sliderImages: true,
-            colors: { populate: "*" },
-            options: { populate: "*" },
-            productInfo: { populate: "*" },
-            productSpecs: { populate: "*" },
-            category: { populate: "*" },
+            colors: true,
+            options: true,
+            productInfo: true,
+            productSpecs: true,
+            category: true,
             detailedSpecifications: {
                 populate: {
                     specifications: {
                         populate: {
-                            specifications: {
-                                populate: "*",
-                            },
+                            specifications: true,
                         },
                     },
                 },
