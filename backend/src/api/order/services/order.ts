@@ -5,13 +5,13 @@
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService('api::order.order', ({ strapi }) => ({
-    async setStatus(user, isSuccess, deliveryStatus) {
+    async updateOrderAfterCheckout(user, isSuccess) {
         if (!user) {
             return;
         }
 
         const lastOrder = await strapi.documents("api::order.order").findMany({
-            sort: "publishedAt:desc",
+            sort: "createdAt:desc",
             limit: 1,
             populate: "*",
             filters: {
@@ -37,7 +37,7 @@ export default factories.createCoreService('api::order.order', ({ strapi }) => (
                 documentId: lastOrder[0].documentId,
                 data: {
                     isSuccess,
-                    deliveryStatus,
+                    deliveryStatus: 'Processing',
                     trackingNumber,
                     estimatedDelivery
                 }
@@ -51,10 +51,10 @@ export default factories.createCoreService('api::order.order', ({ strapi }) => (
                 documentId: lastOrder[0].documentId,
                 data: {
                     isSuccess,
-                    deliveryStatus,
+                    deliveryStatus: 'Cancelled',
                 }
             })
-            
+
             return {}
         }
     }

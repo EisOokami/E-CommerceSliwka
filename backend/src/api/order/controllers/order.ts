@@ -111,19 +111,75 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
             return err
         }
     },
+    async webhook(ctx) {
+        const signature = ctx.request.headers["stripe-signature"];
 
-    async setStatus(ctx) {
+        let event;
+        try {
+            event = stripe.webhooks.constructEvent(
+                ctx.request.body,
+                signature,
+                process.env.STRIPE_WEBHOOK_SECRET
+        );
+        } catch (err) {
+            console.log("Webhook signature verification failed", err.message);
+            ctx.status = 400;
+
+            return ctx.body = `Webhook Error: ${err.message}`;
+        }
+
+        if (event.type === "checkout.session.completed") {
+            const session = event.data.object;
+
+            const order = await strapi.documents("api::order.order").findFirst({
+                filters: {
+                    stripeId: {
+                        $eq: session.id
+                    }
+                }
+            })
+
+            await strapi.documents("api::order.order").update({
+                documentId: order.documentId,
+                data: { isSuccess: true }
+            });
+
+            console.log("Order marked as success:", session.id);
+        }
+
+        if (event.type === "checkout.session.expired") {
+            const session = event.data.object;
+
+            const order = await strapi.documents("api::order.order").findFirst({
+                filters: {
+                    stripeId: {
+                        $eq: session.id
+                    }
+                }
+            })
+
+            await strapi.documents("api::order.order").update({
+                documentId: order.documentId,
+                data: { isSuccess: true }
+            });
+
+            console.log("Order marked as cancelled:", session.id);
+        }
+
+        ctx.send({ received: true });
+    },
+    async updateOrderAfterCheckout(ctx) {
         const user = ctx.state.user
 
         if (!user) {
             return ctx.unauthorized("You are not authorized!");
         }
 
-        const { isSuccess, deliveryStatus } = ctx.request.body.data;
+        const { isSuccess } = ctx.request.body.data;
 
         const result = await strapi
             .service("api::order.order")
-            .setStatus(user, isSuccess, deliveryStatus);
+            .updateOrderAfterCheckout(user, isSuccess);
 
         ctx.send(result);
     }
