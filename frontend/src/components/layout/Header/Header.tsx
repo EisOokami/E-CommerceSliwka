@@ -8,9 +8,14 @@ import { HeaderProps } from "./Header.interfaces";
 import Logo from "@/components/ui/logo/Logo";
 import HeaderIcons from "@/components/ui/HeaderIcons/HeaderIcons";
 import Navigation from "@/components/ui/navigation/Navigation";
-import SearchBar from "@/components/ui/searchBar/SearchBar";
+import SearchBarHeader from "@/components/ui/searchBarHeader/SearchBarHeader";
 
-export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
+export default function Header({
+    data,
+    isUserSingIn,
+    cartsCount,
+    wishlistsCount,
+}: Readonly<HeaderProps>) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerNavbarMenu = useRef<HTMLDivElement>(null);
     const hamburgerRef = useRef<HTMLDivElement>(null);
@@ -46,11 +51,13 @@ export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
                     />
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-end items-center gap-5">
-                    <SearchBar setIsOpenMenu={setIsOpen} />
+                    <SearchBarHeader setIsOpenMenu={setIsOpen} />
                     <HeaderIcons
                         iconsLink={iconsLink}
                         isUserSingIn={isUserSingIn}
                         setIsOpen={setIsOpen}
+                        cartsCount={cartsCount}
+                        wishlistsCount={wishlistsCount}
                     />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
@@ -69,11 +76,13 @@ export default function Header({ data, isUserSingIn }: Readonly<HeaderProps>) {
                             navigationLinks={navigationLinks}
                             setIsOpen={setIsOpen}
                         />
-                        <SearchBar setIsOpenMenu={setIsOpen} />
+                        <SearchBarHeader setIsOpenMenu={setIsOpen} />
                         <HeaderIcons
                             iconsLink={iconsLink}
                             isUserSingIn={isUserSingIn}
                             setIsOpen={setIsOpen}
+                            cartsCount={cartsCount}
+                            wishlistsCount={wishlistsCount}
                         />
                     </div>
                 </div>
