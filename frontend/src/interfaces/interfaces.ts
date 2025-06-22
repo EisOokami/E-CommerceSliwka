@@ -58,6 +58,7 @@ export interface ICategory {
 export interface IColors {
     id: number;
     documentId: string;
+    sliderImages: IImage[];
     colorHex: string;
     colorName: string;
     priceDifference: number;
@@ -135,6 +136,7 @@ export interface IUser {
     productsCart: ICart[];
     avatar: IImage;
     wishlist: IWishlist[];
+    orders: IOrder[];
 }
 
 export interface IUserMeLoader {
@@ -145,6 +147,19 @@ export interface IUserMeLoader {
 
 export interface IWishlist {
     documentId: string;
+    id: number;
     user: IUser;
     product: IProduct;
+}
+
+export interface IOrder {
+    documentId: string;
+    id: number;
+    createdAt: string;
+    orderId: string;
+    isSuccess: boolean | null;
+    deliveryStatus: "Delivered" | "Shipped" | "Processing" | "Cancelled";
+    estimatedDelivery: string;
+    trackingNumber: string;
+    cartItems: ICart[];
 }
