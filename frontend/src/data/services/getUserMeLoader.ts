@@ -20,6 +20,9 @@ export async function getUserMeLoader() {
             productsCart: {
                 populate: "*",
             },
+            orders: {
+                fields: ["cartItems", "deliveryStatus", "isSuccess"],
+            },
             avatar: {
                 fields: ["url", "alternativeText"],
             },
