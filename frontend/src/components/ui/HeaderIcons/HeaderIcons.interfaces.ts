@@ -5,4 +5,6 @@ export interface HeaderIconsProps {
     iconsLink: ILink[];
     isUserSingIn: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
+    cartsCount: number;
+    wishlistsCount: number;
 }
