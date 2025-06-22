@@ -6,7 +6,7 @@ export default (_config: any, {}: { strapi: Core.Strapi }) => {
     return async (ctx: Context, next: Next) => {
         return RateLimit.middleware({
             interval: { min: 1 },
-            max: 200,
+            max: 500,
             message: "Too many requests, please try again later.",
             headers: true,
         })(ctx, next);

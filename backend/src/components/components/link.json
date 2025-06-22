@@ -10,10 +10,6 @@
     },
     "text": {
       "type": "string"
-    },
-    "isExternal": {
-      "type": "boolean",
-      "default": false
     }
   }
 }
