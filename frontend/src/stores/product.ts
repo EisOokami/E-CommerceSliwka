@@ -1,4 +1,4 @@
-import { IImage } from "@/interfaces/interfaces";
+import { IImage, IReviews } from "@/interfaces/interfaces";
 import { create } from "zustand";
 
 interface IProductStore {
@@ -12,6 +12,8 @@ interface IProductStore {
     setSelectedColor: (newSelectedColor: number) => void;
     colorSliderImages: IImage[] | null;
     setColorSliderImages: (newColorSliderImages: IImage[] | null) => void;
+    updatedReviewsData: IReviews[] | null;
+    setUpdatedReviewsData: (newUpdatedReviewsData: IReviews[] | null) => void;
 }
 
 const useProductStore = create<IProductStore>((set) => ({
@@ -39,6 +41,11 @@ const useProductStore = create<IProductStore>((set) => ({
     setColorSliderImages: (newColorSliderImages) =>
         set(() => ({
             colorSliderImages: newColorSliderImages,
+        })),
+    updatedReviewsData: null,
+    setUpdatedReviewsData: (newUpdatedReviewsData) =>
+        set(() => ({
+            updatedReviewsData: newUpdatedReviewsData,
         })),
 }));
 
