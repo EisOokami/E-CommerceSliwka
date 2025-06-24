@@ -10,7 +10,9 @@ export function ZodErrors({ error }: Readonly<{ error: string[] }>) {
             key={index}
             className="flex items-center gap-1 py-1 text-sm text-red-500"
         >
-            <MdErrorOutline className="text-lg" />
+            <div>
+                <MdErrorOutline className="text-lg" />
+            </div>
             <p>{err}</p>
         </div>
     ));
