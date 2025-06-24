@@ -7,9 +7,12 @@ import { getUserMeLoader } from "../services/getUserMeLoader";
 import { getCartProductData } from "../loaders";
 import { uploadImagesToStrapi } from "../services/uploadImage";
 import { IImage } from "@/interfaces/interfaces";
-import { redirect } from "next/navigation";
 
-export async function addProductToCartAction(documentId: string) {
+export async function addProductToCartAction(
+    productDocumentId: string,
+    optionDocumentId: string,
+    colorDocumentId: string,
+) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -21,9 +24,13 @@ export async function addProductToCartAction(documentId: string) {
         };
     }
 
-    const productCart = await getCartProductData(documentId);
+    const productCart = await getCartProductData(
+        productDocumentId,
+        optionDocumentId,
+        colorDocumentId,
+    );
 
-    if (productCart.length) {
+    if (productCart) {
         return { ok: false, message: "Product already added to cart" };
     }
 
@@ -35,9 +42,19 @@ export async function addProductToCartAction(documentId: string) {
         data: {
             quantity: 1,
             product: {
-                connect: [{ documentId: documentId }],
+                connect: [{ documentId: productDocumentId }],
             },
             user: user.data.id,
+            ...(optionDocumentId && {
+                option: {
+                    connect: [{ documentId: optionDocumentId }],
+                },
+            }),
+            ...(colorDocumentId && {
+                color: {
+                    connect: [{ documentId: colorDocumentId }],
+                },
+            }),
         },
     };
 
@@ -74,6 +91,64 @@ export async function addProductToCartAction(documentId: string) {
     return { ok: true, message: "Product add to cart" };
 }
 
+export async function deleteProductFromCartAction(
+    productDocumentId: string,
+    optionDocumentId: string,
+    colorDocumentId: string,
+) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        console.error("User not found");
+
+        return {
+            ok: false,
+            message: "Please sign in or sign up",
+        };
+    }
+
+    const productCart = await getCartProductData(
+        productDocumentId,
+        optionDocumentId,
+        colorDocumentId,
+    );
+
+    if (!productCart) {
+        return { ok: false, message: "Product already deleted from cart" };
+    }
+
+    const responseData = await mutateData(
+        "DELETE",
+        `/api/carts/${productCart.documentId}`,
+    );
+
+    if (!responseData) {
+        console.error("Ops! Something went wrong. Please try again or later.");
+
+        return {
+            ok: false,
+            message: "Ops! Something went wrong. Please try again or later",
+        };
+    }
+
+    if (responseData.error) {
+        console.error(responseData.error);
+        console.error("Failed to Delete Product from Cart.");
+
+        const message =
+            responseData.error.details === "PostLimitReached"
+                ? responseData.error.message
+                : "Ops! Something went wrong. Please try again or later";
+
+        return {
+            ok: false,
+            message: message,
+        };
+    }
+
+    return { ok: true, message: "Product deleted from cart" };
+}
+
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
     "image/jpeg",
@@ -83,9 +158,14 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const schemaAddReview = z.object({
-    description: z.string().min(3).max(1500, {
-        message: "Description must be between 3 and 1500 characters",
-    }),
+    description: z
+        .string()
+        .min(3, {
+            message: "Description must be between 3 and 1500 characters",
+        })
+        .max(1500, {
+            message: "Description must be between 3 and 1500 characters",
+        }),
     rating: z.string().min(1, {
         message: "Please select a rating",
     }),
@@ -195,7 +275,12 @@ export async function addReviewToProductAction(
         };
     }
 
-    redirect(`/catalog/${validatedFields.data.slug}`);
+    return {
+        ...prevState,
+        strapiErrors: null,
+        zodErrors: null,
+        message: "Your review added",
+    };
 }
 
 const schemaEditReview = z.object({
@@ -313,7 +398,12 @@ export async function editReviewAction(
         };
     }
 
-    redirect(`/catalog/${validatedFields.data.slug}`);
+    return {
+        ...prevState,
+        strapiErrors: null,
+        zodErrors: null,
+        message: "Your review edited",
+    };
 }
 
 export async function deleteReviewAction(documentIdReview: string) {
@@ -396,7 +486,11 @@ export async function addProductToWishlistAction(documentId: string) {
         };
     }
 
-    return { ok: true, message: "Product add to wishlist" };
+    return {
+        ok: true,
+        message: "Product add to wishlist",
+        wishlistDocumentId: responseData.data.documentId,
+    };
 }
 
 export async function deleteProductFromWishlistAction(
