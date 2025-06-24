@@ -16,8 +16,10 @@ export default function Tooltip({ message, children }: TooltipProps) {
                 {children}
             </span>
             <div
-                className={`absolute top-full flex flex-col items-center group-hover:flex mt-1 whitespace-nowrap capitalize ${
-                    !show ? "hidden" : null
+                className={`absolute top-full flex flex-col items-center group-hover:flex mt-1 whitespace-nowrap capitalize transition-all duration-200 ease-out ${
+                    !show
+                        ? "hidden opacity-0 scale-90"
+                        : "opacity-100 scale-100"
                 }`}
             >
                 <div className="w-3 h-3 -mb-2.5 bg-gray-600 rotate-45" />
