@@ -4,12 +4,12 @@ import Link from "next/link";
 
 export default function SearchItem({
     productData,
-    setIsOpen,
-    setIsOpenMenu,
+    handleCloseResult,
+    handleCloseMenu,
 }: SearchItemProps) {
     const handleClose = () => {
-        setIsOpen(false);
-        setIsOpenMenu(false);
+        handleCloseResult();
+        handleCloseMenu();
     };
 
     return (
