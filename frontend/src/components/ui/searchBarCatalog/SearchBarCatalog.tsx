@@ -12,6 +12,7 @@ export default function SearchBarCatalog() {
         const isValid = /^[a-zA-Z0-9'",.\- ]+$/.test(trimmedValue);
 
         if (!trimmedValue || !isValid) {
+            setSearchValue("");
             return;
         }
 
@@ -20,15 +21,15 @@ export default function SearchBarCatalog() {
 
     return (
         <div className="relative">
-            <div className="flex items-center gap-1 p-2 lg:p-3 text-xl text-gray-400 bg-gray-100 rounded-md">
+            <div className="flex items-center gap-1 p-3 md:p-2 lg:p-3 text-xl md:text-base lg:text-xl bg-white border border-gray-200 rounded-lg">
                 <label htmlFor="searchBarCatalog">
-                    <IoIosSearch className="text-2xl cursor-text" />
+                    <IoIosSearch className="text-2xl md:text-xl lg:text-2xl cursor-text" />
                 </label>
                 <input
                     id="searchBarCatalog"
                     type="text"
                     placeholder="Search"
-                    className="bg-gray-100 outline-none"
+                    className="w-full placeholder:text-black outline-none"
                     onChange={(e) => {
                         handleChangeInputValue(e.target.value);
                     }}
