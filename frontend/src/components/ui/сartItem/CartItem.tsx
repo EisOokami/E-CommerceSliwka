@@ -25,6 +25,7 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     const [productQuantity, setProductQuantity] = useState<number>(
         cartItem.quantity,
     );
+    const [isVisible, setIsVisible] = useState<boolean>(true);
 
     const handleAddQuantityToProduct = () => {
         addQuantityToProductAction(cartItem.product.documentId);
@@ -43,7 +44,12 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     };
 
     const handleDeleteProductFromCart = async () => {
-        setDeletedProducts([...deletedProducts, cartItem.documentId]);
+        setIsVisible(false);
+        setTimeout(
+            () => setDeletedProducts([...deletedProducts, cartItem.documentId]),
+            300,
+        );
+
         deleteProductFromCartAction(cartItem.product.documentId);
 
         const updatedProductsInCartCount = await getProductsInCartCount();
@@ -57,7 +63,11 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     const colorName = cartItem.color ? cartItem.color.colorName : "";
 
     return (
-        <section className="flex items-center gap-6 w-full min-h-48 py-8 first:border-none border-t">
+        <section
+            className={`flex items-center gap-6 w-full min-h-48 py-8 first:border-none border-t transition-all duration-300 ease-out ${
+                isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
+            }`}
+        >
             <Image
                 src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.product.image.url}`}
                 alt={
