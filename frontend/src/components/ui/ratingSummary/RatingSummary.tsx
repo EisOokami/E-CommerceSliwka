@@ -51,25 +51,33 @@ export default function RatingSummary({
     ];
 
     return (
-        <div className="grid md:flex items-center gap-20">
-            <div className="grid justify-items-center gap-3 md:w-min p-8 bg-gray-100 rounded-xl">
-                <h2 className="text-6xl font-semibold">{averageRating}</h2>
-                <span className="text-gray-500 font-medium">
+        <div className="flex items-center gap-5 md:gap-10">
+            <div className="grid justify-items-center gap-3 w-min p-4 sm:p-5 md:p-8 bg-gray-100 rounded-xl">
+                <h2 className="text-4xl md:text-6xl font-semibold">
+                    {averageRating}
+                </h2>
+                <span className="text-sm md:text-base text-gray-500 font-medium">
                     of {totalReviews} reviews
                 </span>
-                <div>
-                    <RatingStars count={averageRating} />
-                </div>
+                <RatingStars
+                    count={averageRating}
+                    starsClassName="text-lg md:text-2xl"
+                />
             </div>
-            <div className="grid gap-5 w-full">
+            <div className="grid gap-2 md:gap-5 w-full">
                 {counterStarsData.map((counterStars, i) => (
-                    <div key={i} className="flex items-center gap-5 w-full">
-                        <span className="w-28 text-xl font-semibold">
-                            {counterStars.star}
-                        </span>
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                        key={i}
+                        className="flex items-center gap-1 md:gap-5 w-full"
+                    >
+                        <div className="md:max-w-28 min-w-8 md:w-28">
+                            <span className="w-full text-xs md:text-xl font-semibold">
+                                {counterStars.star}
+                            </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 md:h-2.5">
                             <div
-                                className="bg-yellow-500 h-2.5 rounded-full"
+                                className="bg-yellow-500 h-1.5 md:h-2.5 rounded-full"
                                 style={{
                                     width: `${
                                         (counterStars.countStars * 100) /
@@ -78,7 +86,7 @@ export default function RatingSummary({
                                 }}
                             ></div>
                         </div>
-                        <span className="text-right text-xl text-gray-500">
+                        <span className="text-right text-xs md:text-xl text-gray-500">
                             {counterStars.countStars}
                         </span>
                     </div>
