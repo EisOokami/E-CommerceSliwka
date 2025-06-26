@@ -1,8 +1,10 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import useProductStore from "@/stores/product";
 import Image from "next/image";
 import { addReviewToProductAction } from "@/data/actions/productActions";
+import { getReviewsData } from "@/data/loaders";
 import { MdOutlineImage } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { ReviewInputProps } from "./ReviewInput.interfaces";
@@ -17,12 +19,15 @@ const INITIAL_STATE = {
     data: null,
 };
 
-export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
+export default function ReviewInput({ productData, user }: ReviewInputProps) {
+    const setUpdatedReviewsData = useProductStore(
+        (state) => state.setUpdatedReviewsData,
+    );
     const [rating, setRating] = useState<number>();
     const [imagesFromUpload, setImagesFromUpload] = useState<File[] | null>(
         null,
     );
-    const [formState, formAction] = useActionState(
+    const [formState, formAction, isPending] = useActionState(
         handleSubmitAddReview,
         INITIAL_STATE,
     );
@@ -42,9 +47,14 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
         );
     }
 
-    const hasProduct = user.data?.productsCart.some((productCart) =>
-        productCart.product
-            ? productCart.product.documentId === strapiData.documentId
+    const hasProduct = user.data?.orders.some((order) =>
+        order.cartItems &&
+        order.deliveryStatus === "Delivered" &&
+        order.isSuccess
+            ? order.cartItems.some(
+                  (cartItem) =>
+                      cartItem.product.documentId === productData.documentId,
+              )
             : false,
     );
 
@@ -77,11 +87,21 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleSubmitAddReview(prevState: any, formData: FormData) {
-        return await addReviewToProductAction(
+        const result = await addReviewToProductAction(
             prevState,
             formData,
             imagesFromUpload,
         );
+
+        if (!result.strapiErrors && !result.zodErrors) {
+            const updatedReviewsData = await getReviewsData(
+                productData.documentId,
+            );
+
+            setUpdatedReviewsData(updatedReviewsData);
+        }
+
+        return result;
     }
 
     return (
@@ -90,11 +110,11 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
             className="grid gap-5"
             style={INITIAL_STATE.data ? { opacity: 0 } : {}}
         >
-            <div className="flex gap-2 px-10 py-5 border rounded-xl">
+            <div className="flex items-center gap-2 px-5 md:px-10 py-2.5 md:py-5 border rounded-xl">
                 <textarea
                     name="description"
                     rows={1}
-                    className="w-full text-xl outline-none"
+                    className="w-full md:text-xl outline-none"
                 />
                 <input
                     type="file"
@@ -106,7 +126,7 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
                     accept=".jpg, .jpeg, .png, .webp"
                 />
                 <label htmlFor="images">
-                    <MdOutlineImage className="text-3xl text-gray-500 cursor-pointer" />
+                    <MdOutlineImage className="text-2xl md:text-3xl text-gray-500 cursor-pointer" />
                 </label>
             </div>
             <div className="grid md:flex md:justify-between md:items-start gap-3">
@@ -139,24 +159,38 @@ export default function ReviewInput({ strapiData, user }: ReviewInputProps) {
                             name="rating"
                             value={rating ?? ""}
                         />
-                        <Rating size="large" isEdited onRate={setRating} />
+                        <Rating
+                            starsClassName="text-2xl"
+                            isEdited
+                            onRate={setRating}
+                        />
                     </div>
                     <input
                         type="hidden"
                         name="documentId"
-                        value={strapiData.documentId}
+                        value={productData.documentId}
                     />
-                    <input type="hidden" name="slug" value={strapiData.slug} />
-                    <Button
-                        text="Send review"
-                        theme="dark"
-                        type="submit"
-                        className="w-full md:min-w-48 text-sm md:text-base"
-                    />
+                    <input type="hidden" name="slug" value={productData.slug} />
+                    {isPending ? (
+                        <Button
+                            text="Loading"
+                            theme="dark"
+                            type="button"
+                            isLoading
+                            className="w-full md:min-w-48 text-sm md:text-base"
+                        />
+                    ) : (
+                        <Button
+                            text="Send review"
+                            theme="dark"
+                            type="submit"
+                            className="w-full md:min-w-48 text-sm md:text-base"
+                        />
+                    )}
                 </div>
             </div>
             <StrapiErrors error={formState?.strapiErrors} />
-            <div className="grid gap-1 min-w-72">
+            <div className="grid gap-1 md:min-w-72">
                 <ZodErrors error={formState?.zodErrors?.description} />
                 <ZodErrors error={formState?.zodErrors?.rating} />
                 <ZodErrors error={formState?.zodErrors?.images} />
