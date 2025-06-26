@@ -14,6 +14,8 @@ interface ICatalogStore {
     setProductRating: (newProductRating: string) => void;
     searchValue: string;
     setSearchValue: (newSearchValue: string) => void;
+    isProductLoading: boolean;
+    setIsProductLoading: (newIsProductLoading: boolean) => void;
 }
 
 const useCatalogStore = create<ICatalogStore>((set) => ({
@@ -46,6 +48,11 @@ const useCatalogStore = create<ICatalogStore>((set) => ({
     setSearchValue: (newSearchValue) =>
         set(() => ({
             searchValue: newSearchValue,
+        })),
+    isProductLoading: true,
+    setIsProductLoading: (newIsProductLoading) =>
+        set(() => ({
+            isProductLoading: newIsProductLoading,
         })),
 }));
 
