@@ -3,5 +3,5 @@ export interface RatingProps {
     onRate?: (value: number) => void;
     initialRating?: number;
     isEdited?: boolean;
-    size?: "small" | "medium" | "large";
+    starsClassName?: string;
 }
