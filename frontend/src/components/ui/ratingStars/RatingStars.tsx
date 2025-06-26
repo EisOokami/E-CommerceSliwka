@@ -1,7 +1,11 @@
+import { twMerge } from "tailwind-merge";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { RatingStarsProps } from "./RatingStars.interfaces";
 
-export default function RatingStars({ count }: Readonly<RatingStarsProps>) {
+export default function RatingStars({
+    count,
+    starsClassName = "",
+}: Readonly<RatingStarsProps>) {
     const fullStars = count > 5 ? 5 : Math.floor(count);
     const hasHalfStar = count > 5 ? false : !Number.isInteger(count);
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
@@ -13,13 +17,27 @@ export default function RatingStars({ count }: Readonly<RatingStarsProps>) {
     return (
         <div className="flex items-center gap-0.5">
             {[...Array(fullStars)].map((_, i) => (
-                <FaStar key={i} className="text-2xl text-yellow-500" />
+                <FaStar
+                    key={i}
+                    className={twMerge(
+                        `text-2xl text-yellow-500 ${starsClassName}`,
+                    )}
+                />
             ))}
             {hasHalfStar && (
-                <FaStarHalfAlt className="text-2xl text-yellow-500" />
+                <FaStarHalfAlt
+                    className={twMerge(
+                        `text-2xl text-yellow-500 ${starsClassName}`,
+                    )}
+                />
             )}
             {[...Array(emptyStars)].map((_, i) => (
-                <FaRegStar key={i} className="text-2xl text-yellow-500" />
+                <FaRegStar
+                    key={i}
+                    className={twMerge(
+                        `text-2xl text-yellow-500 ${starsClassName}`,
+                    )}
+                />
             ))}
         </div>
     );
