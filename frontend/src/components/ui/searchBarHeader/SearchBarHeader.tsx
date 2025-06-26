@@ -12,20 +12,35 @@ import { SearchBarHeaderProps } from "./SearchBarHeader.interfaces";
 import SearchItem from "../searchItem/SearchItem";
 
 export default function SearchBarHeader({
-    setIsOpenMenu,
+    handleCloseMenu,
 }: SearchBarHeaderProps) {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [products, setProducts] = useState<IProduct[]>([]);
     const searchBarRef = useRef(null);
     const resultRef = useRef(null);
 
-    useClickOutside(
-        resultRef,
-        () => {
-            setIsOpen(false);
-        },
-        [searchBarRef],
-    );
+    useClickOutside(resultRef, () => handleCloseResult(), [searchBarRef]);
+
+    const handleOpenResult = () => {
+        setTimeout(() => setIsVisible(true), 10);
+        setIsMounted(true);
+    };
+
+    const handleCloseResult = () => {
+        setTimeout(() => setIsMounted(false), 500);
+        setIsVisible(false);
+    };
+
+    const toggleMenu = () => {
+        if (isVisible) {
+            handleCloseResult();
+        }
+
+        if (!isVisible) {
+            handleOpenResult();
+        }
+    };
 
     const handleChangeInputValue = useDebouncedCallback(async (value) => {
         const trimmedValue = value.trim();
@@ -40,14 +55,16 @@ export default function SearchBarHeader({
         );
 
         setProducts(productsData);
-        setIsOpen(true);
+        handleOpenResult();
     }, 700);
 
     return (
         <div className="relative">
             <div
                 ref={searchBarRef}
-                className="flex items-center gap-1 p-2 lg:p-3 text-xl text-gray-400 bg-gray-100 rounded-md"
+                className={`flex items-center gap-1 p-2 lg:p-3 text-xl bg-white border border-gray-200 transition-all duration-500 ease-out ${
+                    isMounted ? "rounded-t-lg" : "rounded-lg"
+                }`}
             >
                 <label htmlFor="searchBar">
                     <IoIosSearch className="text-2xl cursor-text" />
@@ -56,41 +73,59 @@ export default function SearchBarHeader({
                     id="searchBar"
                     type="text"
                     placeholder="Search"
-                    className="bg-gray-100 outline-none"
+                    className="placeholder:text-black outline-none"
                     onChange={(e) => {
                         handleChangeInputValue(e.target.value);
                     }}
-                    onFocus={() => setIsOpen(true)}
+                    onFocus={toggleMenu}
                 />
             </div>
-            {isOpen && (
+            {isMounted && (
                 <div
                     ref={resultRef}
-                    className="absolute left-0 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg z-50"
+                    className={`absolute left-0 w-full bg-white border border-gray-200 rounded-b-lg shadow-lg z-50 transition-all duration-500 ease-out ${
+                        isVisible ? "max-h-96" : "max-h-0"
+                    }`}
                 >
                     {products.length > 0 ? (
-                        <div className="max-h-96 overflow-auto py-2">
+                        <div
+                            className={`py-2 transition-all duration-500 ease-out ${
+                                isVisible
+                                    ? "max-h-96 overflow-auto"
+                                    : "max-h-0 overflow-hidden"
+                            }`}
+                        >
                             {products.slice(0, 5).map((productData) => (
                                 <SearchItem
                                     key={productData.documentId}
                                     productData={productData}
-                                    setIsOpen={setIsOpen}
-                                    setIsOpenMenu={setIsOpenMenu}
+                                    handleCloseResult={handleCloseResult}
+                                    handleCloseMenu={handleCloseMenu}
                                 />
                             ))}
                             {products.length > 5 && (
                                 <Link
                                     href="/catalog"
                                     className="flex justify-center w-full py-2 font-medium cursor-pointer"
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={handleCloseResult}
                                 >
                                     Check for more
                                 </Link>
                             )}
                         </div>
                     ) : (
-                        <div className="p-4 text-center text-gray-500">
-                            No products found :(
+                        <div
+                            className={`p-4 text-center overflow-hidden transition-all duration-500 ease-out ${
+                                isVisible ? "max-h-16" : "max-h-0"
+                            }`}
+                        >
+                            <p
+                                className={`text-gray-500 overflow-hidden transition-all duration-500 ease-out ${
+                                    isVisible ? "max-h-16" : "max-h-0"
+                                }`}
+                            >
+                                No products found :(
+                            </p>
                         </div>
                     )}
                 </div>
