@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import useProductStore from "@/stores/product";
 import Image from "next/image";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
@@ -8,6 +9,7 @@ import {
     deleteReviewAction,
     editReviewAction,
 } from "@/data/actions/productActions";
+import { getReviewsData } from "@/data/loaders";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { LuPencilLine } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
@@ -29,6 +31,9 @@ export default function ReviewComment({
     review,
     user,
 }: Readonly<ReviewCommentProps>) {
+    const setUpdatedReviewsData = useProductStore(
+        (state) => state.setUpdatedReviewsData,
+    );
     const [showForm, setShowForm] = useState<boolean>(false);
     const [formState, formAction] = useActionState(
         handleSubmitEditReview,
@@ -95,7 +100,7 @@ export default function ReviewComment({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleSubmitEditReview(prevState: any, formData: FormData) {
-        return await editReviewAction(
+        const result = await editReviewAction(
             prevState,
             formData,
             imagesFromReview,
@@ -103,6 +108,16 @@ export default function ReviewComment({
             review.documentId,
             review.publicationDate,
         );
+
+        if (!result.strapiErrors && !result.zodErrors) {
+            const updatedReviewsData = await getReviewsData(
+                review.product.documentId,
+            );
+
+            setUpdatedReviewsData(updatedReviewsData);
+        }
+
+        return result;
     }
 
     return (
@@ -114,18 +129,20 @@ export default function ReviewComment({
                     : {}
             }
         >
-            <Image
-                src={
-                    review.user.avatar
-                        ? process.env.NEXT_PUBLIC_DB_URL +
-                          review.user.avatar.url
-                        : "/avatar.png"
-                }
-                width={70}
-                height={70}
-                alt={review.user.username}
-                className="w-14 h-14 rounded-full object-contain"
-            />
+            <div className="w-14 h-14">
+                <Image
+                    src={
+                        review.user.avatar
+                            ? process.env.NEXT_PUBLIC_DB_URL +
+                              review.user.avatar.url
+                            : "/avatar.png"
+                    }
+                    width={70}
+                    height={70}
+                    alt={review.user.username}
+                    className="aspect-square rounded-full object-cover"
+                />
+            </div>
             {showForm ? (
                 <form action={formAction} className="grid gap-1 w-full">
                     <div className="flex justify-between items-start">
@@ -137,12 +154,15 @@ export default function ReviewComment({
                                 initialRating={review.rating}
                                 onRate={setRating}
                                 isEdited
-                                size="large"
+                                starsClassName="text-xl md:text-2xl"
                             />
                             <input type="hidden" name="rating" value={rating} />
+                            <span className="inline md:hidden text-gray-500">
+                                {review.publicationDate}
+                            </span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-gray-500">
+                            <span className="hidden md:inline text-gray-500">
                                 {review.publicationDate}
                             </span>
                             {user.ok &&
@@ -251,10 +271,16 @@ export default function ReviewComment({
                             <h6 className="text-lg md:text-xl font-medium">
                                 {review.user.username}
                             </h6>
-                            <RatingStars count={review.rating} />
+                            <RatingStars
+                                count={review.rating}
+                                starsClassName="text-xl md:text-2xl"
+                            />
+                            <span className="inline md:hidden text-gray-500">
+                                {review.publicationDate}
+                            </span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-gray-500">
+                            <span className="hidden md:inline text-gray-500">
                                 {review.publicationDate}
                             </span>
                             {user.ok &&
