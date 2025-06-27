@@ -5,14 +5,33 @@
   },
   "options": {},
   "attributes": {
-    "icon": {
-      "type": "string"
-    },
     "name": {
       "type": "string"
     },
     "specification": {
       "type": "string"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": [
+        "phone",
+        "cpu",
+        "mainCamera",
+        "frontCamera",
+        "battery",
+        "displayVr",
+        "refresh",
+        "weight",
+        "laptop",
+        "storage",
+        "headphone",
+        "noise",
+        "sensor",
+        "iso",
+        "autofocus",
+        "resolution",
+        "screen"
+      ]
     }
   }
 }
