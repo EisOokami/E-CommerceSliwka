@@ -1,128 +1,129 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import { logoutAction } from "@/data/actions/authActions";
 import useClickOutside from "@/hooks/UseClickOutside";
-import { IoPersonOutline, IoLogOutOutline } from "react-icons/io5";
+import { LuClock } from "react-icons/lu";
+import { IoPersonOutline, IoPersonAddOutline } from "react-icons/io5";
+import { RiLoginBoxLine, RiLogoutBoxLine } from "react-icons/ri";
 import { ProfileButtonProps } from "./ProfileButton.interfaces";
+
 import Tooltip from "../tooltip/Tooltip";
+import DropdownLink from "./DropdownLink";
 
 export default function ProfileButton({
     isUserSingIn,
     text,
     handleCloseMenu,
 }: Readonly<ProfileButtonProps>) {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const btnRef = useRef<HTMLButtonElement>(null);
 
-    useClickOutside(dropdownRef, () => setIsOpen(false), [btnRef]);
+    useClickOutside(dropdownRef, () => handleCloseDropdown(), [btnRef]);
 
     const handleOpenDropdown = () => {
-        setIsOpen(!isOpen);
+        setTimeout(() => setIsVisible(true), 10);
+        setIsMounted(true);
+    };
+
+    const handleCloseDropdown = (isLink?: boolean) => {
+        setTimeout(() => setIsMounted(false), 200);
+        setIsVisible(false);
+
+        if (isLink) {
+            handleCloseMenu();
+        }
+    };
+
+    const toggleDropdown = () => {
+        if (isVisible) {
+            handleCloseDropdown();
+        }
+
+        if (!isVisible) {
+            handleOpenDropdown();
+        }
     };
 
     return (
         <div className="relative">
-            {!isOpen && (
+            {!isVisible && (
                 <Tooltip message={text}>
                     <button
                         ref={btnRef}
-                        onClick={handleOpenDropdown}
+                        onClick={toggleDropdown}
                         className="flex items-center"
                     >
                         <IoPersonOutline />
                     </button>
                 </Tooltip>
             )}
-            {isOpen && isUserSingIn && (
-                <>
-                    <button
-                        ref={btnRef}
-                        onClick={handleOpenDropdown}
-                        className="flex items-center"
-                    >
-                        <IoPersonOutline />
-                    </button>
-                    <div
-                        ref={dropdownRef}
-                        className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
-                    >
-                        <button
-                            className="w-full text-left"
-                            onClick={() => {
-                                handleOpenDropdown();
-                                handleCloseMenu();
-                            }}
-                        >
-                            <Link
-                                href="/account"
-                                className="block w-full px-5 py-2 text-lg text-gray-700"
-                            >
-                                Account settings
-                            </Link>
-                        </button>
-                        <form
-                            action={logoutAction}
-                            onSubmit={() => {
-                                handleOpenDropdown();
-                                handleCloseMenu();
-                            }}
-                        >
-                            <button
-                                type="submit"
-                                className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700"
-                            >
-                                Sign out <IoLogOutOutline className="text-lg" />
-                            </button>
-                        </form>
-                    </div>
-                </>
+            {isVisible && (
+                <button
+                    ref={btnRef}
+                    onClick={toggleDropdown}
+                    className="flex items-center"
+                >
+                    <IoPersonOutline />
+                </button>
             )}
-            {isOpen && !isUserSingIn && (
-                <>
-                    <button
-                        ref={btnRef}
-                        onClick={handleOpenDropdown}
-                        className="flex items-center"
-                    >
-                        <IoPersonOutline />
-                    </button>
-                    <div
-                        ref={dropdownRef}
-                        className="absolute right-0 w-56 mt-3 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden z-10"
-                    >
-                        <button
-                            className="w-full text-left"
-                            onClick={() => {
-                                handleOpenDropdown();
-                                handleCloseMenu();
-                            }}
-                        >
-                            <Link
+            {isMounted && (
+                <div
+                    ref={dropdownRef}
+                    className={`absolute right-0 w-56 mt-3 py-1 bg-white border border-gray-300 rounded-lg shadow-lg ring-1 ring-black/5 z-10 transform transition-all duration-200 ease-out
+                            ${
+                                isVisible
+                                    ? "opacity-100 scale-100"
+                                    : "opacity-0 scale-95 pointer-events-none"
+                            }`}
+                >
+                    {isUserSingIn ? (
+                        <>
+                            <DropdownLink
+                                href="/account/account-details"
+                                icon={<IoPersonOutline />}
+                                label="Account settings"
+                                onClick={() => handleCloseDropdown(true)}
+                            />
+                            <DropdownLink
+                                href="/account/order-history"
+                                icon={<LuClock />}
+                                label="Order History"
+                                onClick={() => handleCloseDropdown(true)}
+                            />
+                            <form
+                                action={logoutAction}
+                                onSubmit={() => handleCloseDropdown(true)}
+                                className="mt-1 pt-1 border-t border-gray-300"
+                            >
+                                <button
+                                    type="submit"
+                                    className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700 hover:text-black hover:bg-gray-100 transition"
+                                >
+                                    <RiLogoutBoxLine />
+                                    Sign out
+                                </button>
+                            </form>
+                        </>
+                    ) : (
+                        <div>
+                            <DropdownLink
                                 href="/signIn"
-                                className="block w-full px-5 py-2 text-lg text-gray-700"
-                            >
-                                Sign In
-                            </Link>
-                        </button>
-                        <button
-                            className="w-full text-left"
-                            onClick={() => {
-                                handleOpenDropdown();
-                                handleCloseMenu();
-                            }}
-                        >
-                            <Link
+                                icon={<RiLoginBoxLine />}
+                                label="Sign In"
+                                onClick={() => handleCloseDropdown(true)}
+                            />
+                            <DropdownLink
                                 href="/signUp"
-                                className="block w-full px-5 py-2 text-lg text-gray-700"
-                            >
-                                Sign Up
-                            </Link>
-                        </button>
-                    </div>
-                </>
+                                icon={<IoPersonAddOutline />}
+                                label="Sign Up"
+                                onClick={() => handleCloseDropdown(true)}
+                            />
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );
