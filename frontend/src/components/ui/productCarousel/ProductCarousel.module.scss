@@ -1,6 +1,7 @@
 .embla {
     position: relative;
     max-width: 1000px;
+    width: 100%;
 }
 
 .embla__viewport {
@@ -48,10 +49,13 @@
 .embla__slide__inner {
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 6rem;
     touch-action: manipulation;
     cursor: pointer;
+}
+
+.embla-thumbs__images {
+    object-fit: contain;
 }
 
 @media screen and (min-width: 500px) {
