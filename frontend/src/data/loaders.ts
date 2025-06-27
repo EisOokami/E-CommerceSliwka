@@ -28,6 +28,46 @@ async function fetchData(url: string) {
     }
 }
 
+export async function getAuthPageData() {
+    const url = new URL("/api/auth-page", baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            blocks: {
+                on: {
+                    "layout.sign-in": {
+                        populate: {
+                            banner: {
+                                fields: ["url", "alternativeText"],
+                            },
+                            link: {
+                                populate: true,
+                            },
+                        },
+                    },
+                    "layout.sign-up": {
+                        populate: {
+                            banner: {
+                                fields: ["url", "alternativeText"],
+                            },
+                            link: {
+                                populate: true,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return {
+        signIn: fetchedData.data.blocks[0],
+        signUp: fetchedData.data.blocks[1],
+    };
+}
+
 export async function getHomePageData() {
     const url = new URL("/api/home-page", baseUrl);
 
@@ -200,9 +240,11 @@ export async function getProductsData(page: number = 1, limit: number = 8) {
                         fields: ["url", "alternativeText"],
                     },
                 },
+                sort: "priceDifference:asc",
             },
             options: {
                 populate: true,
+                sort: "priceDifference:asc",
             },
             productInfo: {
                 populate: true,
@@ -279,9 +321,11 @@ export async function getProductData(documentId: string | null, slug?: string) {
                         fields: ["url", "alternativeText"],
                     },
                 },
+                sort: "priceDifference:asc",
             },
             options: {
                 populate: true,
+                sort: "priceDifference:asc",
             },
             productInfo: {
                 populate: true,
@@ -373,9 +417,11 @@ export async function getFilteredProductsData(
                             fields: ["url", "alternativeText"],
                         },
                     },
+                    sort: "priceDifference:asc",
                 },
                 options: {
                     populate: true,
+                    sort: "priceDifference:asc",
                 },
                 productInfo: {
                     populate: true,
@@ -446,9 +492,11 @@ export async function getFiltersByCategory(category: string | null) {
         populate: {
             colors: {
                 populate: true,
+                sort: "priceDifference:asc",
             },
             options: {
                 populate: true,
+                sort: "priceDifference:asc",
             },
             category: {
                 populate: true,
