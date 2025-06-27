@@ -102,7 +102,27 @@ export interface ComponentsProductSpecifications
     displayName: 'Product Specifications';
   };
   attributes: {
-    icon: Schema.Attribute.String;
+    icon: Schema.Attribute.Enumeration<
+      [
+        'phone',
+        'cpu',
+        'mainCamera',
+        'frontCamera',
+        'battery',
+        'displayVr',
+        'refresh',
+        'weight',
+        'laptop',
+        'storage',
+        'headphone',
+        'noise',
+        'sensor',
+        'iso',
+        'autofocus',
+        'resolution',
+        'screen',
+      ]
+    >;
     name: Schema.Attribute.String;
     specification: Schema.Attribute.String;
   };
@@ -246,6 +266,28 @@ export interface LayoutProductsSection extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutSignIn extends Struct.ComponentSchema {
+  collectionName: 'components_layout_sign_ins';
+  info: {
+    displayName: 'Sign In';
+  };
+  attributes: {
+    banner: Schema.Attribute.Media<'images'>;
+    link: Schema.Attribute.Component<'components.link', false>;
+  };
+}
+
+export interface LayoutSignUp extends Struct.ComponentSchema {
+  collectionName: 'components_layout_sign_ups';
+  info: {
+    displayName: 'Sign Up';
+  };
+  attributes: {
+    banner: Schema.Attribute.Media<'images'>;
+    link: Schema.Attribute.Component<'components.link', false>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -267,6 +309,8 @@ declare module '@strapi/strapi' {
       'layout.hero-section': LayoutHeroSection;
       'layout.products-carousel-section': LayoutProductsCarouselSection;
       'layout.products-section': LayoutProductsSection;
+      'layout.sign-in': LayoutSignIn;
+      'layout.sign-up': LayoutSignUp;
     }
   }
 }

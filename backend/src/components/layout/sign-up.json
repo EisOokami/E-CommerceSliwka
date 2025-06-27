@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_layout_sign_ups",
+  "info": {
+    "displayName": "Sign Up"
+  },
+  "options": {},
+  "attributes": {
+    "banner": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "link": {
+      "type": "component",
+      "component": "components.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

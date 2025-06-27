@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "auth_pages",
+  "info": {
+    "singularName": "auth-page",
+    "pluralName": "auth-pages",
+    "displayName": "Auth Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "layout.sign-in",
+        "layout.sign-up"
+      ]
+    }
+  }
+}
