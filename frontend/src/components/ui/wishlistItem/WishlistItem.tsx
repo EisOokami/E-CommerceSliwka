@@ -3,7 +3,6 @@
 import { useState } from "react";
 import useGlobalStore from "@/stores/global";
 import useWishlistStore from "@/stores/wishlist";
-import Image from "next/image";
 import Link from "next/link";
 import { getProductsInWishlistCount } from "@/data/loaders";
 import { deleteProductFromWishlistAction } from "@/data/actions/productActions";
@@ -12,6 +11,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { WishlistItemProps } from "./WishlistItem.interfaces";
 import RatingStars from "../ratingStars/RatingStars";
 import Button from "../button/Button";
+import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function WishlistItem({
     wishlist,
@@ -64,8 +64,8 @@ export default function WishlistItem({
                         href={`/catalog/${wishlist.product.slug}`}
                         className="flex justify-center md:w-1/4 h-48 md:h-auto"
                     >
-                        <Image
-                            src={`${process.env.NEXT_PUBLIC_DB_URL}${wishlist.product.image.url}`}
+                        <StrapiImage
+                            src={wishlist.product.image.url}
                             alt={wishlist.product.name}
                             width={500}
                             height={500}

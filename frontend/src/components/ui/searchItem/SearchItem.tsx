@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { SearchItemProps } from "./SearchItem.interfaces";
 import Link from "next/link";
+import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function SearchItem({
     productData,
@@ -19,7 +19,7 @@ export default function SearchItem({
             onClick={handleClose}
         >
             <div className="relative h-12 w-12 overflow-hidden rounded-md">
-                <Image
+                <StrapiImage
                     src={`${process.env.NEXT_PUBLIC_DB_URL}${productData.image.url}`}
                     alt={productData.name}
                     fill

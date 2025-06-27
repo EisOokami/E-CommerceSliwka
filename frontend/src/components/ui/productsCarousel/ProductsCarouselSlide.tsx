@@ -1,8 +1,8 @@
-import Image from "next/image";
 import styles from "./ProductsCarousel.module.scss";
 import { ProductsCarouselSlideProps } from "./ProductsCarousel.interfaces";
 
 import Button from "../button/Button";
+import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function ProductsCarouselSlide({
     product,
@@ -12,8 +12,8 @@ export default function ProductsCarouselSlide({
             <div className="flex flex-col justify-between gap-5 p-8 bg-gray-100 h-full">
                 <div className="grid gap-3">
                     <div className="justify-self-center self-center grid place-content-center h-40 sm:h-48 md:h-80">
-                        <Image
-                            src={`${process.env.NEXT_PUBLIC_DB_URL}${product.image.url}`}
+                        <StrapiImage
+                            src={product.image.url}
                             alt={product.image.alternativeText ?? product.name}
                             width={400}
                             height={400}

@@ -1,6 +1,7 @@
-import Image from "next/image";
 import styles from "./ProductCarousel.module.scss";
 import { ProductCarouselThumbsProps } from "./ProductCarousel.interfaces";
+
+import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function ProductCarouselThumbs({
     selected,
@@ -17,11 +18,12 @@ export default function ProductCarouselThumbs({
                 type="button"
                 className={styles["embla__slide__inner"]}
             >
-                <Image
+                <StrapiImage
                     width={200}
                     height={200}
-                    src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                    src={image.url}
                     alt={image.alternativeText ?? ""}
+                    className={styles["embla-thumbs__images"]}
                 />
             </button>
         </div>

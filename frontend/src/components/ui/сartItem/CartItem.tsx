@@ -3,7 +3,7 @@
 import { useState } from "react";
 import useGlobalStore from "@/stores/global";
 import useCartStore from "@/stores/cart";
-import Image from "next/image";
+import { getProductsInCartCount } from "@/data/loaders";
 import { IoCloseOutline } from "react-icons/io5";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import {
@@ -12,7 +12,8 @@ import {
     removeQuantityToProductAction,
 } from "@/data/actions/cartActions";
 import { CartItemProps } from "./CartItem.interfaces";
-import { getProductsInCartCount } from "@/data/loaders";
+
+import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     const setProductsInCartCount = useGlobalStore(
@@ -68,8 +69,8 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
                 isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
             }`}
         >
-            <Image
-                src={`${process.env.NEXT_PUBLIC_DB_URL}${cartItem.product.image.url}`}
+            <StrapiImage
+                src={cartItem.product.image.url}
                 alt={
                     cartItem.product.image.alternativeText ??
                     cartItem.product.name
