@@ -22,12 +22,14 @@ import RatingStars from "../ratingStars/RatingStars";
 import Rating from "../rating/Rating";
 import { ZodErrors } from "../zodErrors/ZodErrors";
 import { StrapiErrors } from "../strapiErrors/StrapiErrors";
+import StrapiImage from "../strapiImage/StrapiImage";
 
 const INITIAL_STATE = {
     data: null,
 };
 
 export default function ReviewComment({
+    productDocumentId,
     review,
     user,
 }: Readonly<ReviewCommentProps>) {
@@ -44,7 +46,6 @@ export default function ReviewComment({
         review.images,
     );
     const [imagesFromUpload, setImagesFromUpload] = useState<File[] | null>([]);
-    const [deletedComments, setDeletedComments] = useState<string[]>([]);
 
     const handleEditReview = () => {
         setShowForm(!showForm);
@@ -59,10 +60,9 @@ export default function ReviewComment({
             documentIdDeletedReview &&
             typeof documentIdDeletedReview.data === "string"
         ) {
-            setDeletedComments((prevState) => [
-                ...prevState,
-                documentIdDeletedReview.data,
-            ]);
+            const updatedReviewsData = await getReviewsData(productDocumentId);
+
+            setUpdatedReviewsData(updatedReviewsData);
         }
     };
 
@@ -121,14 +121,7 @@ export default function ReviewComment({
     }
 
     return (
-        <article
-            className="flex items-start gap-3 md:gap-5 p-3 md:p-5 bg-gray-100 rounded-xl"
-            style={
-                deletedComments.includes(review.documentId)
-                    ? { display: "none" }
-                    : {}
-            }
-        >
+        <article className="flex items-start gap-3 md:gap-5 p-3 md:p-5 bg-gray-100 rounded-xl">
             <div className="w-14 h-14">
                 <Image
                     src={
@@ -192,8 +185,8 @@ export default function ReviewComment({
                         {imagesFromReview &&
                             imagesFromReview.map((image, i) => (
                                 <div key={image.id} className="relative">
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                    <StrapiImage
+                                        src={image.url}
                                         alt={`${review.user.username}`}
                                         width={300}
                                         height={300}
@@ -308,9 +301,9 @@ export default function ReviewComment({
                                         key={i}
                                         src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
                                     >
-                                        <Image
+                                        <StrapiImage
                                             key={image.id}
-                                            src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                            src={image.url}
                                             alt={`${review.user.username}`}
                                             width={300}
                                             height={300}
