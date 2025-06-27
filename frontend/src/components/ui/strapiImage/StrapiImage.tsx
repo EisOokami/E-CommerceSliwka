@@ -9,6 +9,7 @@ export default function StrapiImage({
     width,
     className,
     priority,
+    fill = false,
 }: Readonly<StrapiImageProps>) {
     const imageUrl = getStrapiMedia(src);
 
@@ -24,6 +25,7 @@ export default function StrapiImage({
             width={width}
             className={className}
             priority={priority}
+            fill={fill}
         />
     );
 }
