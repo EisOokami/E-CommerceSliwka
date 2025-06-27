@@ -35,8 +35,10 @@ export default function Pagination() {
                 onPageChange={setCurrentPage}
                 maxWidth={screenWidth / 4}
                 extraClassName="justify-content-center gap-1 md:gap-2"
-                pageItemClassName="px-2.5 md:px-4 py-1 md:py-2 text-sm md:text-base text-black bg-gray-100 rounded-md"
-                pageLinkClassName=""
+                pageItemClassName="text-sm md:text-base text-black bg-gray-100 rounded-md"
+                pageLinkClassName="block px-4 py-2"
+                previousClassName="!flex !justify-center !items-center !p-0 !bg-white hover:!bg-gray-100 transition"
+                nextClassName="!flex !justify-center !items-center !p-0 !bg-white hover:!bg-gray-100 transition"
                 activeItemClassName="text-white !bg-black"
                 disabledItemClassName="bg-transparent px-1 md:px-4"
                 navClassName="bg-transparent mt-1 !px-1 md:!px-4"
