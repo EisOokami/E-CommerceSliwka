@@ -10,9 +10,9 @@ import { BsCamera2 } from "react-icons/bs";
 import { HiComputerDesktop } from "react-icons/hi2";
 import { IoIosLaptop } from "react-icons/io";
 import { TbDotsCircleHorizontal } from "react-icons/tb";
-
 import styles from "./CategoriesCarousel.module.scss";
 import { CategoriesCarouselProps } from "./CategoriesCarousel.interfaces";
+
 import { usePrevNextButtons } from "../../../hooks/UsePrevNextButtons";
 
 const initialCategoriesData: { [key: string]: IconType } = {
@@ -74,7 +74,7 @@ export default function CategoriesCarousel({
                         className={`p-2 transition rounded-full ${
                             !prevBtnDisabled
                                 ? "hover:bg-gray-300"
-                                : "cursor-not-allowed"
+                                : "text-gray-500 cursor-not-allowed"
                         }`}
                     >
                         <FaChevronLeft />
@@ -85,7 +85,7 @@ export default function CategoriesCarousel({
                         className={`p-2 transition rounded-full ${
                             !nextBtnDisabled
                                 ? "hover:bg-gray-300"
-                                : "cursor-not-allowed"
+                                : "text-gray-500 cursor-not-allowed"
                         }`}
                     >
                         <FaChevronRight />
@@ -126,30 +126,5 @@ export default function CategoriesCarousel({
                 </div>
             </div>
         </div>
-        // <div className="grid xl:flex grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:justify-between xl:items-center gap-5">
-        //     {categoriesData.map((category) => {
-        //         const Icon =
-        //             initialCategoriesData[category.category.toLowerCase()];
-
-        //         return (
-        //             <div
-        //                 key={category.id}
-        //                 className={`grid justify-items-center gap-2 md:gap-5 w-full p-3 md:p-5 hover:bg-gray-300 rounded-xl cursor-pointer transition ${
-        //                     activeCategory === category.category
-        //                         ? "bg-gray-300"
-        //                         : "bg-gray-200"
-        //                 }`}
-        //                 onClick={() =>
-        //                     handleChangeActiveCategory(category.category)
-        //                 }
-        //             >
-        //                 <Icon className="text-3xl md:text-5xl" />
-        //                 <span className="text-base md:text-xl font-medium">
-        //                     {category.category}
-        //                 </span>
-        //             </div>
-        //         );
-        //     })}
-        // </div>
     );
 }
