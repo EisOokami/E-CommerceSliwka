@@ -1,11 +1,12 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChevronRight } from "react-icons/fa6";
 import { BreadcrumbProps } from "./Breadcrumb.interfaces";
 
-export default function Breadcrumb({ customSlug }: BreadcrumbProps) {
+const Breadcrumb = memo(function Breadcrumb({ customSlug }: BreadcrumbProps) {
     const pathname = usePathname();
 
     const pathSegments = pathname.split("/").filter((segment) => segment);
@@ -16,7 +17,7 @@ export default function Breadcrumb({ customSlug }: BreadcrumbProps) {
 
     return (
         <nav>
-            <ul className="flex gap-3">
+            <ul className="flex items-center gap-3">
                 <li>
                     <Link
                         href="/"
@@ -49,4 +50,6 @@ export default function Breadcrumb({ customSlug }: BreadcrumbProps) {
             </ul>
         </nav>
     );
-}
+});
+
+export default Breadcrumb;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { DetailsSpecsProps } from "./DetailsSpecs.interfaces";
 
 import Button from "@/components/ui/button/Button";
@@ -9,6 +9,10 @@ export default function DetailsSpecs({
     specsData,
 }: Readonly<DetailsSpecsProps>) {
     const [showMore, setShowMore] = useState(false);
+
+    const handleShow = useCallback(() => {
+        setShowMore(!showMore);
+    }, [showMore]);
 
     return (
         <div className="grid gap-8">
@@ -55,7 +59,7 @@ export default function DetailsSpecs({
                     text={showMore ? "View less" : "View more"}
                     theme="dark"
                     inline
-                    onClick={() => setShowMore(!showMore)}
+                    onClick={handleShow}
                 />
             </div>
         </div>

@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { RatingStarsProps } from "./RatingStars.interfaces";
 
-export default function RatingStars({
+const RatingStars = memo(function RatingStars({
     count,
     starsClassName = "",
 }: Readonly<RatingStarsProps>) {
@@ -41,4 +42,6 @@ export default function RatingStars({
             ))}
         </div>
     );
-}
+});
+
+export default RatingStars;

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { FaStar, FaRegStar } from "react-icons/fa6";
 import { RatingProps } from "./Rating.interfaces";
 
-export default function Rating({
+const Rating = memo(function Rating({
     maxStars = 5,
     onRate,
     initialRating = 0,
@@ -67,4 +67,6 @@ export default function Rating({
             ))}
         </div>
     );
-}
+});
+
+export default Rating;

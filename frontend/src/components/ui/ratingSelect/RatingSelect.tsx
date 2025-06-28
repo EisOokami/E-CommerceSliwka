@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import useCatalogStore from "@/stores/catalog";
 import useClickOutside from "@/hooks/UseClickOutside";
 import { IoChevronDown } from "react-icons/io5";
@@ -14,7 +14,7 @@ const options = [
     { label: "Below 4.0", value: "0.0" },
 ];
 
-export default function RatingSelect() {
+const RatingSelect = memo(function RatingSelect() {
     const setProductRating = useCatalogStore((state) => state.setProductRating);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -87,4 +87,6 @@ export default function RatingSelect() {
             )}
         </div>
     );
-}
+});
+
+export default RatingSelect;

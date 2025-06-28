@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import Link from "next/link";
 import { useDebouncedCallback } from "use-debounce";
 import { getProductsBySearchData } from "@/data/loaders";
@@ -11,7 +11,7 @@ import { SearchBarHeaderProps } from "./SearchBarHeader.interfaces";
 
 import SearchItem from "../searchItem/SearchItem";
 
-export default function SearchBarHeader({
+const SearchBarHeader = memo(function SearchBarHeader({
     handleCloseMenu,
 }: SearchBarHeaderProps) {
     const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -132,4 +132,6 @@ export default function SearchBarHeader({
             )}
         </div>
     );
-}
+});
+
+export default SearchBarHeader;

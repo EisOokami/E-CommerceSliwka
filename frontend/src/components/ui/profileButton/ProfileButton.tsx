@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { logoutAction } from "@/data/actions/authActions";
 import useClickOutside from "@/hooks/UseClickOutside";
 import { LuClock } from "react-icons/lu";
@@ -11,7 +11,7 @@ import { ProfileButtonProps } from "./ProfileButton.interfaces";
 import Tooltip from "../tooltip/Tooltip";
 import DropdownLink from "./DropdownLink";
 
-export default function ProfileButton({
+const ProfileButton = memo(function ProfileButton({
     isUserSingIn,
     text,
     handleCloseMenu,
@@ -28,14 +28,15 @@ export default function ProfileButton({
         setIsMounted(true);
     };
 
-    const handleCloseDropdown = (isLink?: boolean) => {
+    const handleCloseDropdown = useCallback((isLink?: boolean) => {
         setTimeout(() => setIsMounted(false), 200);
         setIsVisible(false);
 
         if (isLink) {
             handleCloseMenu();
         }
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const toggleDropdown = () => {
         if (isVisible) {
@@ -127,4 +128,6 @@ export default function ProfileButton({
             )}
         </div>
     );
-}
+});
+
+export default ProfileButton;

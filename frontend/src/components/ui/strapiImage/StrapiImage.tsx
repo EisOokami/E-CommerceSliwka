@@ -1,8 +1,9 @@
+import { memo } from "react";
 import Image from "next/image";
 import { getStrapiMedia } from "@/lib/utils";
 import { StrapiImageProps } from "./StrapiImage.interfaces";
 
-export default function StrapiImage({
+const StrapiImage = memo(function StrapiImage({
     src,
     alt,
     height,
@@ -28,4 +29,6 @@ export default function StrapiImage({
             fill={fill}
         />
     );
-}
+});
+
+export default StrapiImage;

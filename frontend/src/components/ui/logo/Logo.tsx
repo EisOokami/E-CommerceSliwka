@@ -1,9 +1,10 @@
+import { memo } from "react";
 import Link from "next/link";
 import { LogoProps } from "./Logo.interfaces";
 
 import StrapiImage from "../strapiImage/StrapiImage";
 
-export default function Logo({
+const Logo = memo(function Logo({
     width,
     height,
     link,
@@ -21,4 +22,6 @@ export default function Logo({
             />
         </Link>
     );
-}
+});
+
+export default Logo;

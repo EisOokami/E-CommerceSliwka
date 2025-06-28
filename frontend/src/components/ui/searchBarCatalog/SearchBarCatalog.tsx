@@ -1,10 +1,11 @@
 "use client";
 
+import { memo } from "react";
 import useCatalogStore from "@/stores/catalog";
 import { useDebouncedCallback } from "use-debounce";
 import { IoIosSearch } from "react-icons/io";
 
-export default function SearchBarCatalog() {
+const SearchBarCatalog = memo(function SearchBarCatalog() {
     const setSearchValue = useCatalogStore((state) => state.setSearchValue);
 
     const handleChangeInputValue = useDebouncedCallback(async (value) => {
@@ -37,4 +38,6 @@ export default function SearchBarCatalog() {
             </div>
         </div>
     );
-}
+});
+
+export default SearchBarCatalog;

@@ -1,7 +1,8 @@
+import { memo } from "react";
 import Link from "next/link";
 import { DropdownLinkProps } from "./ProfileButton.interfaces";
 
-export default function DropdownLink({
+const DropdownLink = memo(function DropdownLink({
     href,
     icon,
     label,
@@ -18,4 +19,6 @@ export default function DropdownLink({
             </Link>
         </button>
     );
-}
+});
+
+export default DropdownLink;

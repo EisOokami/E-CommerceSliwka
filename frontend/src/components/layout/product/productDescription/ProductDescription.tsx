@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { ProductDescriptionProps } from "./ProductDescription.interfaces";
 
-export default function ProductDescription({
+const ProductDescription = memo(function ProductDescription({
     descr,
     isShowMore = false,
 }: Readonly<ProductDescriptionProps>) {
@@ -22,4 +22,6 @@ export default function ProductDescription({
             )}
         </p>
     );
-}
+});
+
+export default ProductDescription;
