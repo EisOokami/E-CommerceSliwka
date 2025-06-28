@@ -34,7 +34,7 @@ export default function ReviewInput({ productData, user }: ReviewInputProps) {
 
     if (!user.ok) {
         return (
-            <WarningMsg message="Please log in to your account to leave a comment." />
+            <WarningMsg message="Please sign in to your account to leave a comment." />
         );
     }
 
