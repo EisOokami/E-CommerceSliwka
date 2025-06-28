@@ -1,5 +1,6 @@
 import { SearchItemProps } from "./SearchItem.interfaces";
 import Link from "next/link";
+
 import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function SearchItem({

@@ -7,8 +7,8 @@ import Link from "next/link";
 import { getProductsInWishlistCount } from "@/data/loaders";
 import { deleteProductFromWishlistAction } from "@/data/actions/productActions";
 import { FaRegTrashCan } from "react-icons/fa6";
-
 import { WishlistItemProps } from "./WishlistItem.interfaces";
+
 import RatingStars from "../ratingStars/RatingStars";
 import Button from "../button/Button";
 import StrapiImage from "../strapiImage/StrapiImage";

@@ -7,6 +7,7 @@ import { LuClock, LuTruck, LuCalendar } from "react-icons/lu";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import { OrderCardProps } from "./OrderCard.interfaces";
+
 import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function OrderCard({ orderData }: OrderCardProps) {
