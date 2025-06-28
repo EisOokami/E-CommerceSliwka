@@ -291,7 +291,14 @@ export default function ReviewComment({
                         </div>
                     </div>
                     <p className="text-gray-600 text-pretty">
-                        {review.description}
+                        {review.description
+                            .split(" ")
+                            .map((word) =>
+                                word.length > 30
+                                    ? word.match(/.{1,30}/g)?.join("\n")
+                                    : word,
+                            )
+                            .join(" ")}
                     </p>
                     {review.images && (
                         <PhotoProvider>
