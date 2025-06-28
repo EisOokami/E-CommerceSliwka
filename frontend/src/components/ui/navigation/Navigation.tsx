@@ -6,13 +6,9 @@ import { NavigationProps } from "./Navigation.interfaces";
 
 export default function Navigation({
     navigationLinks,
-    setIsOpen,
+    handleCloseMenu,
 }: Readonly<NavigationProps>) {
     const currentPath = usePathname();
-
-    const handleCloseMenu = () => {
-        setIsOpen(false);
-    };
 
     return (
         <nav className="text-center grid gap-2 md:flex md:items-center md:gap-10">
