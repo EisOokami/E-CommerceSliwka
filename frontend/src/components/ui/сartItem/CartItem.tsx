@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGlobalStore from "@/stores/global";
 import useCartStore from "@/stores/cart";
 import { getProductsInCartCount } from "@/data/loaders";
@@ -23,24 +23,33 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     const setDeletedProducts = useCartStore(
         (state) => state.setDeletedProducts,
     );
-    const [productQuantity, setProductQuantity] = useState<number>(
-        cartItem.quantity,
+    const productsQuantity = useCartStore((state) => state.productsQuantity);
+    const setProductsQuantity = useCartStore(
+        (state) => state.setProductsQuantity,
     );
     const [isVisible, setIsVisible] = useState<boolean>(true);
 
+    useEffect(() => {
+        setProductsQuantity({
+            [cartItem.documentId]: cartItem.quantity,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleAddQuantityToProduct = () => {
         addQuantityToProductAction(cartItem.product.documentId);
-        setProductQuantity((prevState) => prevState + 1);
+        setProductsQuantity({
+            [cartItem.documentId]: productsQuantity[cartItem.documentId] + 1,
+        });
     };
 
     const handleRemoveQuantityToProduct = () => {
         removeQuantityToProductAction(cartItem.product.documentId);
-        setProductQuantity((prevState) => {
-            if (prevState === 1) {
-                return prevState;
-            }
-
-            return prevState - 1;
+        setProductsQuantity({
+            [cartItem.documentId]:
+                productsQuantity[cartItem.documentId] > 1
+                    ? productsQuantity[cartItem.documentId] - 1
+                    : 1,
         });
     };
 
@@ -96,7 +105,9 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
                             <FaMinus />
                         </button>
                         <span className="px-2 md:px-4 py-0.5 md:py-1 border rounded">
-                            {productQuantity}
+                            {productsQuantity[cartItem.documentId]
+                                ? productsQuantity[cartItem.documentId]
+                                : cartItem.quantity}
                         </span>
                         <button onClick={handleAddQuantityToProduct}>
                             <FaPlus />
