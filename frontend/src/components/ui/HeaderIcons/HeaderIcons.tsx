@@ -49,7 +49,7 @@ const selectHeaderIcon = (
 export default function HeaderIcons({
     iconsLink,
     isUserSingIn,
-    setIsOpen,
+    handleCloseMenu,
     cartsCount,
     wishlistsCount,
 }: Readonly<HeaderIconsProps>) {
@@ -59,9 +59,6 @@ export default function HeaderIcons({
     const productsInWishlistCount = useGlobalStore(
         (state) => state.productsInWishlistCount,
     );
-    const handleCloseMenu = () => {
-        setIsOpen(false);
-    };
 
     return (
         <div className="flex justify-around md:justify-normal items-center gap-5 text-2xl">
