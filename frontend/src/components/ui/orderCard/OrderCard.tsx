@@ -17,16 +17,16 @@ export default function OrderCard({ orderData }: OrderCardProps) {
         switch (status) {
             case "delivered":
                 return (
-                    <IoMdCheckmarkCircleOutline className="h-5 w-5 text-green-500" />
+                    <IoMdCheckmarkCircleOutline className="text-xl text-green-500" />
                 );
             case "shipped":
-                return <LuTruck className="h-5 w-5 text-blue-500" />;
+                return <LuTruck className="text-xl text-blue-500" />;
             case "processing":
-                return <LuClock className="h-5 w-5 text-yellow-500" />;
+                return <LuClock className="text-xl text-yellow-500" />;
             case "cancelled":
-                return <MdOutlineCancel className="h-5 w-5 text-red-500" />;
+                return <MdOutlineCancel className="text-xl text-red-500" />;
             default:
-                return <FiPackage className="h-5 w-5 text-gray-500" />;
+                return <FiPackage className="text-xl text-gray-500" />;
         }
     };
 
@@ -77,7 +77,7 @@ export default function OrderCard({ orderData }: OrderCardProps) {
                             </h3>
                             {orderData.createdAt && (
                                 <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-                                    <LuCalendar className="w-4 h-4" />
+                                    <LuCalendar className="text-base" />
                                     <span>
                                         {formatDate(orderData.createdAt)}
                                     </span>
@@ -111,7 +111,7 @@ export default function OrderCard({ orderData }: OrderCardProps) {
                 </div>
                 <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
-                        <FiPackage className="w-4 h-4" />
+                        <FiPackage className="text-base" />
                         <span>
                             {orderData.cartItems.length} item
                             {orderData.cartItems.length > 1 ? "s" : ""}
@@ -136,12 +136,12 @@ export default function OrderCard({ orderData }: OrderCardProps) {
                 >
                     {isExpanded ? (
                         <>
-                            <IoChevronUp className="h-4 w-4" />
+                            <IoChevronUp className="text-base" />
                             Hide details
                         </>
                     ) : (
                         <>
-                            <IoChevronDown className="h-4 w-4" />
+                            <IoChevronDown className="text-base" />
                             Show details
                         </>
                     )}
