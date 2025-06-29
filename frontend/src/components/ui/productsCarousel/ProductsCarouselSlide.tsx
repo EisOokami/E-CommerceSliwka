@@ -6,7 +6,7 @@ import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function ProductsCarouselSlide({
     product,
-}: ProductsCarouselSlideProps) {
+}: Readonly<ProductsCarouselSlideProps>) {
     return (
         <div className={styles["embla__slide"]} key={product.id}>
             <div className="flex flex-col justify-between gap-5 p-8 bg-gray-100 h-full">

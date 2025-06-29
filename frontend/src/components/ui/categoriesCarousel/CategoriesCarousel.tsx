@@ -1,7 +1,7 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-
+import { usePrevNextButtons } from "../../../hooks/UsePrevNextButtons";
 import { IconType } from "react-icons";
 import { FaGamepad } from "react-icons/fa";
 import { FaHeadphones, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
@@ -12,8 +12,6 @@ import { IoIosLaptop } from "react-icons/io";
 import { TbDotsCircleHorizontal } from "react-icons/tb";
 import styles from "./CategoriesCarousel.module.scss";
 import { CategoriesCarouselProps } from "./CategoriesCarousel.interfaces";
-
-import { usePrevNextButtons } from "../../../hooks/UsePrevNextButtons";
 
 const initialCategoriesData: { [key: string]: IconType } = {
     smartphones: IoPhonePortraitOutline,
@@ -33,7 +31,7 @@ export default function CategoriesCarousel({
     setProductsData,
     tabsData,
     activeTab,
-}: CategoriesCarouselProps) {
+}: Readonly<CategoriesCarouselProps>) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         dragFree: true,
         align: "start",

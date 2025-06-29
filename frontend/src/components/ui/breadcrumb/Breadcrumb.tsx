@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import { FaChevronRight } from "react-icons/fa6";
 import { BreadcrumbProps } from "./Breadcrumb.interfaces";
 
-const Breadcrumb = memo(function Breadcrumb({ customSlug }: BreadcrumbProps) {
+const Breadcrumb = memo(function Breadcrumb({
+    customSlug,
+}: Readonly<BreadcrumbProps>) {
     const pathname = usePathname();
 
     const pathSegments = pathname.split("/").filter((segment) => segment);

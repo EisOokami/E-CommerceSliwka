@@ -11,7 +11,7 @@ const Rating = memo(function Rating({
     initialRating = 0,
     isEdited = false,
     starsClassName = "",
-}: RatingProps) {
+}: Readonly<RatingProps>) {
     const [rating, setRating] = useState<number>(initialRating);
     const [hover, setHover] = useState<number | null>(null);
 

@@ -7,7 +7,7 @@ export default function ProductCarouselThumbs({
     selected,
     image,
     onClick,
-}: ProductCarouselThumbsProps) {
+}: Readonly<ProductCarouselThumbsProps>) {
     return (
         <div
             className={`${styles["embla-thumbs__slide"]}

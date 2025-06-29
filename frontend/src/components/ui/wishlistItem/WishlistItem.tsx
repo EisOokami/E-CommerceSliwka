@@ -16,7 +16,7 @@ import StrapiImage from "../strapiImage/StrapiImage";
 export default function WishlistItem({
     wishlist,
     setRemovedProducts,
-}: WishlistItemProps) {
+}: Readonly<WishlistItemProps>) {
     const setProductsInWishlistCount = useGlobalStore(
         (state) => state.setProductsInWishlistCount,
     );
