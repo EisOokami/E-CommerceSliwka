@@ -7,4 +7,6 @@ export interface InlineButtonProps {
     isLink?: boolean;
     onClick?: () => void;
     type?: "button" | "reset" | "submit";
+    isLoading?: boolean;
+    spinnerClassName?: string;
 }
