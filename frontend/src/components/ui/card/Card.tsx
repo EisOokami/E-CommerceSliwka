@@ -1,20 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useWishlistStore from "@/stores/wishlist";
+import useGlobalStore from "@/stores/global";
 import Link from "next/link";
-import Image from "next/image";
 import toast, { Toaster } from "react-hot-toast";
 import {
     addProductToWishlistAction,
     deleteProductFromWishlistAction,
 } from "@/data/actions/productActions";
+import { getProductsInWishlistCount } from "@/data/loaders";
+import { BiCommentDetail } from "react-icons/bi";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { CardProps } from "./Card.interfaces";
 
 import Button from "@/components/ui/button/Button";
+import RatingStars from "../ratingStars/RatingStars";
+import StrapiImage from "../strapiImage/StrapiImage";
 
-export default function Card({
+const Card = memo(function Card({
     productDocumentId,
     imageSrc,
     imageAlt,
@@ -22,6 +26,10 @@ export default function Card({
     imageHeight,
     title,
     price,
+    isDiscount,
+    discountedPrice,
+    averageRating,
+    reviewsCount,
     buttonHref,
     buttonTheme,
     buttonText,
@@ -34,6 +42,9 @@ export default function Card({
     );
     const productsInWishlist = useWishlistStore(
         (state) => state.productsInWishlist,
+    );
+    const setProductsInWishlistCount = useGlobalStore(
+        (state) => state.setProductsInWishlistCount,
     );
     const [wishlistDocumentId, setWishlistDocumentId] = useState<
         string | undefined
@@ -55,6 +66,12 @@ export default function Card({
 
         if (result.ok) {
             setProductsInWishlist([...productsInWishlist, productDocumentId]);
+            setWishlistDocumentId(result.wishlistDocumentId);
+
+            const updatedProductsInWishlistCount =
+                await getProductsInWishlistCount();
+
+            setProductsInWishlistCount(updatedProductsInWishlistCount);
 
             toast.success(result.message, {
                 position: "bottom-right",
@@ -86,6 +103,11 @@ export default function Card({
                 ),
             );
 
+            const updatedProductsInWishlistCount =
+                await getProductsInWishlistCount();
+
+            setProductsInWishlistCount(updatedProductsInWishlistCount);
+
             toast.success(result.message, {
                 position: "bottom-right",
                 className: "text-xl border-l-8 border-green-500",
@@ -101,18 +123,18 @@ export default function Card({
     };
 
     return (
-        <div className="group relative grid justify-items-center gap-3 xl:min-h-[500px] p-3 md:p-8 bg-gray-100 rounded-md hover:shadow-lg cursor-pointer transition">
+        <div className="group relative grid justify-items-center gap-3 xl:min-h-[500px] p-3 md:p-8 bg-white border border-gray-200 rounded-3xl hover:shadow-lg cursor-pointer transition">
             <div className="absolute top-3 right-3 z-10">
                 {productsInWishlist.includes(productDocumentId) ? (
                     <div
-                        className="h-min p-3 bg-white hover:bg-white/50 rounded-full transition hover:scale-105"
+                        className="h-min p-3 bg-gray-100 hover:bg-gray-100/50 rounded-full transition hover:scale-105"
                         onClick={handleDeleteProductFromWishlist}
                     >
                         <GoHeartFill className="text-2xl md:text-3xl text-red-500" />
                     </div>
                 ) : (
                     <div
-                        className="h-min p-3 bg-white/50 hover:bg-white rounded-full transition hover:scale-105"
+                        className="h-min p-3 bg-gray-100/50 hover:bg-gray-100 rounded-full transition hover:scale-105"
                         onClick={handleAddProductToWishlist}
                     >
                         <GoHeart className="text-2xl md:text-3xl text-gray-500" />
@@ -123,23 +145,48 @@ export default function Card({
                 href={buttonHref}
                 className="grid grid-rows-[min-content_1fr]"
             >
-                <div className="grid place-content-center ">
-                    <Image
+                <div className="grid place-content-center">
+                    <StrapiImage
                         src={imageSrc}
                         alt={imageAlt}
                         width={imageWidth}
                         height={imageHeight}
-                        className="w-52 xl:w-64 h-52 xl:h-64 object-contain transition-transform group-hover:scale-105"
+                        className="size-32 sm:size-48 xl:size-64 object-contain transition-transform group-hover:scale-105"
                     />
                 </div>
-                <div className="grid justify-items-center gap-3">
-                    <span className="text-center md:text-lg break-all font-medium">
-                        {title}
-                    </span>
-                    <div className="grid content-end justify-items-center gap-2 h-full">
-                        <span className="text-2xl md:text-3xl font-semibold">
-                            {price}
+                <div className="grid justify-items-center gap-1 md:gap-3">
+                    <div className="grid place-content-between md:place-content-baseline">
+                        <span className="text-center sm:text-lg font-medium">
+                            {title}
                         </span>
+                        <div className="grid sm:flex justify-items-center justify-center items-center gap-1 sm:gap-2">
+                            <RatingStars
+                                count={averageRating}
+                                starsClassName="text-base md:text-2xl"
+                            />
+                            <div className="flex items-center gap-1">
+                                <BiCommentDetail className="text-sm md:text-lg text-gray-600" />
+                                <span className="text-sm md:text-lg text-gray-600">
+                                    {reviewsCount}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="grid content-end justify-items-center gap-2 h-full">
+                        {isDiscount && discountedPrice ? (
+                            <div className="grid">
+                                <span className="text-center text-sm md:text-lg text-gray-500 line-through font-semibold">
+                                    ${price}
+                                </span>
+                                <span className="text-xl md:text-3xl font-semibold">
+                                    ${discountedPrice}
+                                </span>
+                            </div>
+                        ) : (
+                            <span className="text-xl md:text-3xl font-semibold">
+                                ${price}
+                            </span>
+                        )}
                         <Button
                             theme={buttonTheme}
                             text={buttonText}
@@ -152,4 +199,6 @@ export default function Card({
             <Toaster />
         </div>
     );
-}
+});
+
+export default Card;

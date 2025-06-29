@@ -8,10 +8,14 @@ export interface CardProps {
     productDocumentId: string;
     imageSrc: string;
     imageAlt: string;
-    imageWidth: number | `${number}` | undefined;
-    imageHeight: number | `${number}` | undefined;
+    imageWidth: number | `${number}`;
+    imageHeight: number | `${number}`;
     title: string;
-    price: string;
+    price: number;
+    isDiscount: boolean;
+    discountedPrice: number | null;
+    averageRating: number;
+    reviewsCount: number;
     buttonHref: string;
     buttonTheme: "dark" | "light";
     buttonText: string;
