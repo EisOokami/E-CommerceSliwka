@@ -3,10 +3,12 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { loginUserAction } from "@/data/actions/authActions";
+import { SignInProps } from "./SignIn.interfaces";
 
 import Button from "@/components/ui/button/Button";
-import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 import { StrapiErrors } from "@/components/ui/strapiErrors/StrapiErrors";
+import StrapiImage from "@/components/ui/strapiImage/StrapiImage";
+import AuthInput from "@/components/ui/authInput/AuthInput";
 
 const INITIAL_STATE = {
     zodErrors: null,
@@ -15,7 +17,7 @@ const INITIAL_STATE = {
     message: null,
 };
 
-export default function SignIn() {
+export default function SignIn({ pageData }: Readonly<SignInProps>) {
     const [formState, formAction] = useActionState(
         loginUserAction,
         INITIAL_STATE,
@@ -24,9 +26,24 @@ export default function SignIn() {
     return (
         <>
             <section className="hidden md:block w-1/2 bg-gray-100">
-                <div></div>
+                <Link
+                    href={pageData.link.url}
+                    className="block w-full h-full"
+                    target="_blank"
+                >
+                    <StrapiImage
+                        src={pageData.banner.url}
+                        alt={
+                            pageData.banner.alternativeText ??
+                            pageData.link.text
+                        }
+                        width={1500}
+                        height={1500}
+                        className="w-full h-full object-cover"
+                    />
+                </Link>
             </section>
-            <section className="grid content-center md:place-items-center w-full md:w-1/2 container mx-auto px-3 md:px-5">
+            <section className="grid content-center md:place-items-center w-full md:w-1/2 container mx-auto px-5">
                 <form
                     action={formAction}
                     className="grid gap-6 md:w-2/3 md:p-5"
@@ -38,38 +55,20 @@ export default function SignIn() {
                             Enter your details to sign in to your account
                         </p>
                     </div>
-                    <div className="relative">
-                        <input
-                            className="w-full px-4 pt-5 pb-4 text-gray-700 border rounded-lg  appearance-none leading-tight focus:outline-none peer"
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder=" "
-                        />
-                        <label
-                            className="absolute left-4 pt-1 text-gray-700 text-sm font-bold transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:left-4 peer-focus:text-sm peer-focus:text-gray-700"
-                            htmlFor="email"
-                        >
-                            Email
-                        </label>
-                        <ZodErrors error={formState?.zodErrors?.email} />
-                    </div>
-                    <div className="relative">
-                        <input
-                            className="w-full px-4 pt-5 pb-4 text-gray-700 border rounded-lg  appearance-none leading-tight focus:outline-none peer"
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder=" "
-                        />
-                        <label
-                            className="absolute left-4 pt-1 text-gray-700 text-sm font-bold transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:left-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:left-4 peer-focus:text-sm peer-focus:text-gray-700"
-                            htmlFor="password"
-                        >
-                            Password
-                        </label>
-                        <ZodErrors error={formState?.zodErrors?.password} />
-                    </div>
+                    <AuthInput
+                        id="email"
+                        name="email"
+                        type="email"
+                        labelValue="Email"
+                        zodErrorMsg={formState?.zodErrors?.email}
+                    />
+                    <AuthInput
+                        id="password"
+                        name="password"
+                        type="password"
+                        labelValue="Password"
+                        zodErrorMsg={formState?.zodErrors?.password}
+                    />
                     <StrapiErrors error={formState?.strapiErrors} />
                     <Button
                         text="Sign In"
