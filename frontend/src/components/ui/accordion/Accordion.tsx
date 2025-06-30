@@ -1,46 +1,20 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-    Accordion as AccordionWrapper,
-    AccordionItem as Item,
-} from "@szhsin/react-accordion";
+import { Accordion as AccordionWrapper } from "@szhsin/react-accordion";
 import { useDebouncedCallback } from "use-debounce";
-import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";
+import { FaChevronLeft } from "react-icons/fa6";
 import { IoFilter } from "react-icons/io5";
-import {
-    AccordionContainerProps,
-    AccordionItemProps,
-} from "./Accordion.interfaces";
+import { AccordionContainerProps } from "./Accordion.interfaces";
 
-const AccordionItem = ({ header, ...rest }: Readonly<AccordionItemProps>) => (
-    <Item
-        {...rest}
-        header={({ state: { isEnter } }) => (
-            <div className="flex justify-between items-center w-full">
-                <h4 className="text-xl font-medium">{header}</h4>
-                <FaChevronDown
-                    className={`transition-transform duration-200 ease-out ${
-                        isEnter && "rotate-180"
-                    }`}
-                />
-            </div>
-        )}
-        buttonProps={{
-            className: () =>
-                `flex w-full my-4 py-3 text-left transition border-b-4`,
-        }}
-        contentProps={{
-            className: "transition-height duration-200 ease-out",
-        }}
-        panelProps={{ className: "grid gap-2" }}
-    />
-);
+import SearchBarCatalog from "../searchBarCatalog/SearchBarCatalog";
+import AccordionItem from "./AccordionItem";
 
 export default function Accordion({
     items,
 }: Readonly<AccordionContainerProps>) {
-    const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [screenWidth, setScreenWidth] = useState<number>(699);
 
     useEffect(() => {
@@ -130,23 +104,52 @@ export default function Accordion({
         500,
     );
 
+    const handleOpenModal = () => {
+        setTimeout(() => setIsVisible(true), 10);
+        setIsMounted(true);
+    };
+
+    const handleCloseModal = () => {
+        setTimeout(() => setIsMounted(false), 200);
+        setIsVisible(false);
+    };
+
+    const toggleModal = () => {
+        if (isVisible) {
+            handleCloseModal();
+        }
+
+        if (!isVisible) {
+            handleOpenModal();
+        }
+    };
+
     return (
         <>
             <button
-                className="md:hidden flex justify-between items-center w-full px-3 py-2 border rounded-md"
-                onClick={() => setIsFilterOpen(true)}
+                className="md:hidden flex justify-between items-center w-full px-5 py-2 border rounded-md"
+                onClick={toggleModal}
             >
                 Filters <IoFilter />
             </button>
-            {(screenWidth > 767 || isFilterOpen) && (
-                <div className="absolute md:relative left-0 top-0 w-full h-full px-3 py-5 md:p-0 bg-white z-40">
+            {(screenWidth > 767 || isMounted) && (
+                <div
+                    className={`absolute md:relative left-0 top-0 w-full h-full px-5 py-5 md:p-0 bg-white z-40 transition-all duration-200 ease-out ${
+                        screenWidth > 767 || isVisible
+                            ? "opacity-100 scale-100"
+                            : "opacity-0 scale-90"
+                    }`}
+                >
                     <div className="container mx-auto">
                         <div className="md:hidden flex items-center gap-3">
                             <FaChevronLeft
                                 className="text-xl"
-                                onClick={() => setIsFilterOpen(false)}
+                                onClick={handleCloseModal}
                             />
                             <h2 className="text-2xl">Filters</h2>
+                        </div>
+                        <div className="w-full mt-5 md:mt-0">
+                            <SearchBarCatalog />
                         </div>
                         <AccordionWrapper
                             allowMultiple
