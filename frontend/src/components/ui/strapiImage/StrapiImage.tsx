@@ -2,6 +2,7 @@ import { memo } from "react";
 import Image from "next/image";
 import { getStrapiMedia } from "@/lib/utils";
 import { StrapiImageProps } from "./StrapiImage.interfaces";
+import { twMerge } from "tailwind-merge";
 
 const StrapiImage = memo(function StrapiImage({
     src,
@@ -24,7 +25,7 @@ const StrapiImage = memo(function StrapiImage({
             alt={alt}
             height={height}
             width={width}
-            className={className}
+            className={twMerge(`w-auto h-auto ${className}`)}
             priority={priority}
             fill={fill}
         />
