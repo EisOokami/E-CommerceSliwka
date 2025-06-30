@@ -19,7 +19,10 @@ const INITIAL_STATE = {
     data: null,
 };
 
-export default function ReviewInput({ productData, user }: ReviewInputProps) {
+export default function ReviewInput({
+    productData,
+    user,
+}: Readonly<ReviewInputProps>) {
     const setUpdatedReviewsData = useProductStore(
         (state) => state.setUpdatedReviewsData,
     );

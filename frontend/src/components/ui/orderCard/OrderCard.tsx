@@ -10,7 +10,7 @@ import { OrderCardProps } from "./OrderCard.interfaces";
 
 import StrapiImage from "../strapiImage/StrapiImage";
 
-export default function OrderCard({ orderData }: OrderCardProps) {
+export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const getStatusIcon = (status: string) => {

@@ -7,7 +7,7 @@ export default function SearchItem({
     productData,
     handleCloseResult,
     handleCloseMenu,
-}: SearchItemProps) {
+}: Readonly<SearchItemProps>) {
     const handleClose = () => {
         handleCloseResult();
         handleCloseMenu();

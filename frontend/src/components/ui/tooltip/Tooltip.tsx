@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TooltipProps } from "./Tooltip.interfaces";
 
-export default function Tooltip({ message, children }: TooltipProps) {
+export default function Tooltip({ message, children }: Readonly<TooltipProps>) {
     const [show, setShow] = useState(false);
 
     return (

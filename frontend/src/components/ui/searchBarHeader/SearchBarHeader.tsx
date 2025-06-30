@@ -13,7 +13,7 @@ import SearchItem from "../searchItem/SearchItem";
 
 const SearchBarHeader = memo(function SearchBarHeader({
     handleCloseMenu,
-}: SearchBarHeaderProps) {
+}: Readonly<SearchBarHeaderProps>) {
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [products, setProducts] = useState<IProduct[]>([]);
