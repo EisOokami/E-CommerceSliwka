@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { LuFilterX } from "react-icons/lu";
 import { IProduct } from "@/interfaces/interfaces";
 import { ProductsProps } from "./Products.interfaces";
 
@@ -37,7 +37,7 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
 
     return (
         <section>
-            <div className="px-3 md:px-5 py-10 bg-gray-100">
+            <div className="px-5 py-10 bg-gray-100">
                 <CategoriesCarousel
                     categoriesData={categories}
                     activeCategory={activeCategory}
@@ -47,7 +47,7 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
                     activeTab={activeTab}
                 />
             </div>
-            <div className="grid gap-7 container mx-auto px-3 md:px-5 py-10">
+            <div className="grid gap-7 container mx-auto px-5 py-10">
                 <div className="flex gap-5 md:gap-10 whitespace-nowrap overflow-y-auto">
                     {tabs.map((tab, i) => (
                         <div
@@ -65,24 +65,23 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
                         </div>
                     ))}
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                    {productsData.length ? (
+                {productsData.length ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                         <CardsComponent productsData={productsData} />
-                    ) : (
-                        <div className="grid place-items-center gap-2 w-full">
-                            <Image
-                                src="/no-data.svg"
-                                alt="no-data"
-                                width={300}
-                                height={300}
-                            />
-                            <h1 className="text-center text-3xl text-gray-500 font-medium">
-                                Sorry... <br />
-                                no result found
-                            </h1>
+                    </div>
+                ) : (
+                    <div className="grid place-content-center gap-2 w-full h-96">
+                        <div className="flex justify-center">
+                            <LuFilterX className="text-8xl text-gray-300" />
                         </div>
-                    )}
-                </div>
+                        <h1 className="text-center text-3xl text-gray-800 font-medium">
+                            No products found
+                        </h1>
+                        <p className="text-center text-2xl text-gray-500">
+                            Try adjusting your filter criteria
+                        </p>
+                    </div>
+                )}
             </div>
         </section>
     );
