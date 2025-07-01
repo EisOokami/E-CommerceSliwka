@@ -1,6 +1,6 @@
-import { IReviews, IUserMeLoader } from "@/interfaces/interfaces";
+import { IProduct, IUserMeLoader } from "@/interfaces/interfaces";
 
 export interface ReviewListProps {
-    reviewsData: IReviews[];
+    productData: IProduct;
     user: IUserMeLoader;
 }
