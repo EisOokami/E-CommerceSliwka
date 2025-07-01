@@ -1,5 +1,9 @@
+import { IColors, IOptions } from "@/interfaces/interfaces";
+
 export interface ProductPriceProps {
-    price: number | string;
+    price: number;
     isDiscount: boolean;
-    discount?: number | string | null;
+    discount?: number | null;
+    colorsData: IColors[] | null;
+    optionsData: IOptions[] | null;
 }

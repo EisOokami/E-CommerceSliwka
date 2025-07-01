@@ -13,11 +13,11 @@ export default function ProductPrice({
     const selectedOption = useProductStore((state) => state.selectedOption);
     const selectedColor = useProductStore((state) => state.selectedColor);
     const optionPrice =
-        optionsData && optionsData.length
+        optionsData && optionsData.length && optionsData.length > selectedOption
             ? optionsData[selectedOption].priceDifference
             : 0;
     const colorPrice =
-        colorsData && colorsData.length
+        colorsData && colorsData.length && colorsData.length > selectedColor
             ? colorsData[selectedColor].priceDifference
             : 0;
 
