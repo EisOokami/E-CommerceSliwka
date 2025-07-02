@@ -9,7 +9,7 @@ export default function Footer({ data }: Readonly<FooterProps>) {
     const { logoImage, logoLink, utilityLinks, socialLinks, aboutUs } = data;
 
     return (
-        <footer className="px-3 md:px-5 text-white bg-black">
+        <footer className="px-5 text-white bg-black">
             <div className="grid gap-10 md:gap-0 container mx-auto py-10 md:py-20">
                 <div className="grid md:flex md:justify-between gap-10 md:gap-0">
                     <div className="text-center md:text-left grid content-start justify-items-center md:justify-items-start gap-5 md:w-1/3">
