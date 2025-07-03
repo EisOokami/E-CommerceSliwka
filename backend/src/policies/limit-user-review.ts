@@ -8,8 +8,8 @@ export default async (policyContext, config, { strapi }) => {
         filters: { user: userId },
     });
 
-    if (postCount > 1) {
-        throw new PolicyError("You can add a maximum of 1 review", 'PostLimitReached')
+    if (postCount >= 5) {
+        throw new PolicyError("You can add a maximum of 5 review", 'PostLimitReached')
     }
 
     return true;
