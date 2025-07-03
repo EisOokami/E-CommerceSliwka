@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition } from "react";
+import useCartStore from "@/stores/cart";
 import { redirectToCheckoutAction } from "@/data/actions/cartActions";
 import { OrderSummaryProps } from "./OrderSummary.interfaces";
 
@@ -8,7 +10,15 @@ import Button from "@/components/ui/button/Button";
 export default function OrderSummary({
     cartItemsData,
 }: Readonly<OrderSummaryProps>) {
+    const deletedProducts = useCartStore((state) => state.deletedProducts);
+    const productsQuantity = useCartStore((state) => state.productsQuantity);
+    const [isPending, startTransition] = useTransition();
+
     const subtotal = cartItemsData.reduce((accumulator, currentValue) => {
+        if (deletedProducts.includes(currentValue.documentId)) {
+            return accumulator;
+        }
+
         const optionPrice = currentValue.option
             ? currentValue.option.priceDifference
             : 0;
@@ -24,16 +34,24 @@ export default function OrderSummary({
                   colorPrice
                 : currentValue.product.price + optionPrice + colorPrice;
 
-        return accumulator + price * currentValue.quantity;
+        return (
+            accumulator +
+            price *
+                (productsQuantity[currentValue.documentId]
+                    ? productsQuantity[currentValue.documentId]
+                    : currentValue.quantity)
+        );
     }, 0);
     // const tax = +(subtotal * 0.23).toFixed(2);
     const tax = +(subtotal * 0).toFixed(2);
     const shippingAndHandling = subtotal ? 15 : 0;
     const total = (subtotal + tax + shippingAndHandling).toFixed(2);
 
-    const handlePayment = async () => {
+    const handlePayment = () => {
         if (subtotal) {
-            await redirectToCheckoutAction(cartItemsData);
+            startTransition(async () => {
+                await redirectToCheckoutAction(cartItemsData);
+            });
         }
     };
 
@@ -62,12 +80,21 @@ export default function OrderSummary({
                 <span className="font-medium">Total</span>
                 <span className="font-medium">≈${total}</span>
             </div>
-            <Button
-                text="Checkout"
-                theme="dark"
-                className="w-full"
-                onClick={handlePayment}
-            />
+            {isPending ? (
+                <Button
+                    text="Loading"
+                    theme="dark"
+                    className="w-full"
+                    isLoading
+                />
+            ) : (
+                <Button
+                    text="Checkout"
+                    theme="dark"
+                    className="w-full"
+                    onClick={handlePayment}
+                />
+            )}
         </div>
     );
 }
