@@ -32,6 +32,10 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
                 const option = item.option ? await strapi.documents("api::option.option").findOne({
                     documentId: item.option.documentId,
                 }) : null;
+                const quantity = await strapi.documents("api::cart.cart").findOne({
+                    documentId: item.documentId,
+                    fields: ["quantity"]
+                })
 
                 const optionPrice = option
                     ? option.priceDifference
@@ -64,7 +68,7 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
                                     colorPrice
                                   ) * 100 
                     },
-                    quantity: item.quantity
+                    quantity: quantity.quantity
                 }
             })
         )
