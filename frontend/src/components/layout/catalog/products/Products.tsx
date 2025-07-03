@@ -1,14 +1,15 @@
-import Image from "next/image";
+import useCatalogStore from "@/stores/catalog";
+import { LuSearchX } from "react-icons/lu";
 import { ProductsProps } from "./Products.interfaces";
 
-import Card from "@/components/ui/card/Card";
 import RatingSelect from "@/components/ui/ratingSelect/RatingSelect";
+import CardsComponent from "@/components/ui/card/CardsComponent";
+import CardSkeleton from "@/components/ui/card/CardSkeleton";
 
-export default function Products({
-    productsData,
-    setProductRating,
-    productsCount,
-}: ProductsProps) {
+export default function Products({ productsData }: Readonly<ProductsProps>) {
+    const productsCount = useCatalogStore((state) => state.productsCount);
+    const isProductLoading = useCatalogStore((state) => state.isProductLoading);
+
     return (
         <section className="grid gap-5 w-full">
             <div className="flex justify-between items-center">
@@ -19,45 +20,28 @@ export default function Products({
                     </span>
                 </h4>
                 <div className="hidden md:block">
-                    <RatingSelect setProductRating={setProductRating} />
+                    <RatingSelect />
                 </div>
             </div>
-            {!productsData.length ? (
+            {!productsData.length && !isProductLoading ? (
                 <div className="grid place-items-center gap-2 w-full">
-                    <Image
-                        src="/no-data.svg"
-                        alt="no-data"
-                        width={300}
-                        height={300}
-                    />
-                    <h1 className="text-center text-5xl text-gray-500 font-medium">
-                        Sorry... <br />
-                        no result found
+                    <LuSearchX className="text-8xl text-gray-300" />
+                    <h1 className="text-center text-3xl text-gray-800 font-medium">
+                        No products found
                     </h1>
+                    <p className="text-center text-2xl text-gray-500">
+                        Try adjusting your search or filter criteria
+                    </p>
+                </div>
+            ) : isProductLoading ? (
+                <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-3 md:gap-5">
+                    {[...Array(9)].map((_, i) => (
+                        <CardSkeleton key={i} />
+                    ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-3">
-                    {productsData.map((productData) => (
-                        <Card
-                            key={productData.documentId}
-                            imageSrc={`${process.env.NEXT_PUBLIC_DB_URL}${productData.image.url}`}
-                            imageAlt={
-                                productData.image.alternativeText ??
-                                productData.name
-                            }
-                            imageWidth={250}
-                            imageHeight={250}
-                            title={productData.name}
-                            price={`$${
-                                productData.isDiscount
-                                    ? productData.discountedPrice
-                                    : productData.price
-                            }`}
-                            buttonHref={`/catalog/${productData.documentId}`}
-                            buttonTheme="dark"
-                            buttonText="Buy Now"
-                        />
-                    ))}
+                <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-3 md:gap-5">
+                    <CardsComponent productsData={productsData} />
                 </div>
             )}
         </section>
