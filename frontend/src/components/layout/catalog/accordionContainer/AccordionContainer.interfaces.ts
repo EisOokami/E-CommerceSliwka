@@ -5,7 +5,6 @@ export interface IAccordionItems {
     header: string;
     content: string[] | number[] | [];
     type: "checkbox" | "range" | "radio";
-    searchBar?: boolean;
     setState:
         | Dispatch<SetStateAction<{ [key: string]: string[] }>>
         | Dispatch<SetStateAction<{ [key: string]: number[] }>>;
@@ -14,6 +13,7 @@ export interface IAccordionItems {
 }
 
 export interface IFilterParams {
+    search: string | null;
     category: string | null;
     price: number[] | null;
     colors: string[] | null;
@@ -23,11 +23,4 @@ export interface IFilterParams {
 
 export interface AccordionContainerProps {
     setFilteredProducts: Dispatch<SetStateAction<IProduct[]>>;
-    productRating: string;
-    limit: number;
-    currentPage: number;
-    totalPages: number;
-    setTotalPages: Dispatch<SetStateAction<number>>;
-    productsCount: number;
-    setProductsCount: Dispatch<SetStateAction<number>>;
 }
