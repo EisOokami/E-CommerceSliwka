@@ -1,38 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import useCartStore from "@/stores/cart";
+import { TbShoppingCartX } from "react-icons/tb";
 import { CartListProps } from "./CartList.interfaces";
 
-import CartItem from "@/components/ui/сartItem/CartItem";
+import CartItem from "@/components/ui/cartItem/CartItem";
 
 export default function CartList({ cartItemsData }: Readonly<CartListProps>) {
-    const [deletedProducts, setDeletedProducts] = useState<string[]>([]);
+    const deletedProducts = useCartStore((state) => state.deletedProducts);
 
     return (
         <div className="grid w-full md:w-1/2">
             {cartItemsData.map((cartItem, i) =>
                 !deletedProducts.includes(cartItem.documentId) ? (
-                    <CartItem
-                        key={i}
-                        cartItem={cartItem}
-                        setDeletedProducts={setDeletedProducts}
-                    />
+                    <CartItem key={i} cartItem={cartItem} />
                 ) : null,
             )}
             {(!cartItemsData.length ||
                 deletedProducts.length === cartItemsData.length) && (
-                <div className="grid place-items-center gap-2 w-full mt-5">
-                    <Image
-                        src="/no-data.svg"
-                        alt="no-data"
-                        width={300}
-                        height={300}
-                    />
-                    <h1 className="text-center text-5xl text-gray-500 font-medium">
-                        Sorry... <br />
-                        no result found
+                <div className="grid place-content-center gap-2 w-full my-10 md:my-0 md:mt-5">
+                    <div className="flex justify-center">
+                        <TbShoppingCartX className="text-8xl text-gray-300" />
+                    </div>
+                    <h1 className="text-center text-3xl text-gray-800 font-medium">
+                        No products found
                     </h1>
+                    <p className="text-center text-2xl text-gray-500">
+                        Try add product
+                    </p>
                 </div>
             )}
         </div>
