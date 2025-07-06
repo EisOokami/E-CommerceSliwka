@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     icons: "/icon.ico",
 };
 
-export default function RootLayout({
+export default function CatalogLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
