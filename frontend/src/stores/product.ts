@@ -14,6 +14,8 @@ interface IProductStore {
     setColorSliderImages: (newColorSliderImages: IImage[] | null) => void;
     updatedReviewsData: IReviews[] | null;
     setUpdatedReviewsData: (newUpdatedReviewsData: IReviews[] | null) => void;
+    updatedAverageRating: number | null;
+    setUpdatedAverageRating: (newUpdatedAverageRating: number | null) => void;
 }
 
 const useProductStore = create<IProductStore>((set) => ({
@@ -46,6 +48,11 @@ const useProductStore = create<IProductStore>((set) => ({
     setUpdatedReviewsData: (newUpdatedReviewsData) =>
         set(() => ({
             updatedReviewsData: newUpdatedReviewsData,
+        })),
+    updatedAverageRating: null,
+    setUpdatedAverageRating: (newUpdatedAverageRating) =>
+        set(() => ({
+            updatedAverageRating: newUpdatedAverageRating,
         })),
 }));
 
