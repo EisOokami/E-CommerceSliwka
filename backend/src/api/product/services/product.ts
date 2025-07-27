@@ -6,7 +6,7 @@ import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService("api::product.product", ({ strapi }) => ({
     async getPriceRange(filters) {
-        const products = await strapi.entityService.findMany("api::product.product", {
+        const products = await strapi.documents("api::product.product").findMany({
             filters,
             fields: ["price", "discountedPrice", "isDiscount"],
             limit: 1000,
