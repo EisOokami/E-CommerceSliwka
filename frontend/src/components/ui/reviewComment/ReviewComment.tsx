@@ -8,6 +8,7 @@ import "react-photo-view/dist/react-photo-view.css";
 import {
     deleteReviewAction,
     editReviewAction,
+    updateProductAverageRatingAction,
 } from "@/data/actions/productActions";
 import { getReviewsData } from "@/data/loaders";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -36,6 +37,9 @@ export default function ReviewComment({
     const setUpdatedReviewsData = useProductStore(
         (state) => state.setUpdatedReviewsData,
     );
+    const setUpdatedAverageRating = useProductStore(
+        (state) => state.setUpdatedAverageRating,
+    );
     const [showForm, setShowForm] = useState<boolean>(false);
     const [formState, formAction] = useActionState(
         handleSubmitEditReview,
@@ -52,17 +56,21 @@ export default function ReviewComment({
     };
 
     const handleDeleteReview = async () => {
-        const documentIdDeletedReview = await deleteReviewAction(
+        const deletedReviewDocumentId = await deleteReviewAction(
             review.documentId,
         );
 
         if (
-            documentIdDeletedReview &&
-            typeof documentIdDeletedReview.data === "string"
+            deletedReviewDocumentId &&
+            typeof deletedReviewDocumentId.data === "string"
         ) {
             const updatedReviewsData = await getReviewsData(productDocumentId);
+            const updatedAverageRating = await updateProductAverageRatingAction(
+                productDocumentId,
+            );
 
             setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedAverageRating(updatedAverageRating);
         }
     };
 
@@ -113,8 +121,12 @@ export default function ReviewComment({
             const updatedReviewsData = await getReviewsData(
                 review.product.documentId,
             );
+            const updatedAverageRating = await updateProductAverageRatingAction(
+                productDocumentId,
+            );
 
             setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedAverageRating(updatedAverageRating);
         }
 
         return result;

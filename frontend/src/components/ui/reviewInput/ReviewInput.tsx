@@ -3,7 +3,10 @@
 import { useActionState, useState } from "react";
 import useProductStore from "@/stores/product";
 import Image from "next/image";
-import { addReviewToProductAction } from "@/data/actions/productActions";
+import {
+    addReviewToProductAction,
+    updateProductAverageRatingAction,
+} from "@/data/actions/productActions";
 import { getReviewsData } from "@/data/loaders";
 import { MdOutlineImage } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
@@ -25,6 +28,9 @@ export default function ReviewInput({
 }: Readonly<ReviewInputProps>) {
     const setUpdatedReviewsData = useProductStore(
         (state) => state.setUpdatedReviewsData,
+    );
+    const setUpdatedAverageRating = useProductStore(
+        (state) => state.setUpdatedAverageRating,
     );
     const [rating, setRating] = useState<number>();
     const [imagesFromUpload, setImagesFromUpload] = useState<File[] | null>(
@@ -100,8 +106,12 @@ export default function ReviewInput({
             const updatedReviewsData = await getReviewsData(
                 productData.documentId,
             );
+            const updatedAverageRating = await updateProductAverageRatingAction(
+                productData.documentId,
+            );
 
             setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedAverageRating(updatedAverageRating);
         }
 
         return result;

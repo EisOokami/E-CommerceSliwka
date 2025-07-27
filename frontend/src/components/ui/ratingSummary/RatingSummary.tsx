@@ -1,3 +1,6 @@
+"use client";
+
+import useProductStore from "@/stores/product";
 import { RatingSummaryProps } from "./RatingSummary.interfaces";
 
 import RatingStars from "@/components/ui/ratingStars/RatingStars";
@@ -6,11 +9,23 @@ export default function RatingSummary({
     reviewsData,
     averageRating,
 }: Readonly<RatingSummaryProps>) {
-    const totalReviews = reviewsData.length;
+    const updatedAverageRating = useProductStore(
+        (state) => state.updatedAverageRating,
+    );
+    const updatedReviewsData = useProductStore(
+        (state) => state.updatedReviewsData,
+    );
+
+    const validatedAverageRating =
+        updatedAverageRating !== null ? updatedAverageRating : averageRating;
+    const validatedReviewsData =
+        updatedReviewsData !== null ? updatedReviewsData : reviewsData;
+
+    const totalReviews = validatedReviewsData.length;
     const counterStarsData = [
         {
             star: "5 star",
-            countStars: reviewsData.reduce(
+            countStars: validatedReviewsData.reduce(
                 (accumulator, currentValue) =>
                     (currentValue.rating === 5 ? 1 : 0) + accumulator,
                 0,
@@ -18,7 +33,7 @@ export default function RatingSummary({
         },
         {
             star: "4 star",
-            countStars: reviewsData.reduce(
+            countStars: validatedReviewsData.reduce(
                 (accumulator, currentValue) =>
                     (currentValue.rating === 4 ? 1 : 0) + accumulator,
                 0,
@@ -26,7 +41,7 @@ export default function RatingSummary({
         },
         {
             star: "3 star",
-            countStars: reviewsData.reduce(
+            countStars: validatedReviewsData.reduce(
                 (accumulator, currentValue) =>
                     (currentValue.rating === 3 ? 1 : 0) + accumulator,
                 0,
@@ -34,7 +49,7 @@ export default function RatingSummary({
         },
         {
             star: "2 star",
-            countStars: reviewsData.reduce(
+            countStars: validatedReviewsData.reduce(
                 (accumulator, currentValue) =>
                     (currentValue.rating === 2 ? 1 : 0) + accumulator,
                 0,
@@ -42,7 +57,7 @@ export default function RatingSummary({
         },
         {
             star: "1 star",
-            countStars: reviewsData.reduce(
+            countStars: validatedReviewsData.reduce(
                 (accumulator, currentValue) =>
                     (currentValue.rating === 1 ? 1 : 0) + accumulator,
                 0,
@@ -54,13 +69,13 @@ export default function RatingSummary({
         <div className="flex items-center gap-5 md:gap-10">
             <div className="grid justify-items-center gap-3 w-min p-4 sm:p-5 md:p-8 bg-gray-100 rounded-xl">
                 <h2 className="text-4xl md:text-6xl font-semibold">
-                    {averageRating}
+                    {validatedAverageRating}
                 </h2>
                 <span className="text-sm md:text-base text-gray-500 font-medium">
                     of {totalReviews} reviews
                 </span>
                 <RatingStars
-                    count={averageRating}
+                    count={validatedAverageRating}
                     starsClassName="text-lg md:text-2xl"
                 />
             </div>
