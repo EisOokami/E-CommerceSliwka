@@ -27,9 +27,9 @@ export default function OptionsSelector({
         return null;
     }
 
-    const handleSelectedOption = (index: number, documentIdOption: string) => {
+    const handleSelectedOption = (index: number, optionDocumentId: string) => {
         setSelectedOption(index);
-        setOptionDocumentId(documentIdOption);
+        setOptionDocumentId(optionDocumentId);
     };
 
     return (

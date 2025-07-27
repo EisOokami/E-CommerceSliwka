@@ -40,11 +40,11 @@ export default function ColorSelector({
 
     const handleSelectedColor = (
         index: number,
-        documentIdColor: string,
+        colorDocumentId: string,
         sliderImages: IImage[],
     ) => {
         setSelectedColor(index);
-        setColorDocumentId(documentIdColor);
+        setColorDocumentId(colorDocumentId);
         setColorSliderImages(sliderImages);
     };
 
