@@ -317,7 +317,7 @@ export async function editReviewAction(
     formData: FormData,
     imagesFromReview: IImage[] | null,
     imagesFromUpload: File[] | null,
-    documentIdReview: string,
+    reviewDocumentId: string,
     publicationDate: string,
 ) {
     const user = await getUserMeLoader();
@@ -376,7 +376,7 @@ export async function editReviewAction(
 
     const responseData = await mutateData(
         "PUT",
-        `/api/reviews/${documentIdReview}?${query}`,
+        `/api/reviews/${reviewDocumentId}?${query}`,
         payload,
     );
 
@@ -406,7 +406,7 @@ export async function editReviewAction(
     };
 }
 
-export async function deleteReviewAction(documentIdReview: string) {
+export async function deleteReviewAction(reviewDocumentId: string) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -415,7 +415,7 @@ export async function deleteReviewAction(documentIdReview: string) {
 
     const responseData = await mutateData(
         "DELETE",
-        `/api/reviews/${documentIdReview}`,
+        `/api/reviews/${reviewDocumentId}`,
     );
 
     if (!responseData) {
@@ -427,7 +427,7 @@ export async function deleteReviewAction(documentIdReview: string) {
         console.error("Failed to Delete Product.");
     }
 
-    return { data: documentIdReview };
+    return { data: reviewDocumentId };
 }
 
 export async function addProductToWishlistAction(documentId: string) {
@@ -494,7 +494,7 @@ export async function addProductToWishlistAction(documentId: string) {
 }
 
 export async function deleteProductFromWishlistAction(
-    documentIdWishlist: string,
+    wishlistDocumentId: string,
 ) {
     const user = await getUserMeLoader();
 
@@ -510,7 +510,7 @@ export async function deleteProductFromWishlistAction(
 
     const responseData = await mutateData(
         "DELETE",
-        `/api/wishlists/${documentIdWishlist}`,
+        `/api/wishlists/${wishlistDocumentId}`,
     );
 
     if (!responseData) {
@@ -533,4 +533,41 @@ export async function deleteProductFromWishlistAction(
     }
 
     return { ok: true, message: "Product delete from wishlist" };
+}
+
+export async function updateProductAverageRatingAction(
+    productDocumentId: string,
+) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        console.error("User not found");
+    }
+
+    const query = qs.stringify({
+        populate: "*",
+    });
+
+    const payload = {
+        data: {
+            productDocumentId: productDocumentId,
+        },
+    };
+
+    const responseData = await mutateData(
+        "POST",
+        `/api/reviews/update-product-average-rating?${query}`,
+        payload,
+    );
+
+    if (!responseData) {
+        console.error("Ops! Something went wrong. Please try again.");
+    }
+
+    if (responseData.error) {
+        console.error(responseData.error);
+        console.error("Failed to Update Product Average Rating.");
+    }
+
+    return responseData.averageRating;
 }
