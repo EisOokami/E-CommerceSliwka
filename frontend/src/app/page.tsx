@@ -14,9 +14,9 @@ export default async function HomePage() {
         <main>
             <Hero data={blocks[0]} />
             <FeatureProducts data={blocks[1]} />
-            <Products data={blocks[4]} />
+            <Products data={blocks[2]} />
             <ProductsCarouselSection data={blocks[3]} />
-            <DiscountsShowcase data={blocks[2]} />
+            <DiscountsShowcase data={blocks[4]} />
         </main>
     );
 }
