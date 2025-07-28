@@ -40,6 +40,7 @@ export default factories.createCoreService("api::product.product", ({ strapi }) 
             productInfo: true,
             productSpecs: true,
             category: true,
+            reviews: true,
             detailedSpecifications: {
                 populate: {
                     specifications: {
