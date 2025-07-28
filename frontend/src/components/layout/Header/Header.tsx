@@ -13,8 +13,8 @@ import SearchBarHeader from "@/components/ui/searchBarHeader/SearchBarHeader";
 export default function Header({
     data,
     isUserSingIn,
-    cartsCount,
-    wishlistsCount,
+    globalProductsInCartCount,
+    globalProductsInWishlistCount,
 }: Readonly<HeaderProps>) {
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -73,8 +73,10 @@ export default function Header({
                         iconsLink={iconsLink}
                         isUserSingIn={isUserSingIn}
                         handleCloseMenu={handleCloseMenu}
-                        cartsCount={cartsCount}
-                        wishlistsCount={wishlistsCount}
+                        globalProductsInCartCount={globalProductsInCartCount}
+                        globalProductsInWishlistCount={
+                            globalProductsInWishlistCount
+                        }
                     />
                 </div>
                 <div ref={hamburgerRef} className="block md:hidden">
@@ -106,8 +108,12 @@ export default function Header({
                             iconsLink={iconsLink}
                             isUserSingIn={isUserSingIn}
                             handleCloseMenu={handleCloseMenu}
-                            cartsCount={cartsCount}
-                            wishlistsCount={wishlistsCount}
+                            globalProductsInCartCount={
+                                globalProductsInCartCount
+                            }
+                            globalProductsInWishlistCount={
+                                globalProductsInWishlistCount
+                            }
                         />
                     </div>
                 </div>

@@ -9,6 +9,6 @@ export interface HeaderProps {
         logoLink: ILink;
     };
     isUserSingIn: boolean;
-    cartsCount: number;
-    wishlistsCount: number;
+    globalProductsInCartCount: number;
+    globalProductsInWishlistCount: number;
 }

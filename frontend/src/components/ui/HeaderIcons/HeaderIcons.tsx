@@ -50,8 +50,8 @@ export default function HeaderIcons({
     iconsLink,
     isUserSingIn,
     handleCloseMenu,
-    cartsCount,
-    wishlistsCount,
+    globalProductsInCartCount,
+    globalProductsInWishlistCount,
 }: Readonly<HeaderIconsProps>) {
     const productsInCartCount = useGlobalStore(
         (state) => state.productsInCartCount,
@@ -76,11 +76,11 @@ export default function HeaderIcons({
                                     productsInCartCount !== null &&
                                         productsInCartCount >= 0
                                         ? productsInCartCount
-                                        : cartsCount,
+                                        : globalProductsInCartCount,
                                     productsInWishlistCount !== null &&
                                         productsInWishlistCount >= 0
                                         ? productsInWishlistCount
-                                        : wishlistsCount,
+                                        : globalProductsInWishlistCount,
                                 )}
                             </Link>
                         </Tooltip>
