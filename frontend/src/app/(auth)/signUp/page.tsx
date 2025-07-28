@@ -1,9 +1,8 @@
+import { getAuthPageData } from "@/data/loaders";
 import SignUp from "@/components/layout/signUp/SignUp";
 
-export default function SingUpPage() {
-    return (
-        <>
-            <SignUp />
-        </>
-    );
+export default async function SingUpPage() {
+    const pageData = await getAuthPageData();
+
+    return <SignUp pageData={pageData.signUp} />;
 }
