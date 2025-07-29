@@ -34,6 +34,13 @@ const schemaRegister = z.object({
             /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
             "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
         ),
+    agreeToTermsAndPrivacy: z
+        .literal("on", {
+            errorMap: () => ({
+                message: "You must agree to the Terms & Privacy",
+            }),
+        })
+        .transform(() => true),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +49,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
         username: formData.get("username"),
         email: formData.get("email"),
         password: formData.get("password"),
+        agreeToTermsAndPrivacy: formData.get("terms-and-policy"),
     });
 
     if (!validatedFields.success) {

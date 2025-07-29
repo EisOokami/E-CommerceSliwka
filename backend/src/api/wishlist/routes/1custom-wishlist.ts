@@ -4,6 +4,9 @@ export default {
             method: "GET",
             path: "/wishlists/wishlists-count",
             handler: "wishlist.wishlistsCount",
+            config: {
+                policies: ["global::consent"]
+            }
         },
     ]
 }

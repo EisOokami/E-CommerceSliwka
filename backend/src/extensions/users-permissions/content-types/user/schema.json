@@ -11,6 +11,7 @@
   "options": {
     "draftAndPublish": false
   },
+  "pluginOptions": {},
   "attributes": {
     "username": {
       "type": "string",
@@ -64,6 +65,9 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
+    },
+    "agreeToTermsAndPrivacy": {
+      "type": "boolean"
     },
     "avatar": {
       "type": "media",

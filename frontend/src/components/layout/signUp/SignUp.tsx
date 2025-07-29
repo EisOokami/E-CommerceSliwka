@@ -9,6 +9,7 @@ import Button from "@/components/ui/button/Button";
 import { StrapiErrors } from "@/components/ui/strapiErrors/StrapiErrors";
 import StrapiImage from "@/components/ui/strapiImage/StrapiImage";
 import AuthInput from "@/components/ui/authInput/AuthInput";
+import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 
 const INITIAL_STATE = {
     data: null,
@@ -72,6 +73,24 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         labelValue="Password"
                         zodErrorMsg={formState?.zodErrors?.password}
                     />
+                    <div className="relative">
+                        <div className="flex gap-2">
+                            <input
+                                type="checkbox"
+                                name="terms-and-policy"
+                                id="terms-and-policy"
+                            />
+                            <label htmlFor="terms-and-policy">
+                                I agree to the{" "}
+                                <a href="#" className="underline">
+                                    Terms & Privacy
+                                </a>
+                            </label>
+                        </div>
+                        <ZodErrors
+                            error={formState?.zodErrors?.agreeToTermsAndPrivacy}
+                        />
+                    </div>
                     <StrapiErrors error={formState?.strapiErrors} />
                     <Button
                         text="Sign Up"

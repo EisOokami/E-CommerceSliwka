@@ -4,6 +4,9 @@ export default {
             method: "POST",
             path: "/orders/update-order-after-checkout",
             handler: "order.updateOrderAfterCheckout",
+            config: {
+                policies: ["global::consent"]
+            }
         },
         {
             method: "POST",
@@ -13,7 +16,8 @@ export default {
                 auth: false,
                 body: {
                     type: "raw",
-                }
+                },
+                policies: ["global::consent"]
             }
         },
     ]
