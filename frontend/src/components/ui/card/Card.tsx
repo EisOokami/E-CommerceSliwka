@@ -12,10 +12,10 @@ import {
 import { getProductsInWishlistCount } from "@/data/loaders";
 import { BiCommentDetail } from "react-icons/bi";
 import { GoHeart, GoHeartFill } from "react-icons/go";
+import { FaStar } from "react-icons/fa";
 import { CardProps } from "./Card.interfaces";
 
 import Button from "@/components/ui/button/Button";
-import RatingStars from "../ratingStars/RatingStars";
 import StrapiImage from "../strapiImage/StrapiImage";
 
 const Card = memo(function Card({
@@ -159,11 +159,13 @@ const Card = memo(function Card({
                         <span className="text-center sm:text-lg font-medium">
                             {title}
                         </span>
-                        <div className="grid sm:flex justify-items-center justify-center items-center gap-1 sm:gap-2">
-                            <RatingStars
-                                count={averageRating}
-                                starsClassName="text-base md:text-2xl"
-                            />
+                        <div className="flex justify-center items-center gap-1 sm:gap-2">
+                            <div className="flex items-center gap-1">
+                                <FaStar className="text-base md:text-2xl text-yellow-300" />
+                                <span className="text-sm md:text-lg">
+                                    {averageRating}
+                                </span>
+                            </div>
                             <div className="flex items-center gap-1">
                                 <BiCommentDetail className="text-sm md:text-lg text-gray-600" />
                                 <span className="text-sm md:text-lg text-gray-600">

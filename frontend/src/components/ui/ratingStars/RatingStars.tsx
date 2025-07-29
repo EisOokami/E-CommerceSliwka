@@ -21,14 +21,14 @@ const RatingStars = memo(function RatingStars({
                 <FaStar
                     key={i}
                     className={twMerge(
-                        `text-2xl text-yellow-500 ${starsClassName}`,
+                        `text-2xl text-yellow-300 ${starsClassName}`,
                     )}
                 />
             ))}
             {hasHalfStar && (
                 <FaStarHalfAlt
                     className={twMerge(
-                        `text-2xl text-yellow-500 ${starsClassName}`,
+                        `text-2xl text-yellow-300 ${starsClassName}`,
                     )}
                 />
             )}
@@ -36,7 +36,7 @@ const RatingStars = memo(function RatingStars({
                 <FaRegStar
                     key={i}
                     className={twMerge(
-                        `text-2xl text-yellow-500 ${starsClassName}`,
+                        `text-2xl text-yellow-300 ${starsClassName}`,
                     )}
                 />
             ))}

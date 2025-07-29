@@ -92,7 +92,7 @@ export default function RatingSummary({
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-1.5 md:h-2.5">
                             <div
-                                className="bg-yellow-500 h-1.5 md:h-2.5 rounded-full"
+                                className="bg-yellow-300 h-1.5 md:h-2.5 rounded-full"
                                 style={{
                                     width: `${
                                         (counterStars.countStars * 100) /

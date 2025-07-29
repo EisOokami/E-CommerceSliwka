@@ -22,7 +22,7 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
             case "shipped":
                 return <LuTruck className="text-xl text-blue-500" />;
             case "processing":
-                return <LuClock className="text-xl text-yellow-500" />;
+                return <LuClock className="text-xl text-yellow-300" />;
             case "cancelled":
                 return <MdOutlineCancel className="text-xl text-red-500" />;
             default:

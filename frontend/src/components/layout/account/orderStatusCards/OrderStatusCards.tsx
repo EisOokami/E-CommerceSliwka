@@ -22,7 +22,7 @@ const statusConfig = [
     {
         key: "Processing",
         label: "Processing",
-        icon: <LuClock className="text-3xl text-yellow-500" />,
+        icon: <LuClock className="text-3xl text-yellow-300" />,
         textColor: "text-yellow-600",
     },
     {
