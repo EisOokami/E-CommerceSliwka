@@ -150,7 +150,7 @@ export default function ActionsButton({
     };
 
     return (
-        <div className="grid lg:flex items-center gap-3 md:gap-5">
+        <div className="grid lg:flex items-center gap-3 md:gap-5 my-3">
             {isPendingWishlist ? (
                 <Button
                     theme="dark"

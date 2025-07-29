@@ -18,6 +18,7 @@ import ReviewList from "@/components/layout/product/reviewList/ReviewList";
 import Breadcrumb from "@/components/ui/breadcrumb/Breadcrumb";
 import ActionsButton from "@/components/layout/product/actionsButton/ActionsButton";
 import ReviewInput from "@/components/ui/reviewInput/ReviewInput";
+import ProductStars from "@/components/ui/productStars/ProductStars";
 
 export default async function ProductPage({ params }: ProductPageProps) {
     const { product } = await params;
@@ -35,26 +36,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <section className="md:flex gap-5 lg:gap-16 container mx-auto">
                 <ProductCarousel images={productData.sliderImages} />
                 <div className="grid content-start gap-4 md:gap-8 w-full mt-3 px-5">
-                    <ProductTitle title={productData.name} />
-                    <ProductPrice
-                        price={productData.price}
-                        isDiscount={productData.isDiscount}
-                        discount={productData.discountedPrice}
-                        colorsData={productData.colors}
-                        optionsData={productData.options}
-                    />
-                    <ColorSelector colorsData={productData.colors} />
-                    <OptionsSelector optionsData={productData.options} />
-                    <ProductSpecs specsData={productData.productSpecs} />
-                    <ProductDescription
-                        descr={productData.description}
-                        isShowMore
-                    />
-                    <ActionsButton
-                        productData={productData}
-                        wishlistData={wishlistData}
-                    />
-                    <ProductInfo infoData={productData.productInfo} />
+                    <div className="grid gap-5">
+                        <ProductTitle title={productData.name} />
+                        <ProductPrice
+                            price={productData.price}
+                            isDiscount={productData.isDiscount}
+                            discount={productData.discountedPrice}
+                            colorsData={productData.colors}
+                            optionsData={productData.options}
+                        />
+                        <ProductStars
+                            averageRating={productData.averageRating}
+                        />
+                    </div>
+                    <div className="grid gap-5">
+                        <ColorSelector colorsData={productData.colors} />
+                        <OptionsSelector optionsData={productData.options} />
+                        <ProductSpecs specsData={productData.productSpecs} />
+                        <ProductDescription
+                            descr={productData.description}
+                            isShowMore
+                        />
+                        <ActionsButton
+                            productData={productData}
+                            wishlistData={wishlistData}
+                        />
+                        <ProductInfo infoData={productData.productInfo} />
+                    </div>
                 </div>
             </section>
             <section className="px-5 py-10 bg-gray-100">
