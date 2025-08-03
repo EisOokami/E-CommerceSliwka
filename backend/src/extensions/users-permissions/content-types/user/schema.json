@@ -73,9 +73,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images"
-      ]
+            "allowedTypes": ["images"]
     },
     "reviews": {
       "type": "relation",
@@ -100,6 +98,12 @@
       "relation": "oneToMany",
       "target": "api::order.order",
       "mappedBy": "user"
+        },
+        "csrfToken": {
+            "type": "password",
+            "private": true,
+            "configurable": false,
+            "searchable": false
     }
   }
 }

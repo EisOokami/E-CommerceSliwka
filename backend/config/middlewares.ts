@@ -1,21 +1,22 @@
 export default [
-    'strapi::logger',
-    'strapi::errors',
-    'strapi::security',
+    "strapi::logger",
+    "strapi::errors",
+    "strapi::security",
     {
         name: "strapi::cors",
         config: {
-            origin: process.env.CORS_ORIGIN?.split(',') || [],
-            keepHeaderOnError: true
+            origin: process.env.CORS_ORIGIN?.split(",") || [],
+            keepHeaderOnError: true,
         },
     },
-    'strapi::poweredBy',
-    'strapi::query',
+    "strapi::poweredBy",
+    "strapi::query",
     "global::raw-body",
-    'strapi::body',
-    'strapi::session',
-    'strapi::favicon',
-    'strapi::public',
+    "strapi::body",
+    "strapi::session",
+    "strapi::favicon",
+    "strapi::public",
     "global::rate-limit",
     "global::ip-rate-limit",
+    "global::csrf",
 ];

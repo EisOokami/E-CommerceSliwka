@@ -5,3 +5,9 @@ export async function getAuthToken() {
     const authToken = cookieStore.get("jwt")?.value;
     return authToken;
 }
+
+export async function getCSRFToken() {
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get("csrfToken")?.value;
+    return authToken;
+}
