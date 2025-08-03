@@ -3,12 +3,25 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Accordion as AccordionWrapper } from "@szhsin/react-accordion";
 import { useDebouncedCallback } from "use-debounce";
+import { z } from "zod";
 import { FaChevronLeft } from "react-icons/fa6";
 import { IoFilter } from "react-icons/io5";
 import { AccordionContainerProps } from "./Accordion.interfaces";
 
 import SearchBarCatalog from "../searchBarCatalog/SearchBarCatalog";
 import AccordionItem from "./AccordionItem";
+
+const schema = z.object({
+    value: z
+        .string()
+        .regex(/^[-]?\d*\.?\d+$/, "Must be a number")
+        .pipe(
+            z.coerce
+                .number()
+                .int("Must be an integer")
+                .positive("Must be a positive number"),
+        ),
+});
 
 export default function Accordion({
     items,
@@ -78,6 +91,15 @@ export default function Accordion({
             >,
             content: number[],
         ) => {
+            const validatedFields = schema.safeParse({
+                value: value,
+            });
+
+            if (!validatedFields.success) {
+                console.error(validatedFields.error.message);
+                throw new Error("Value must contain only numbers");
+            }
+
             const filterKey = header.toLocaleLowerCase();
 
             if (name === `${header}-from`) {
