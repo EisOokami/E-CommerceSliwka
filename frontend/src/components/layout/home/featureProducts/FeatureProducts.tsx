@@ -18,7 +18,7 @@ export default function FeatureProducts({
                         ? featureProduct[0].product.slug
                         : ""
                 }`}
-                className="relative col-span-12 sm:col-span-7 lg:col-span-5 row-span-2 sm:row-span-4 lg:row-span-7 grid content-end p-8 bg-no-repeat bg-cover bg-center rounded-lg shadow-[inset_0px_-150px_50px_0px_rgba(0,_0,_0,_0.45)] hover:scale-105 transition"
+                className={`relative col-span-12 sm:col-span-7 lg:col-span-5 row-span-2 sm:row-span-4 lg:row-span-7 grid content-end p-8 bg-no-repeat bg-cover bg-center rounded-lg shadow-[inset_0px_-150px_50px_0px_rgba(0,_0,_0,_0.45)] hover:scale-105 transition`}
                 style={{
                     backgroundImage: `url(${getStrapiMedia(
                         featureProduct[0].image.url,
@@ -38,10 +38,9 @@ export default function FeatureProducts({
                 }`}
                 className="relative col-span-12 sm:col-span-5 lg:col-span-3 row-span-2 sm:row-span-4 lg:row-span-7 grid content-end p-5 bg-no-repeat bg-contain bg-center bg-gray-200 rounded-lg shadow-[inset_0px_-150px_50px_0px_rgba(255,_255,_255,_0.45)] hover:scale-105 transition"
                 style={{
-                    backgroundImage: `url(${
-                        process.env.NEXT_PUBLIC_DB_URL +
-                        featureProduct[1].image.url
-                    })`,
+                    backgroundImage: `url(${getStrapiMedia(
+                        featureProduct[1].image.url,
+                    )})`,
                 }}
             >
                 <LuArrowUpRight className="absolute top-2 right-2 text-3xl md:text-4xl lg:text-5xl" />
@@ -60,10 +59,9 @@ export default function FeatureProducts({
                 }`}
                 className="relative col-span-12 lg:col-span-4 row-span-2 sm:row-span-4 lg:row-span-12 grid content-end p-5 bg-no-repeat bg-cover bg-center rounded-lg shadow-[inset_0px_-200px_50px_0px_rgba(0,_0,_0,_0.45)] hover:scale-105 transition"
                 style={{
-                    backgroundImage: `url(${
-                        process.env.NEXT_PUBLIC_DB_URL +
-                        featureProduct[2].image.url
-                    })`,
+                    backgroundImage: `url(${getStrapiMedia(
+                        featureProduct[2].image.url,
+                    )})`,
                 }}
             >
                 <LuArrowUpRight className="absolute top-2 right-2 text-3xl md:text-4xl lg:text-5xl text-white" />
@@ -82,10 +80,9 @@ export default function FeatureProducts({
                 }`}
                 className="relative col-span-12 sm:col-span-5 lg:col-span-3 row-span-2 sm:row-span-4 lg:row-span-5 grid content-end p-5 bg-no-repeat bg-contain bg-center bg-gray-200 rounded-lg shadow-[inset_0px_-75px_50px_0px_rgba(255,_255,_255,_0.45)] hover:scale-105 transition"
                 style={{
-                    backgroundImage: `url(${
-                        process.env.NEXT_PUBLIC_DB_URL +
-                        featureProduct[3].image.url
-                    })`,
+                    backgroundImage: `url(${getStrapiMedia(
+                        featureProduct[3].image.url,
+                    )})`,
                 }}
             >
                 <LuArrowUpRight className="absolute top-2 right-2 text-3xl md:text-4xl lg:text-5xl" />
@@ -101,10 +98,9 @@ export default function FeatureProducts({
                 }`}
                 className="relative col-span-12 sm:col-span-7 lg:col-span-5 row-span-2 sm:row-span-4 lg:row-span-5 grid content-between p-5 bg-no-repeat bg-cover bg-center rounded-lg shadow-[inset_0px_75px_50px_-35px_rgba(0,_0,_0,_0.45)] hover:scale-105 transition"
                 style={{
-                    backgroundImage: `url(${
-                        process.env.NEXT_PUBLIC_DB_URL +
-                        featureProduct[4].image.url
-                    })`,
+                    backgroundImage: `url(${getStrapiMedia(
+                        featureProduct[4].image.url,
+                    )})`,
                 }}
             >
                 <LuArrowUpRight className="absolute top-2 right-2 text-3xl md:text-4xl lg:text-5xl text-white" />

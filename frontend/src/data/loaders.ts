@@ -81,7 +81,7 @@ export async function getHomePageData() {
                                 fields: ["url", "alternativeText"],
                             },
                             product: {
-                                fields: ["slug"],
+                                fields: ["slug", "name"],
                             },
                         },
                     },

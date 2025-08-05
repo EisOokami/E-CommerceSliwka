@@ -11,6 +11,7 @@ import {
     updateProductAverageRatingAction,
 } from "@/data/actions/productActions";
 import { getReviewsData } from "@/data/loaders";
+import { getStrapiMedia } from "@/lib/utils";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { LuPencilLine } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
@@ -138,8 +139,7 @@ export default function ReviewComment({
                 <Image
                     src={
                         review.user.avatar
-                            ? process.env.NEXT_PUBLIC_DB_URL +
-                              review.user.avatar.url
+                            ? `${getStrapiMedia(review.user.avatar.url)}`
                             : "/avatar.png"
                     }
                     width={70}
@@ -199,7 +199,10 @@ export default function ReviewComment({
                                 <div key={image.id} className="relative">
                                     <StrapiImage
                                         src={image.url}
-                                        alt={`${review.user.username}`}
+                                        alt={
+                                            image.alternativeText ??
+                                            review.user.username
+                                        }
                                         width={300}
                                         height={300}
                                         className="w-20 md:w-32 h-16 md:h-24 rounded-xl"
@@ -318,12 +321,15 @@ export default function ReviewComment({
                                 {review.images.map((image, i) => (
                                     <PhotoView
                                         key={i}
-                                        src={`${process.env.NEXT_PUBLIC_DB_URL}${image.url}`}
+                                        src={`${getStrapiMedia(image.url)}`}
                                     >
                                         <StrapiImage
                                             key={image.id}
                                             src={image.url}
-                                            alt={`${review.user.username}`}
+                                            alt={
+                                                image.alternativeText ??
+                                                review.user.username
+                                            }
                                             width={300}
                                             height={300}
                                             className="w-20 md:w-32 h-16 md:h-24 rounded-xl cursor-pointer"

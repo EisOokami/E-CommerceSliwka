@@ -6,6 +6,7 @@ import {
     changePasswordAction,
     updateProfileAction,
 } from "@/data/actions/profileActions";
+import { getStrapiMedia } from "@/lib/utils";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
 import { GoShieldLock } from "react-icons/go";
@@ -80,8 +81,9 @@ export default function AccountDetails({
                                                   imageFromUpload[0],
                                               )
                                             : userData.avatar
-                                            ? process.env.NEXT_PUBLIC_DB_URL +
-                                              userData.avatar.url
+                                            ? `${getStrapiMedia(
+                                                  userData.avatar.url,
+                                              )}`
                                             : "/avatar.png"
                                     }
                                     alt="avatar"

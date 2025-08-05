@@ -1,5 +1,6 @@
-import { SearchItemProps } from "./SearchItem.interfaces";
 import Link from "next/link";
+import { getStrapiMedia } from "@/lib/utils";
+import { SearchItemProps } from "./SearchItem.interfaces";
 
 import StrapiImage from "../strapiImage/StrapiImage";
 
@@ -21,8 +22,8 @@ export default function SearchItem({
         >
             <div className="relative h-12 w-12 overflow-hidden rounded-md">
                 <StrapiImage
-                    src={`${process.env.NEXT_PUBLIC_DB_URL}${productData.image.url}`}
-                    alt={productData.name}
+                    src={`${getStrapiMedia(productData.image.url)}`}
+                    alt={productData.image.alternativeText ?? productData.name}
                     fill
                     className="object-cover"
                 />

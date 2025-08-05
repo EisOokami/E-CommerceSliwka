@@ -28,7 +28,7 @@ export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
                 </div>
                 <StrapiImage
                     src={image.url}
-                    alt={image.alternativeText ?? "iphone"}
+                    alt={image.alternativeText ?? product.name}
                     width={800}
                     height={800}
                 />
