@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import useGlobalStore from "@/stores/global";
 import useProductStore from "@/stores/product";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
     getCartProductData,
     getProductsInCartCount,

@@ -6,7 +6,10 @@ import {
     getProductsInWishlistCount,
 } from "@/data/loaders";
 import { getUserMeLoader } from "@/data/services/getUserMeLoader";
+import { Toaster } from "sonner";
+import "sonner/dist/styles.css";
 import "./globals.scss";
+
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/footer/Footer";
 
@@ -90,6 +93,18 @@ export default async function RootLayout({
                 />
                 {children}
                 <Footer data={globalData.data.footer} />
+                <Toaster
+                    position="bottom-right"
+                    closeButton
+                    richColors
+                    toastOptions={{
+                        classNames: {
+                            title: "!text-lg md:!text-xl",
+                            icon: "!w-6 !h-6",
+                            closeButton: "!w-7 md:!w-6 !h-7 md:!h-6",
+                        },
+                    }}
+                />
             </body>
         </html>
     );

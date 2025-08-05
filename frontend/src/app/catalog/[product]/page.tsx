@@ -1,4 +1,3 @@
-import { Toaster } from "react-hot-toast";
 import { getProductData, getWishlistProductData } from "@/data/loaders";
 import { getUserMeLoader } from "@/data/services/getUserMeLoader";
 import { ProductPageProps } from "./page.interfaces";
@@ -87,7 +86,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <ReviewInput productData={productData} user={user} />
                 <ReviewList productData={productData} user={user} />
             </section>
-            <Toaster />
         </>
     );
 }

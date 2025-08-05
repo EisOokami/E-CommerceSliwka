@@ -4,7 +4,7 @@ import { memo, useEffect, useState } from "react";
 import useWishlistStore from "@/stores/wishlist";
 import useGlobalStore from "@/stores/global";
 import Link from "next/link";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "sonner";
 import {
     addProductToWishlistAction,
     deleteProductFromWishlistAction,
@@ -61,6 +61,15 @@ const Card = memo(function Card({
         }
     }, [productDocumentId, wishlist]);
 
+    const showToast = (ok: boolean, message: string) => {
+        const toastFn = ok ? toast.success : toast.error;
+        const borderColor = ok ? "border-green-500" : "border-red-500";
+
+        toastFn(message, {
+            className: `text-xl border-l-8 ${borderColor}`,
+        });
+    };
+
     const handleAddProductToWishlist = async () => {
         const result = await addProductToWishlistAction(productDocumentId);
 
@@ -72,19 +81,9 @@ const Card = memo(function Card({
                 await getProductsInWishlistCount();
 
             setProductsInWishlistCount(updatedProductsInWishlistCount);
-
-            toast.success(result.message, {
-                position: "bottom-right",
-                className: "text-xl border-l-8 border-green-500",
-            });
         }
 
-        if (!result.ok) {
-            toast.error(result.message, {
-                position: "bottom-right",
-                className: "text-xl border-l-8 border-red-500",
-            });
-        }
+        showToast(result.ok, result.message);
     };
 
     const handleDeleteProductFromWishlist = async () => {
@@ -107,19 +106,9 @@ const Card = memo(function Card({
                 await getProductsInWishlistCount();
 
             setProductsInWishlistCount(updatedProductsInWishlistCount);
-
-            toast.success(result.message, {
-                position: "bottom-right",
-                className: "text-xl border-l-8 border-green-500",
-            });
         }
 
-        if (!result.ok) {
-            toast.error(result.message, {
-                position: "bottom-right",
-                className: "text-xl border-l-8 border-red-500",
-            });
-        }
+        showToast(result.ok, result.message);
     };
 
     return (
@@ -198,7 +187,6 @@ const Card = memo(function Card({
                     </div>
                 </div>
             </Link>
-            <Toaster />
         </div>
     );
 });

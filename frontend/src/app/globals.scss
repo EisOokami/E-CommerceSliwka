@@ -5,3 +5,11 @@
 * {
     @apply box-border;
 }
+
+div[data-icon] svg {
+    @apply w-7 h-7;
+}
+
+button[data-close-button] svg {
+    @apply w-[18px] md:w-4 h-[18px] md:h-4;
+}
