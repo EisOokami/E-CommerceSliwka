@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
             script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
             style-src 'self' 'nonce-${nonce}';
             style-src-attr 'self' 'unsafe-inline';
-            img-src 'self' http://127.0.0.1:1337;
+            img-src 'self' http://127.0.0.1:1337 blob:;
             connect-src 'self' http://127.0.0.1:1337;
             font-src 'self';
             object-src 'none';
