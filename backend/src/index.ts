@@ -13,19 +13,61 @@ const getService = (name) => {
 };
 
 const callbackSchema = yup.object({
-    identifier: yup.string().required(),
-    password: yup.string().required(),
+    identifier: yup
+        .string()
+        .trim()
+        .required("Please enter a valid email address")
+        .email("Please enter a valid email address"),
+    password: yup
+        .string()
+        .required("Password must be between 8 and 100 characters")
+        .min(8, "Password must be between 8 and 100 characters")
+        .max(100, "Password must be between 8 and 100 characters")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+        .matches(/\d/, "Password must contain at least one number")
+        .matches(
+            /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+            "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+        ),
 });
 
 const createRegisterSchema = (config: {
     validatePassword?: (value: string) => Promise<boolean>;
 }) =>
     yup.object({
-        email: yup.string().email().required(),
-        username: yup.string().required(),
+        email: yup
+            .string()
+            .trim()
+            .required("Please enter a valid email address")
+            .email("Please enter a valid email address"),
+        username: yup
+            .string()
+            .required("Username must be between 3 and 40 characters")
+            .min(3, "Username must be between 3 and 40 characters")
+            .max(40, "Username must be between 3 and 40 characters")
+            .matches(
+                /^[A-Za-z\s]+$/,
+                "Username must contain only letters and spaces",
+            ),
         password: yup
             .string()
-            .required()
+            .required("Password must be between 8 and 100 characters")
+            .min(8, "Password must be between 8 and 100 characters")
+            .max(100, "Password must be between 8 and 100 characters")
+            .matches(
+                /[A-Z]/,
+                "Password must contain at least one uppercase letter",
+            )
+            .matches(
+                /[a-z]/,
+                "Password must contain at least one lowercase letter",
+            )
+            .matches(/\d/, "Password must contain at least one number")
+            .matches(
+                /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+                "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+            )
             .test(function (this: TestContext, value) {
                 if (!value) return true;
                 const isValid = new TextEncoder().encode(value).length <= 72;
@@ -55,9 +97,187 @@ const createRegisterSchema = (config: {
             }),
     });
 
+const updateUserBodySchema = yup.object().shape({
+    email: yup
+        .string()
+        .trim()
+        .required("Please enter a valid email address")
+        .email("Please enter a valid email address"),
+    username: yup
+        .string()
+        .required("Username must be between 3 and 40 characters")
+        .min(3, "Username must be between 3 and 40 characters")
+        .max(40, "Username must be between 3 and 40 characters")
+        .matches(
+            /^[A-Za-z\s]+$/,
+            "Username must contain only letters and spaces",
+        ),
+    password: yup.mixed(),
+    // .string()
+    // .required("Password must be between 8 and 100 characters")
+    // .min(8, "Password must be between 8 and 100 characters")
+    // .max(100, "Password must be between 8 and 100 characters")
+    // .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    // .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    // .matches(/\d/, "Password must contain at least one number")
+    // .matches(
+    //     /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+    //     "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+    // )
+    // .test(
+    //     "password-validation",
+    //     "Password must be at least 1 character",
+    //     function validatePassword(value) {
+    //         if (value == null || value === "") {
+    //             return true;
+    //         }
+    //         return typeof value === "string" && value.length >= 1;
+    //     },
+    // ),
+    role: yup.lazy((value) =>
+        typeof value === "object"
+            ? yup.object().shape({
+                  connect: yup
+                      .array()
+                      .of(yup.object().shape({ id: yup.strapiID().required() }))
+                      .required(),
+                  disconnect: yup
+                      .array()
+                      .test(
+                          "CheckDisconnect",
+                          "Cannot remove role",
+                          function test(disconnectValue) {
+                              if (
+                                  value.connect.length === 0 &&
+                                  disconnectValue.length > 0
+                              ) {
+                                  return false;
+                              }
+
+                              return true;
+                          },
+                      )
+                      .required(),
+              })
+            : yup.strapiID(),
+    ),
+});
+
+const createChangePasswordSchema = (config) =>
+    yup
+        .object({
+            password: yup
+                .string()
+                .required("New password must be between 8 and 100 characters")
+                .min(8, "New password must be between 8 and 100 characters")
+                .max(100, "New password must be between 8 and 100 characters")
+                .matches(
+                    /[A-Z]/,
+                    "New password must contain at least one uppercase letter",
+                )
+                .matches(
+                    /[a-z]/,
+                    "New password must contain at least one lowercase letter",
+                )
+                .matches(/\d/, "New password must contain at least one number")
+                .matches(
+                    /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+                    "New password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+                )
+                .test(function (this: TestContext, value) {
+                    if (!value) return true;
+                    const isValid =
+                        new TextEncoder().encode(value).length <= 72;
+                    if (!isValid) {
+                        return this.createError({
+                            message: "New password must be less than 73 bytes",
+                        });
+                    }
+                    return true;
+                })
+                .test(async function (this: TestContext, value) {
+                    if (typeof config?.validatePassword === "function") {
+                        try {
+                            const isValid =
+                                await config.validatePassword(value);
+                            if (!isValid) {
+                                return this.createError({
+                                    message: "New password validation failed.",
+                                });
+                            }
+                        } catch (error) {
+                            return this.createError({
+                                message: error.message || "An error occurred.",
+                            });
+                        }
+                    }
+                    return true;
+                }),
+            passwordConfirmation: yup
+                .string()
+                .required(
+                    "Confirm new password must be between 8 and 100 characters",
+                )
+                .min(
+                    8,
+                    "Confirm new password must be between 8 and 100 characters",
+                )
+                .max(
+                    100,
+                    "Confirm new password must be between 8 and 100 characters",
+                )
+                .matches(
+                    /[A-Z]/,
+                    "Confirm new password must contain at least one uppercase letter",
+                )
+                .matches(
+                    /[a-z]/,
+                    "Confirm new password must contain at least one lowercase letter",
+                )
+                .matches(
+                    /\d/,
+                    "Confirm new password must contain at least one number",
+                )
+                .matches(
+                    /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+                    "Confirm new password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+                )
+                .oneOf([yup.ref("password")], "New passwords do not match"),
+            currentPassword: yup
+                .string()
+                .required(
+                    "Current password must be between 8 and 100 characters",
+                )
+                .min(8, "Current password must be between 8 and 100 characters")
+                .max(
+                    100,
+                    "Current password must be between 8 and 100 characters",
+                )
+                .matches(
+                    /[A-Z]/,
+                    "Current password must contain at least one uppercase letter",
+                )
+                .matches(
+                    /[a-z]/,
+                    "Current password must contain at least one lowercase letter",
+                )
+                .matches(
+                    /\d/,
+                    "Current password must contain at least one number",
+                )
+                .matches(
+                    /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+                    "Current password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+                ),
+        })
+        .noUnknown();
+
 const validateRegisterBody = (payload, config) =>
     validateYupSchema(createRegisterSchema(config))(payload);
 const validateCallbackBody = validateYupSchema(callbackSchema);
+const validateUpdateUserBody = validateYupSchema(updateUserBodySchema);
+const validateChangePasswordBody = (payload, config) =>
+    validateYupSchema(createChangePasswordSchema(config))(payload);
 
 const sanitizeUser = (user, ctx) => {
     const { auth } = ctx.state;
@@ -66,7 +286,15 @@ const sanitizeUser = (user, ctx) => {
     return strapi.contentAPI.sanitize.output(user, userSchema, { auth });
 };
 
-const { ApplicationError, ValidationError, ForbiddenError } = utils.errors;
+const sanitizeOutput = async (user, ctx) => {
+    const schema = strapi.getModel("plugin::users-permissions.user");
+    const { auth } = ctx.state;
+
+    return strapi.contentAPI.sanitize.output(user, schema, { auth });
+};
+
+const { ApplicationError, ValidationError, ForbiddenError, NotFoundError } =
+    utils.errors;
 
 export default {
     /**
@@ -314,14 +542,148 @@ export default {
                         );
                     }
 
+                    const csrfToken = crypto.randomBytes(32).toString("hex");
+
+                    await getService("user").edit(user.id, {
+                        csrfToken,
+                    });
+
                     return ctx.send({
                         jwt: getService("jwt").issue({ id: user.id }),
+                        csrfToken,
                         user: await sanitizeUser(user, ctx),
                     });
                 } catch (error) {
                     throw new ApplicationError(error.message);
                 }
             };
+
+        strapi.plugins["users-permissions"].controllers["auth"].changePassword =
+            async (ctx) => {
+                if (!ctx.state.user) {
+                    throw new ApplicationError(
+                        "You must be authenticated to reset your password",
+                    );
+                }
+
+                const validations = strapi.config.get(
+                    "plugin::users-permissions.validationRules",
+                );
+
+                const { currentPassword, password } =
+                    await validateChangePasswordBody(
+                        ctx.request.body,
+                        validations,
+                    );
+
+                const user = await strapi.db
+                    .query("plugin::users-permissions.user")
+                    .findOne({ where: { id: ctx.state.user.id } });
+
+                const validPassword = await getService("user").validatePassword(
+                    currentPassword,
+                    user.password,
+                );
+
+                if (!validPassword) {
+                    throw new ValidationError(
+                        "The provided current password is invalid",
+                    );
+                }
+
+                if (currentPassword === password) {
+                    throw new ValidationError(
+                        "Your new password must be different than your current password",
+                    );
+                }
+
+                await getService("user").edit(user.id, { password });
+
+                const csrfToken = crypto.randomBytes(32).toString("hex");
+
+                await getService("user").edit(user.id, {
+                    csrfToken,
+                });
+
+                ctx.send({
+                    jwt: getService("jwt").issue({ id: user.id }),
+                    csrfToken,
+                    user: await sanitizeUser(user, ctx),
+                });
+            };
+
+        strapi.plugins["users-permissions"].controllers["user"].update = async (
+            ctx,
+        ) => {
+            const advancedConfigs = (await strapi
+                .store({
+                    type: "plugin",
+                    name: "users-permissions",
+                    key: "advanced",
+                })
+                .get()) as any;
+
+            const { id } = ctx.params;
+            const { email, username, password } = ctx.request.body;
+
+            const user = await getService("user").fetch(id);
+            if (!user) {
+                throw new NotFoundError(`User not found`);
+            }
+
+            if (user.documentId !== ctx.state.user.documentId) {
+                throw new NotFoundError(`User not found`);
+            }
+
+            await validateUpdateUserBody(ctx.request.body);
+
+            if (
+                user.provider === "local" &&
+                _.has(ctx.request.body, "password") &&
+                !password
+            ) {
+                throw new ValidationError("password.notNull");
+            }
+
+            if (_.has(ctx.request.body, "username")) {
+                const userWithSameUsername = await strapi.db
+                    .query("plugin::users-permissions.user")
+                    .findOne({ where: { username } });
+
+                if (
+                    userWithSameUsername &&
+                    _.toString(userWithSameUsername.id) !== _.toString(id)
+                ) {
+                    throw new ApplicationError("Username already taken");
+                }
+            }
+
+            if (
+                _.has(ctx.request.body, "email") &&
+                advancedConfigs.unique_email
+            ) {
+                const userWithSameEmail = await strapi.db
+                    .query("plugin::users-permissions.user")
+                    .findOne({ where: { email: email.toLowerCase() } });
+
+                if (
+                    userWithSameEmail &&
+                    _.toString(userWithSameEmail.id) !== _.toString(id)
+                ) {
+                    throw new ApplicationError("Email already taken");
+                }
+                ctx.request.body.email = ctx.request.body.email.toLowerCase();
+            }
+
+            const updateData = {
+                ...ctx.request.body,
+            };
+
+            const data = await getService("user").edit(user.id, updateData);
+            const sanitizedData = await sanitizeOutput(data, ctx);
+
+            ctx.send(sanitizedData);
+        };
     },
 
     /**
