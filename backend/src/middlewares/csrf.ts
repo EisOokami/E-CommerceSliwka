@@ -11,7 +11,8 @@ export default (config, { strapi }: { strapi: Core.Strapi }) =>
             ctx.path.includes("/admin") ||
             ctx.path.includes("/content-manager") ||
             ctx.path.includes("/content-type-builder") ||
-            ctx.path.includes("/users-permissions")
+            ctx.path.includes("/users-permissions") ||
+            ctx.path.includes("/upload/actions/bulk-delete")
         ) {
             return next();
         }
