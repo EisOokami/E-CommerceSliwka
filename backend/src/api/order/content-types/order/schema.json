@@ -1,49 +1,46 @@
 {
-  "kind": "collectionType",
-  "collectionName": "orders",
-  "info": {
-    "singularName": "order",
-    "pluralName": "orders",
-    "displayName": "Order",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {},
-  "attributes": {
-    "stripeId": {
-      "type": "string"
+    "kind": "collectionType",
+    "collectionName": "orders",
+    "info": {
+        "singularName": "order",
+        "pluralName": "orders",
+        "displayName": "Order",
+        "description": ""
     },
-    "orderId": {
-      "type": "string"
+    "options": {
+        "draftAndPublish": true
     },
-    "isSuccess": {
-      "type": "boolean"
-    },
-    "deliveryStatus": {
-      "type": "enumeration",
-      "enum": [
-        "Delivered",
-        "Shipped",
-        "Processing",
-        "Cancelled"
-      ]
-    },
-    "estimatedDelivery": {
-      "type": "date"
-    },
-    "trackingNumber": {
-      "type": "string"
-    },
-    "cartItems": {
-      "type": "json"
-    },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "orders"
+    "pluginOptions": {},
+    "attributes": {
+        "stripeId": {
+            "type": "string",
+            "private": true
+        },
+        "orderId": {
+            "type": "string"
+        },
+        "isSuccess": {
+            "type": "boolean"
+        },
+        "deliveryStatus": {
+            "type": "enumeration",
+            "enum": ["Delivered", "Shipped", "Processing", "Cancelled"]
+        },
+        "estimatedDelivery": {
+            "type": "date"
+        },
+        "trackingNumber": {
+            "type": "string"
+        },
+        "cartItems": {
+            "type": "json"
+        },
+        "user": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "plugin::users-permissions.user",
+            "inversedBy": "orders",
+            "private": true
+        }
     }
-  }
 }

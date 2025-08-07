@@ -157,6 +157,7 @@ export default factories.createCoreService(
                         stripeId: session.id,
                         user: user.documentId,
                     },
+                    status: "published",
                 });
 
                 return { stripeSession: session };
@@ -166,6 +167,33 @@ export default factories.createCoreService(
 
                 return err;
             }
+        },
+
+        async findOrder(params, user) {
+            const { results, pagination } = await super.find(params);
+
+            const orderData = await strapi
+                .documents("api::order.order")
+                .findMany({
+                    populate: {
+                        ...params.populate,
+                        user: {
+                            fields: ["id"],
+                        },
+                    },
+                    filters: {
+                        ...params.filters,
+                        user: {
+                            documentId: {
+                                $eq: user.documentId,
+                            },
+                        },
+                    },
+                    fields: params.fields,
+                    sort: params.sort,
+                });
+
+            return { data: orderData, meta: { pagination } };
         },
 
         async webhook(ctx, signature) {
@@ -245,8 +273,8 @@ export default factories.createCoreService(
                     populate: "*",
                     filters: {
                         user: {
-                            id: {
-                                $eq: user.id,
+                            documentId: {
+                                $eq: user.documentId,
                             },
                         },
                     },
@@ -275,6 +303,14 @@ export default factories.createCoreService(
                         trackingNumber,
                         estimatedDelivery,
                     },
+                    filters: {
+                        user: {
+                            documentId: {
+                                $eq: user.documentId,
+                            },
+                        },
+                    },
+                    status: "published",
                 });
 
                 return {};
@@ -287,6 +323,14 @@ export default factories.createCoreService(
                         isSuccess,
                         deliveryStatus: "Cancelled",
                     },
+                    filters: {
+                        user: {
+                            documentId: {
+                                $eq: user.documentId,
+                            },
+                        },
+                    },
+                    status: "published",
                 });
 
                 return {};

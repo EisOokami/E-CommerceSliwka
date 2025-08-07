@@ -7,6 +7,25 @@ import { factories } from "@strapi/strapi";
 export default factories.createCoreController(
     "api::order.order",
     ({ strapi }) => ({
+        async find(ctx) {
+            const user = ctx.state.user;
+
+            if (!user) {
+                return ctx.unauthorized("You are not authorized!");
+            }
+
+            const params = (await this.sanitizeQuery(ctx)) as Record<
+                string,
+                any
+            >;
+
+            const result = await strapi
+                .service("api::order.order")
+                .findOrder(params, user);
+
+            ctx.send(result);
+        },
+
         async create(ctx) {
             const user = ctx.state.user;
 
