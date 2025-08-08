@@ -447,7 +447,8 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
         user: Schema.Attribute.Relation<
             "manyToOne",
             "plugin::users-permissions.user"
-        >;
+        > &
+            Schema.Attribute.Private;
     };
 }
 
@@ -623,7 +624,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
             Schema.Attribute.Private;
         orderId: Schema.Attribute.String;
         publishedAt: Schema.Attribute.DateTime;
-        stripeId: Schema.Attribute.String;
+        stripeId: Schema.Attribute.String & Schema.Attribute.Private;
         trackingNumber: Schema.Attribute.String;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
@@ -631,7 +632,8 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
         user: Schema.Attribute.Relation<
             "manyToOne",
             "plugin::users-permissions.user"
-        >;
+        > &
+            Schema.Attribute.Private;
     };
 }
 
@@ -729,7 +731,8 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
         user: Schema.Attribute.Relation<
             "manyToOne",
             "plugin::users-permissions.user"
-        >;
+        > &
+            Schema.Attribute.Private;
     };
 }
 
@@ -762,7 +765,8 @@ export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
         user: Schema.Attribute.Relation<
             "manyToOne",
             "plugin::users-permissions.user"
-        >;
+        > &
+            Schema.Attribute.Private;
     };
 }
 
@@ -1243,7 +1247,6 @@ export interface PluginUsersPermissionsUser
         csrfToken: Schema.Attribute.Password & Schema.Attribute.Private;
         email: Schema.Attribute.Email &
             Schema.Attribute.Required &
-            Schema.Attribute.Private &
             Schema.Attribute.SetMinMaxLength<{
                 minLength: 6;
             }>;
