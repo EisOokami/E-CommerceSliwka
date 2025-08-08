@@ -6,6 +6,16 @@ import { mutateData } from "@/data/services/mutateData";
 import { revalidatePath } from "next/cache";
 import { getUserMeLoader } from "../services/getUserMeLoader";
 import { uploadImagesToStrapi } from "../services/uploadImage";
+import { cookies } from "next/headers";
+
+const config = {
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+    domain: process.env.HOST ?? "localhost",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict" as const,
+};
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -160,7 +170,7 @@ export async function updateProfileAction(
 
 const schemaChangePassword = z
     .object({
-        password: z
+        currentPassword: z
             .string()
             .min(6, {
                 message: "Password must be between 6 and 100 characters",
@@ -168,57 +178,58 @@ const schemaChangePassword = z
             .max(100, {
                 message: "Password must be between 6 and 100 characters",
             }),
-        confirmPassword: z
+        confirmCurrentPassword: z
             .string()
             .min(6, { message: "Please confirm your password" })
             .max(100, { message: "Please confirm your password" }),
-        resetPassword: z.string().optional(),
-        confirmResetPassword: z.string().optional(),
+        password: z.string().optional(),
+        confirmPassword: z.string().optional(),
     })
     .superRefine((val, ctx) => {
-        if (val.password !== val.confirmPassword) {
+        if (val.currentPassword !== val.confirmCurrentPassword) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: "Password is not the same as confirm password",
-                path: ["confirmPassword"],
+                message:
+                    "Current password is not the same as confirm current password",
+                path: ["confirmCurrentPassword"],
             });
         }
 
-        const hasReset = val.resetPassword?.length;
-        const hasConfirmReset = val.confirmResetPassword?.length;
+        const hasNew = val.password?.length;
+        const hasConfirmNew = val.confirmPassword?.length;
 
-        if (hasReset || hasConfirmReset) {
+        if (hasNew || hasConfirmNew) {
             if (
-                !hasReset ||
-                val.resetPassword!.length < 6 ||
-                val.resetPassword!.length > 100
+                !hasNew ||
+                val.password!.length < 6 ||
+                val.password!.length > 100
             ) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message:
-                        "Reset password must be between 6 and 100 characters",
-                    path: ["resetPassword"],
+                        "New password must be between 6 and 100 characters",
+                    path: ["password"],
                 });
             }
 
             if (
-                !hasConfirmReset ||
-                val.confirmResetPassword!.length < 6 ||
-                val.confirmResetPassword!.length > 100
+                !hasConfirmNew ||
+                val.confirmPassword!.length < 6 ||
+                val.confirmPassword!.length > 100
             ) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: "Please confirm your reset password",
-                    path: ["confirmResetPassword"],
+                    message: "Please confirm your new password",
+                    path: ["confirmPassword"],
                 });
             }
 
-            if (val.resetPassword !== val.confirmResetPassword) {
+            if (val.password !== val.confirmPassword) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message:
-                        "Reset password is not the same as confirm reset password",
-                    path: ["confirmResetPassword"],
+                        "New password is not the same as confirm new password",
+                    path: ["confirmPassword"],
                 });
             }
         }
@@ -238,10 +249,10 @@ export async function changePasswordAction(
     }
 
     const validatedFields = schemaChangePassword.safeParse({
+        currentPassword: formData.get("current-password"),
+        confirmCurrentPassword: formData.get("confirm-current-password"),
         password: formData.get("password"),
         confirmPassword: formData.get("confirm-password"),
-        resetPassword: formData.get("reset-password"),
-        confirmResetPassword: formData.get("confirm-reset-password"),
     });
 
     if (!validatedFields.success) {
@@ -255,24 +266,21 @@ export async function changePasswordAction(
 
     const rawFormData = Object.fromEntries(formData);
 
-    const query = qs.stringify({
-        populate: "*",
-    });
-
     const payload: {
+        currentPassword?: FormDataEntryValue | null;
         password?: FormDataEntryValue | null;
+        passwordConfirmation?: FormDataEntryValue | null;
     } = {};
 
-    if (
-        validatedFields.data.resetPassword &&
-        validatedFields.data.confirmResetPassword
-    ) {
-        payload["password"] = rawFormData["confirm-reset-password"];
+    if (validatedFields.data.password && validatedFields.data.confirmPassword) {
+        payload["currentPassword"] = rawFormData["current-password"];
+        payload["password"] = rawFormData["password"];
+        payload["passwordConfirmation"] = rawFormData["confirm-password"];
     }
 
     const responseData = await mutateData(
-        "PUT",
-        `/api/users/${userId}?${query}`,
+        "POST",
+        `/api/auth/change-password`,
         payload,
     );
 
@@ -291,6 +299,10 @@ export async function changePasswordAction(
             message: "Failed to Update Profile.",
         };
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set("jwt", responseData.jwt, config);
+    cookieStore.set("csrfToken", responseData.csrfToken, config);
 
     revalidatePath("/account");
 
