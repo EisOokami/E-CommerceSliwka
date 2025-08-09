@@ -6,13 +6,16 @@
   "options": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "specification": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "icon": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "phone",
         "cpu",

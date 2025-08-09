@@ -10,24 +10,27 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "header": {
-      "displayName": "Header",
       "type": "component",
+      "component": "layout.header",
       "repeatable": false,
-      "component": "layout.header"
+      "required": true
     },
     "footer": {
-      "displayName": "Footer",
       "type": "component",
+      "component": "layout.footer",
       "repeatable": false,
-      "component": "layout.footer"
+      "required": true
     }
   }
 }

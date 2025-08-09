@@ -6,12 +6,14 @@
   "options": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "links": {
       "type": "component",
+      "component": "components.link",
       "repeatable": true,
-      "component": "components.link"
+      "required": true
     }
   }
 }

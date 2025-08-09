@@ -16,7 +16,8 @@
       "components": [
         "layout.sign-in",
         "layout.sign-up"
-      ]
+      ],
+      "required": true
     }
   }
 }

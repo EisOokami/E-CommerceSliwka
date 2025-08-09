@@ -15,13 +15,14 @@
     "image": {
       "type": "media",
       "multiple": false,
-      "required": false,
+      "required": true,
       "allowedTypes": [
         "images"
       ]
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "sliderImages": {
       "type": "media",
@@ -31,48 +32,61 @@
       ]
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "price": {
-      "type": "float"
+      "type": "decimal",
+      "required": true
     },
     "isDiscount": {
       "type": "boolean",
+      "required": true,
       "default": false
     },
     "discountedPrice": {
-      "type": "float"
+      "type": "decimal",
+      "required": false,
+      "default": 0,
+      "min": 0
     },
     "finalPrice": {
       "type": "decimal"
     },
     "averageRating": {
       "type": "decimal",
-      "default": 0
+      "default": 0,
+      "min": 0,
+      "max": 5
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "category": {
       "type": "component",
       "component": "components.category",
-      "repeatable": false
-    },
-    "productInfo": {
-      "type": "component",
-      "component": "components.product-info",
-      "repeatable": false
+      "repeatable": false,
+      "required": true
     },
     "productSpecs": {
       "type": "component",
       "component": "components.product-specifications",
-      "repeatable": true
+      "repeatable": true,
+      "required": true
+    },
+    "productInfo": {
+      "type": "component",
+      "component": "components.product-info",
+      "repeatable": false,
+      "required": true
     },
     "detailedSpecifications": {
       "type": "component",
       "component": "components.detailed-specifications",
-      "repeatable": true
+      "repeatable": true,
+      "required": true
     },
     "reviews": {
       "type": "relation",

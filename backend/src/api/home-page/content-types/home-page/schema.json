@@ -10,12 +10,15 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "blocks": {
       "type": "dynamiczone",
@@ -25,7 +28,8 @@
         "layout.discounts",
         "layout.products-carousel-section",
         "layout.products-section"
-      ]
+      ],
+      "required": true
     }
   }
 }

@@ -13,13 +13,18 @@
   "pluginOptions": {},
   "attributes": {
     "value": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "priceDifference": {
-      "type": "decimal"
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "min": 0
     },
     "inStock": {
       "type": "boolean",
+      "required": true,
       "default": true
     },
     "product": {

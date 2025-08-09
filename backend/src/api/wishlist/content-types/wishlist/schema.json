@@ -1,28 +1,28 @@
 {
-    "kind": "collectionType",
-    "collectionName": "wishlists",
-    "info": {
-        "singularName": "wishlist",
-        "pluralName": "wishlists",
-        "displayName": "Wishlist",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "wishlists",
+  "info": {
+    "singularName": "wishlist",
+    "pluralName": "wishlists",
+    "displayName": "Wishlist",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "wishlist"
     },
-    "options": {
-        "draftAndPublish": true
-    },
-    "attributes": {
-        "product": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "api::product.product",
-            "inversedBy": "wishlist"
-        },
-        "user": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "plugin::users-permissions.user",
-            "inversedBy": "wishlist",
-            "private": true
-        }
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "private": true,
+      "inversedBy": "wishlist"
     }
+  }
 }

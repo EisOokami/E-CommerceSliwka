@@ -8,6 +8,7 @@
   "attributes": {
     "category": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "Smartphones",
         "Smartwatches",

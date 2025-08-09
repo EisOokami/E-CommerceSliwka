@@ -13,20 +13,27 @@
   "pluginOptions": {},
   "attributes": {
     "colorName": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "colorHex": {
       "type": "string",
       "default": "#",
       "minLength": 4,
-      "maxLength": 7
+      "maxLength": 7,
+      "required": true,
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
     },
     "priceDifference": {
-      "type": "decimal"
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "min": 0
     },
     "sliderImages": {
       "type": "media",
       "multiple": true,
+      "required": true,
       "allowedTypes": [
         "images"
       ]

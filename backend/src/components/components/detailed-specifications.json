@@ -6,13 +6,14 @@
   "options": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "specifications": {
-      "displayName": "Specification",
       "type": "component",
+      "component": "components.specification",
       "repeatable": true,
-      "component": "components.specification"
+      "required": true
     }
   }
 }

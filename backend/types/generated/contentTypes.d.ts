@@ -398,7 +398,8 @@ export interface ApiAuthPageAuthPage extends Struct.SingleTypeSchema {
     attributes: {
         blocks: Schema.Attribute.DynamicZone<
             ["layout.sign-in", "layout.sign-up"]
-        >;
+        > &
+            Schema.Attribute.Required;
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -440,7 +441,14 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
         option: Schema.Attribute.Relation<"manyToOne", "api::option.option">;
         product: Schema.Attribute.Relation<"manyToOne", "api::product.product">;
         publishedAt: Schema.Attribute.DateTime;
-        quantity: Schema.Attribute.Integer;
+        quantity: Schema.Attribute.Integer &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMax<
+                {
+                    min: 1;
+                },
+                number
+            >;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -466,12 +474,13 @@ export interface ApiColorColor extends Struct.CollectionTypeSchema {
     attributes: {
         carts: Schema.Attribute.Relation<"oneToMany", "api::cart.cart">;
         colorHex: Schema.Attribute.String &
+            Schema.Attribute.Required &
             Schema.Attribute.SetMinMaxLength<{
                 maxLength: 7;
                 minLength: 4;
             }> &
             Schema.Attribute.DefaultTo<"#">;
-        colorName: Schema.Attribute.String;
+        colorName: Schema.Attribute.String & Schema.Attribute.Required;
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -481,10 +490,19 @@ export interface ApiColorColor extends Struct.CollectionTypeSchema {
             "api::color.color"
         > &
             Schema.Attribute.Private;
-        priceDifference: Schema.Attribute.Decimal;
+        priceDifference: Schema.Attribute.Decimal &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMax<
+                {
+                    min: 0;
+                },
+                number
+            > &
+            Schema.Attribute.DefaultTo<0>;
         product: Schema.Attribute.Relation<"manyToOne", "api::product.product">;
         publishedAt: Schema.Attribute.DateTime;
-        sliderImages: Schema.Attribute.Media<"images", true>;
+        sliderImages: Schema.Attribute.Media<"images", true> &
+            Schema.Attribute.Required;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -506,9 +524,11 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        description: Schema.Attribute.Text;
-        footer: Schema.Attribute.Component<"layout.footer", false>;
-        header: Schema.Attribute.Component<"layout.header", false>;
+        description: Schema.Attribute.Text & Schema.Attribute.Required;
+        footer: Schema.Attribute.Component<"layout.footer", false> &
+            Schema.Attribute.Required;
+        header: Schema.Attribute.Component<"layout.header", false> &
+            Schema.Attribute.Required;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
         localizations: Schema.Attribute.Relation<
             "oneToMany",
@@ -516,7 +536,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
         > &
             Schema.Attribute.Private;
         publishedAt: Schema.Attribute.DateTime;
-        title: Schema.Attribute.String;
+        title: Schema.Attribute.String & Schema.Attribute.Required;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -543,11 +563,12 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
                 "layout.products-carousel-section",
                 "layout.products-section",
             ]
-        >;
+        > &
+            Schema.Attribute.Required;
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        description: Schema.Attribute.Text;
+        description: Schema.Attribute.Text & Schema.Attribute.Required;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
         localizations: Schema.Attribute.Relation<
             "oneToMany",
@@ -555,7 +576,7 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
         > &
             Schema.Attribute.Private;
         publishedAt: Schema.Attribute.DateTime;
-        title: Schema.Attribute.String;
+        title: Schema.Attribute.String & Schema.Attribute.Required;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -578,20 +599,30 @@ export interface ApiOptionOption extends Struct.CollectionTypeSchema {
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        inStock: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+        inStock: Schema.Attribute.Boolean &
+            Schema.Attribute.Required &
+            Schema.Attribute.DefaultTo<true>;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
         localizations: Schema.Attribute.Relation<
             "oneToMany",
             "api::option.option"
         > &
             Schema.Attribute.Private;
-        priceDifference: Schema.Attribute.Decimal;
+        priceDifference: Schema.Attribute.Decimal &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMax<
+                {
+                    min: 0;
+                },
+                number
+            > &
+            Schema.Attribute.DefaultTo<0>;
         product: Schema.Attribute.Relation<"manyToOne", "api::product.product">;
         publishedAt: Schema.Attribute.DateTime;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        value: Schema.Attribute.String;
+        value: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -607,13 +638,14 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
         draftAndPublish: true;
     };
     attributes: {
-        cartItems: Schema.Attribute.JSON;
+        cartItems: Schema.Attribute.JSON & Schema.Attribute.Required;
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
         deliveryStatus: Schema.Attribute.Enumeration<
             ["Delivered", "Shipped", "Processing", "Cancelled"]
-        >;
+        > &
+            Schema.Attribute.DefaultTo<"Processing">;
         estimatedDelivery: Schema.Attribute.Date;
         isSuccess: Schema.Attribute.Boolean;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -622,10 +654,15 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
             "api::order.order"
         > &
             Schema.Attribute.Private;
-        orderId: Schema.Attribute.String;
+        orderId: Schema.Attribute.String &
+            Schema.Attribute.Required &
+            Schema.Attribute.Unique;
         publishedAt: Schema.Attribute.DateTime;
-        stripeId: Schema.Attribute.String & Schema.Attribute.Private;
-        trackingNumber: Schema.Attribute.String;
+        stripeId: Schema.Attribute.String &
+            Schema.Attribute.Required &
+            Schema.Attribute.Private &
+            Schema.Attribute.Unique;
+        trackingNumber: Schema.Attribute.String & Schema.Attribute.Unique;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -649,22 +686,40 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         draftAndPublish: true;
     };
     attributes: {
-        averageRating: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
+        averageRating: Schema.Attribute.Decimal &
+            Schema.Attribute.SetMinMax<
+                {
+                    max: 5;
+                    min: 0;
+                },
+                number
+            > &
+            Schema.Attribute.DefaultTo<0>;
         carts: Schema.Attribute.Relation<"oneToMany", "api::cart.cart">;
-        category: Schema.Attribute.Component<"components.category", false>;
+        category: Schema.Attribute.Component<"components.category", false> &
+            Schema.Attribute.Required;
         colors: Schema.Attribute.Relation<"oneToMany", "api::color.color">;
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        description: Schema.Attribute.Text;
+        description: Schema.Attribute.Text & Schema.Attribute.Required;
         detailedSpecifications: Schema.Attribute.Component<
             "components.detailed-specifications",
             true
-        >;
-        discountedPrice: Schema.Attribute.Float;
+        > &
+            Schema.Attribute.Required;
+        discountedPrice: Schema.Attribute.Decimal &
+            Schema.Attribute.SetMinMax<
+                {
+                    min: 0;
+                },
+                number
+            > &
+            Schema.Attribute.DefaultTo<0>;
         finalPrice: Schema.Attribute.Decimal;
-        image: Schema.Attribute.Media<"images">;
+        image: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         isDiscount: Schema.Attribute.Boolean &
+            Schema.Attribute.Required &
             Schema.Attribute.DefaultTo<false>;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
         localizations: Schema.Attribute.Relation<
@@ -672,21 +727,23 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
             "api::product.product"
         > &
             Schema.Attribute.Private;
-        name: Schema.Attribute.String;
+        name: Schema.Attribute.String & Schema.Attribute.Required;
         options: Schema.Attribute.Relation<"oneToMany", "api::option.option">;
-        price: Schema.Attribute.Float;
+        price: Schema.Attribute.Decimal & Schema.Attribute.Required;
         productInfo: Schema.Attribute.Component<
             "components.product-info",
             false
-        >;
+        > &
+            Schema.Attribute.Required;
         productSpecs: Schema.Attribute.Component<
             "components.product-specifications",
             true
-        >;
+        > &
+            Schema.Attribute.Required;
         publishedAt: Schema.Attribute.DateTime;
         reviews: Schema.Attribute.Relation<"oneToMany", "api::review.review">;
         sliderImages: Schema.Attribute.Media<"images", true>;
-        slug: Schema.Attribute.UID<"name">;
+        slug: Schema.Attribute.UID<"name"> & Schema.Attribute.Required;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -712,7 +769,12 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
         createdAt: Schema.Attribute.DateTime;
         createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
-        description: Schema.Attribute.Text;
+        description: Schema.Attribute.Text &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMaxLength<{
+                maxLength: 1500;
+                minLength: 3;
+            }>;
         images: Schema.Attribute.Media<"images", true>;
         lastEdited: Schema.Attribute.Date;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -722,9 +784,17 @@ export interface ApiReviewReview extends Struct.CollectionTypeSchema {
         > &
             Schema.Attribute.Private;
         product: Schema.Attribute.Relation<"manyToOne", "api::product.product">;
-        publicationDate: Schema.Attribute.Date;
+        publicationDate: Schema.Attribute.Date & Schema.Attribute.Required;
         publishedAt: Schema.Attribute.DateTime;
-        rating: Schema.Attribute.Integer;
+        rating: Schema.Attribute.Integer &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMax<
+                {
+                    max: 5;
+                    min: 1;
+                },
+                number
+            >;
         updatedAt: Schema.Attribute.DateTime;
         updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
             Schema.Attribute.Private;
@@ -1236,7 +1306,8 @@ export interface PluginUsersPermissionsUser
         draftAndPublish: false;
     };
     attributes: {
-        agreeToTermsAndPrivacy: Schema.Attribute.Boolean;
+        agreeToTermsAndPrivacy: Schema.Attribute.Boolean &
+            Schema.Attribute.Required;
         avatar: Schema.Attribute.Media<"images">;
         blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
         confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;

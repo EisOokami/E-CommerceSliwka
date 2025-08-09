@@ -7,7 +7,7 @@ export interface ComponentsArray extends Struct.ComponentSchema {
         icon: "archive";
     };
     attributes: {
-        item: Schema.Attribute.String;
+        item: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -29,7 +29,8 @@ export interface ComponentsCategory extends Struct.ComponentSchema {
                 "Gaming",
                 "Other",
             ]
-        >;
+        > &
+            Schema.Attribute.Required;
     };
 }
 
@@ -40,11 +41,12 @@ export interface ComponentsDetailedSpecifications
         displayName: "Detailed Specifications";
     };
     attributes: {
-        name: Schema.Attribute.String;
+        name: Schema.Attribute.String & Schema.Attribute.Required;
         specifications: Schema.Attribute.Component<
             "components.specification",
             true
-        >;
+        > &
+            Schema.Attribute.Required;
     };
 }
 
@@ -55,8 +57,8 @@ export interface ComponentsFeatureProduct extends Struct.ComponentSchema {
         displayName: "FeatureProduct";
     };
     attributes: {
-        heading: Schema.Attribute.String;
-        image: Schema.Attribute.Media<"images">;
+        heading: Schema.Attribute.String & Schema.Attribute.Required;
+        image: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         product: Schema.Attribute.Relation<"oneToOne", "api::product.product">;
         subHeading: Schema.Attribute.Text;
     };
@@ -69,7 +71,7 @@ export interface ComponentsLink extends Struct.ComponentSchema {
     };
     attributes: {
         text: Schema.Attribute.String;
-        url: Schema.Attribute.String;
+        url: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -89,9 +91,9 @@ export interface ComponentsProductInfo extends Struct.ComponentSchema {
         displayName: "Product Info";
     };
     attributes: {
-        delivery: Schema.Attribute.String;
-        guaranteed: Schema.Attribute.String;
-        inStore: Schema.Attribute.String;
+        delivery: Schema.Attribute.String & Schema.Attribute.Required;
+        guaranteed: Schema.Attribute.String & Schema.Attribute.Required;
+        inStore: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -122,9 +124,10 @@ export interface ComponentsProductSpecifications
                 "resolution",
                 "screen",
             ]
-        >;
-        name: Schema.Attribute.String;
-        specification: Schema.Attribute.String;
+        > &
+            Schema.Attribute.Required;
+        name: Schema.Attribute.String & Schema.Attribute.Required;
+        specification: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -151,8 +154,9 @@ export interface ComponentsSpecification extends Struct.ComponentSchema {
         displayName: "Specification";
     };
     attributes: {
-        name: Schema.Attribute.String;
-        specifications: Schema.Attribute.Component<"components.array", true>;
+        name: Schema.Attribute.String & Schema.Attribute.Required;
+        specifications: Schema.Attribute.Component<"components.array", true> &
+            Schema.Attribute.Required;
     };
 }
 
@@ -162,8 +166,9 @@ export interface ComponentsUtilityLinks extends Struct.ComponentSchema {
         displayName: "Utility links";
     };
     attributes: {
-        links: Schema.Attribute.Component<"components.link", true>;
-        title: Schema.Attribute.String;
+        links: Schema.Attribute.Component<"components.link", true> &
+            Schema.Attribute.Required;
+        title: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -192,7 +197,8 @@ export interface LayoutFeatureProductsSection extends Struct.ComponentSchema {
         featureProduct: Schema.Attribute.Component<
             "components.feature-product",
             true
-        >;
+        > &
+            Schema.Attribute.Required;
         title: Schema.Attribute.String;
     };
 }
@@ -204,14 +210,17 @@ export interface LayoutFooter extends Struct.ComponentSchema {
         displayName: "Footer";
     };
     attributes: {
-        aboutUs: Schema.Attribute.Text;
-        logoImage: Schema.Attribute.Media<"images">;
-        logoLink: Schema.Attribute.Component<"components.link", false>;
-        socialLinks: Schema.Attribute.Component<"components.link", true>;
+        aboutUs: Schema.Attribute.Text & Schema.Attribute.Required;
+        logoImage: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
+        logoLink: Schema.Attribute.Component<"components.link", false> &
+            Schema.Attribute.Required;
+        socialLinks: Schema.Attribute.Component<"components.link", true> &
+            Schema.Attribute.Required;
         utilityLinks: Schema.Attribute.Component<
             "components.utility-links",
             true
-        >;
+        > &
+            Schema.Attribute.Required;
     };
 }
 
@@ -222,10 +231,13 @@ export interface LayoutHeader extends Struct.ComponentSchema {
         displayName: "Header";
     };
     attributes: {
-        iconsLink: Schema.Attribute.Component<"components.link", true>;
-        logoImage: Schema.Attribute.Media<"images">;
-        logoLink: Schema.Attribute.Component<"components.link", false>;
-        navigationLinks: Schema.Attribute.Component<"components.link", true>;
+        iconsLink: Schema.Attribute.Component<"components.link", true> &
+            Schema.Attribute.Required;
+        logoImage: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
+        logoLink: Schema.Attribute.Component<"components.link", false> &
+            Schema.Attribute.Required;
+        navigationLinks: Schema.Attribute.Component<"components.link", true> &
+            Schema.Attribute.Required;
     };
 }
 
@@ -236,10 +248,10 @@ export interface LayoutHeroSection extends Struct.ComponentSchema {
         displayName: "Hero Section";
     };
     attributes: {
-        heading: Schema.Attribute.String;
-        image: Schema.Attribute.Media<"images">;
+        heading: Schema.Attribute.String & Schema.Attribute.Required;
+        image: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         product: Schema.Attribute.Relation<"oneToOne", "api::product.product">;
-        subHeading: Schema.Attribute.Text;
+        subHeading: Schema.Attribute.Text & Schema.Attribute.Required;
     };
 }
 
@@ -268,7 +280,8 @@ export interface LayoutProductsSection extends Struct.ComponentSchema {
             "oneToMany",
             "api::product.product"
         >;
-        categories: Schema.Attribute.Component<"components.category", true>;
+        categories: Schema.Attribute.Component<"components.category", true> &
+            Schema.Attribute.Required;
         featuredProducts: Schema.Attribute.Relation<
             "oneToMany",
             "api::product.product"
@@ -277,7 +290,8 @@ export interface LayoutProductsSection extends Struct.ComponentSchema {
             "oneToMany",
             "api::product.product"
         >;
-        tabs: Schema.Attribute.Component<"components.array", true>;
+        tabs: Schema.Attribute.Component<"components.array", true> &
+            Schema.Attribute.Required;
     };
 }
 
@@ -287,7 +301,7 @@ export interface LayoutSignIn extends Struct.ComponentSchema {
         displayName: "Sign In";
     };
     attributes: {
-        banner: Schema.Attribute.Media<"images">;
+        banner: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         link: Schema.Attribute.Component<"components.link", false>;
     };
 }
@@ -298,7 +312,7 @@ export interface LayoutSignUp extends Struct.ComponentSchema {
         displayName: "Sign Up";
     };
     attributes: {
-        banner: Schema.Attribute.Media<"images">;
+        banner: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         link: Schema.Attribute.Component<"components.link", false>;
     };
 }

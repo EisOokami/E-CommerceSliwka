@@ -6,13 +6,16 @@
   "options": {},
   "attributes": {
     "delivery": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "inStore": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "guaranteed": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }

@@ -6,27 +6,31 @@
   },
   "options": {},
   "attributes": {
+    "logoImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "logoLink": {
       "type": "component",
+      "component": "components.link",
       "repeatable": false,
-      "component": "components.link"
+      "required": true
     },
     "navigationLinks": {
       "type": "component",
+      "component": "components.link",
       "repeatable": true,
-      "component": "components.link"
+      "required": true
     },
     "iconsLink": {
       "type": "component",
+      "component": "components.link",
       "repeatable": true,
-      "component": "components.link"
-    },
-    "logoImage": {
-      "allowedTypes": [
-        "images"
-      ],
-      "type": "media",
-      "multiple": false
+      "required": true
     }
   }
 }

@@ -7,12 +7,14 @@
   "options": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "specifications": {
       "type": "component",
+      "component": "components.array",
       "repeatable": true,
-      "component": "components.array"
+      "required": true
     }
   }
 }

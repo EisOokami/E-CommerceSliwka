@@ -8,13 +8,15 @@
   "attributes": {
     "categories": {
       "type": "component",
+      "component": "components.category",
       "repeatable": true,
-      "component": "components.category"
+      "required": true
     },
     "tabs": {
       "type": "component",
+      "component": "components.array",
       "repeatable": true,
-      "component": "components.array"
+      "required": true
     },
     "newArrival": {
       "type": "relation",

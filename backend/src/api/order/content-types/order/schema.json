@@ -1,46 +1,60 @@
 {
-    "kind": "collectionType",
-    "collectionName": "orders",
-    "info": {
-        "singularName": "order",
-        "pluralName": "orders",
-        "displayName": "Order",
-        "description": ""
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stripeId": {
+      "type": "string",
+      "private": true,
+      "required": true,
+      "unique": true
     },
-    "options": {
-        "draftAndPublish": true
+    "orderId": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "regex": "^ORD-[a-z0-9]+-[A-Z0-9]{6}$"
     },
-    "pluginOptions": {},
-    "attributes": {
-        "stripeId": {
-            "type": "string",
-            "private": true
-        },
-        "orderId": {
-            "type": "string"
-        },
-        "isSuccess": {
-            "type": "boolean"
-        },
-        "deliveryStatus": {
-            "type": "enumeration",
-            "enum": ["Delivered", "Shipped", "Processing", "Cancelled"]
-        },
-        "estimatedDelivery": {
-            "type": "date"
-        },
-        "trackingNumber": {
-            "type": "string"
-        },
-        "cartItems": {
-            "type": "json"
-        },
-        "user": {
-            "type": "relation",
-            "relation": "manyToOne",
-            "target": "plugin::users-permissions.user",
-            "inversedBy": "orders",
-            "private": true
-        }
+    "isSuccess": {
+      "type": "boolean"
+    },
+    "deliveryStatus": {
+      "type": "enumeration",
+      "default": "Processing",
+      "enum": [
+        "Delivered",
+        "Shipped",
+        "Processing",
+        "Cancelled"
+      ]
+    },
+    "estimatedDelivery": {
+      "type": "date"
+    },
+    "trackingNumber": {
+      "type": "string",
+      "unique": true,
+      "regex": "^[A-Z]{2}[0-9]{9}$"
+    },
+    "cartItems": {
+      "type": "json",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "private": true,
+      "inversedBy": "orders"
     }
+  }
 }
