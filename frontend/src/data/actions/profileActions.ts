@@ -107,8 +107,10 @@ export async function updateProfileAction(
     if (!validatedFields.success) {
         return {
             ...prevState,
-            zodErrors: validatedFields.error.flatten().fieldErrors,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
+            zodErrors: validatedFields.error.flatten().fieldErrors,
             message: "Missing Fields. Failed to Update Profile.",
         };
     }
@@ -144,7 +146,10 @@ export async function updateProfileAction(
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
+            zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
     }
@@ -152,7 +157,13 @@ export async function updateProfileAction(
     if (responseData.error) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
+            zodErrors: null,
             message: "Failed to Update Profile.",
         };
     }
@@ -161,10 +172,12 @@ export async function updateProfileAction(
 
     return {
         ...prevState,
+        formData: null,
         zodErrors: null,
         message: "Profile Updated",
         data: payload,
         strapiErrors: null,
+        strapiErrorsDetails: null,
     };
 }
 
@@ -258,8 +271,10 @@ export async function changePasswordAction(
     if (!validatedFields.success) {
         return {
             ...prevState,
+            formData,
             zodErrors: validatedFields.error.flatten().fieldErrors,
             strapiErrors: null,
+            strapiErrorsDetails: null,
             message: "Missing Fields. Failed to Update Profile.",
         };
     }
@@ -287,7 +302,10 @@ export async function changePasswordAction(
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
+            zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
     }
@@ -295,7 +313,13 @@ export async function changePasswordAction(
     if (responseData.error) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
+            zodErrors: null,
             message: "Failed to Update Profile.",
         };
     }
@@ -308,9 +332,11 @@ export async function changePasswordAction(
 
     return {
         ...prevState,
+        formData: null,
         zodErrors: null,
         message: "Profile Updated",
         data: payload,
         strapiErrors: null,
+        strapiErrorsDetails: null,
     };
 }

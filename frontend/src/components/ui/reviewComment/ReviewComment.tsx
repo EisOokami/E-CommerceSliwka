@@ -27,7 +27,12 @@ import { StrapiErrors } from "../strapiErrors/StrapiErrors";
 import StrapiImage from "../strapiImage/StrapiImage";
 
 const INITIAL_STATE = {
+    zodErrors: null,
+    strapiErrors: null,
     data: null,
+    message: null,
+    strapiErrorsDetails: null,
+    formData: null,
 };
 
 export default function ReviewComment({
@@ -190,7 +195,11 @@ export default function ReviewComment({
                     <textarea
                         name="description"
                         id="description"
-                        defaultValue={review.description}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("description")
+                                : review.description
+                        }
                         className="text-gray-600 bg-gray-100"
                     ></textarea>
                     <div className="flex flex-wrap gap-3">
@@ -270,7 +279,22 @@ export default function ReviewComment({
                     <ZodErrors error={formState?.zodErrors?.description} />
                     <ZodErrors error={formState?.zodErrors?.rating} />
                     <ZodErrors error={formState?.zodErrors?.images} />
+                    {formState?.strapiErrorsDetails &&
+                    formState?.strapiErrorsDetails.length ? (
+                        formState?.strapiErrorsDetails.map(
+                            (
+                                error: {
+                                    path: string;
+                                    message: string;
+                                    name: string;
+                                    value: string;
+                                },
+                                i: number,
+                            ) => <StrapiErrors key={i} error={error} />,
+                        )
+                    ) : (
                     <StrapiErrors error={formState?.strapiErrors} />
+                    )}
                 </form>
             ) : (
                 <div className="grid gap-1 w-full">

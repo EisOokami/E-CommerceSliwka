@@ -15,6 +15,8 @@ const INITIAL_STATE = {
     strapiErrors: null,
     data: null,
     message: null,
+    strapiErrorsDetails: null,
+    formData: null,
 };
 
 export default function SignIn({ pageData }: Readonly<SignInProps>) {
@@ -60,7 +62,12 @@ export default function SignIn({ pageData }: Readonly<SignInProps>) {
                         name="email"
                         type="email"
                         labelValue="Email"
-                        zodErrorMsg={formState?.zodErrors?.email}
+                        zodErrorMsg={formState?.zodErrors?.identifier}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("email")
+                                : null
+                        }
                     />
                     <AuthInput
                         id="password"
@@ -68,8 +75,28 @@ export default function SignIn({ pageData }: Readonly<SignInProps>) {
                         type="password"
                         labelValue="Password"
                         zodErrorMsg={formState?.zodErrors?.password}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("password")
+                                : null
+                        }
                     />
-                    <StrapiErrors error={formState?.strapiErrors} />
+                    {formState?.strapiErrorsDetails &&
+                    formState?.strapiErrorsDetails.length ? (
+                        formState?.strapiErrorsDetails.map(
+                            (
+                                error: {
+                                    path: string;
+                                    message: string;
+                                    name: string;
+                                    value: string;
+                                },
+                                i: number,
+                            ) => <StrapiErrors key={i} error={error} />,
+                        )
+                    ) : (
+                        <StrapiErrors error={formState?.strapiErrors} />
+                    )}
                     <Button
                         text="Sign In"
                         theme="dark"

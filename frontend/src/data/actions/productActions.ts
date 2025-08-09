@@ -218,8 +218,10 @@ export async function addReviewToProductAction(
     if (!validatedFields.success) {
         return {
             ...prevState,
+            formData,
             zodErrors: validatedFields.error.flatten().fieldErrors,
             strapiErrors: null,
+            strapiErrorsDetails: null,
             message: "Missing Fields. Failed to Add Review.",
         };
     }
@@ -269,7 +271,12 @@ export async function addReviewToProductAction(
 
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
             zodErrors: null,
             message: message,
         };
@@ -277,7 +284,9 @@ export async function addReviewToProductAction(
 
     return {
         ...prevState,
+        formData: null,
         strapiErrors: null,
+        strapiErrorsDetails: null,
         zodErrors: null,
         message: "Your review added",
     };
@@ -342,8 +351,10 @@ export async function editReviewAction(
     if (!validatedFields.success) {
         return {
             ...prevState,
-            zodErrors: validatedFields.error.flatten().fieldErrors,
+            formData,
+            strapiErrorsDetails: null,
             strapiErrors: null,
+            zodErrors: validatedFields.error.flatten().fieldErrors,
             message: "Missing Fields. Failed to Edit Review.",
         };
     }
@@ -383,7 +394,9 @@ export async function editReviewAction(
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
             zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
@@ -392,7 +405,12 @@ export async function editReviewAction(
     if (responseData.error) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
             zodErrors: null,
             message: "Failed to Edit Review.",
         };
@@ -400,7 +418,9 @@ export async function editReviewAction(
 
     return {
         ...prevState,
+        formData: null,
         strapiErrors: null,
+        strapiErrorsDetails: null,
         zodErrors: null,
         message: "Your review edited",
     };

@@ -1,9 +1,7 @@
 import { MdError } from "react-icons/md";
 import { StrapiErrorsProps } from "./StrapiErrors.interfaces";
 
-export function StrapiErrors({
-    error,
-}: Readonly<{ error: StrapiErrorsProps }>) {
+export function StrapiErrors({ error }: Readonly<StrapiErrorsProps>) {
     if (!error?.message) {
         return null;
     }

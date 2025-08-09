@@ -19,7 +19,12 @@ import { StrapiErrors } from "../strapiErrors/StrapiErrors";
 import { ZodErrors } from "../zodErrors/ZodErrors";
 
 const INITIAL_STATE = {
+    zodErrors: null,
+    strapiErrors: null,
     data: null,
+    message: null,
+    strapiErrorsDetails: null,
+    formData: null,
 };
 
 export default function ReviewInput({
@@ -128,6 +133,11 @@ export default function ReviewInput({
                     name="description"
                     rows={1}
                     className="w-full md:text-xl outline-none"
+                    defaultValue={
+                        formState?.formData
+                            ? formState?.formData.get("description")
+                            : null
+                    }
                 />
                 <input
                     type="file"
@@ -202,7 +212,22 @@ export default function ReviewInput({
                     )}
                 </div>
             </div>
+            {formState?.strapiErrorsDetails &&
+            formState?.strapiErrorsDetails.length ? (
+                formState?.strapiErrorsDetails.map(
+                    (
+                        error: {
+                            path: string;
+                            message: string;
+                            name: string;
+                            value: string;
+                        },
+                        i: number,
+                    ) => <StrapiErrors key={i} error={error} />,
+                )
+            ) : (
             <StrapiErrors error={formState?.strapiErrors} />
+            )}
             <div className="grid gap-1 md:min-w-72">
                 <ZodErrors error={formState?.zodErrors?.description} />
                 <ZodErrors error={formState?.zodErrors?.rating} />

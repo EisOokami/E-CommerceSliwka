@@ -12,7 +12,12 @@ import AuthInput from "@/components/ui/authInput/AuthInput";
 import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 
 const INITIAL_STATE = {
+    zodErrors: null,
+    strapiErrors: null,
     data: null,
+    message: null,
+    strapiErrorsDetails: null,
+    formData: null,
 };
 
 export default function SignUp({ pageData }: Readonly<SignUpProps>) {
@@ -58,6 +63,11 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         name="username"
                         labelValue="Username"
                         zodErrorMsg={formState?.zodErrors?.username}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("username")
+                                : null
+                        }
                     />
                     <AuthInput
                         id="email"
@@ -65,6 +75,11 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         type="email"
                         labelValue="Email"
                         zodErrorMsg={formState?.zodErrors?.email}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("email")
+                                : null
+                        }
                     />
                     <AuthInput
                         id="password"
@@ -72,6 +87,11 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         type="password"
                         labelValue="Password"
                         zodErrorMsg={formState?.zodErrors?.password}
+                        defaultValue={
+                            formState?.formData
+                                ? formState?.formData.get("password")
+                                : null
+                        }
                     />
                     <div className="relative">
                         <div className="flex gap-2">
@@ -91,7 +111,22 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                             error={formState?.zodErrors?.agreeToTermsAndPrivacy}
                         />
                     </div>
-                    <StrapiErrors error={formState?.strapiErrors} />
+                    {formState?.strapiErrorsDetails &&
+                    formState?.strapiErrorsDetails.length ? (
+                        formState?.strapiErrorsDetails.map(
+                            (
+                                error: {
+                                    path: string;
+                                    message: string;
+                                    name: string;
+                                    value: string;
+                                },
+                                i: number,
+                            ) => <StrapiErrors key={i} error={error} />,
+                        )
+                    ) : (
+                        <StrapiErrors error={formState?.strapiErrors} />
+                    )}
                     <Button
                         text="Sign Up"
                         theme="dark"

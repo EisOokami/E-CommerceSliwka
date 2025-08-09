@@ -56,8 +56,10 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     if (!validatedFields.success) {
         return {
             ...prevState,
-            zodErrors: validatedFields.error.flatten().fieldErrors,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
+            zodErrors: validatedFields.error.flatten().fieldErrors,
             message: "Missing Fields. Failed to Register.",
         };
     }
@@ -67,7 +69,9 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
             zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
@@ -76,7 +80,12 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     if (responseData.error) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
             zodErrors: null,
             message: "Failed to Register.",
         };
@@ -118,6 +127,9 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     if (!validatedFields.success) {
         return {
             ...prevState,
+            formData,
+            strapiErrors: null,
+            strapiErrorsDetails: null,
             zodErrors: validatedFields.error.flatten().fieldErrors,
             message: "Missing Fields. Failed to Login.",
         };
@@ -128,7 +140,9 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails: null,
             zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
@@ -137,7 +151,12 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     if (responseData.error) {
         return {
             ...prevState,
+            formData,
             strapiErrors: responseData.error,
+            strapiErrorsDetails:
+                responseData.error.details && responseData.error.details.errors
+                    ? responseData.error.details.errors
+                    : null,
             zodErrors: null,
             message: "Failed to Login.",
         };

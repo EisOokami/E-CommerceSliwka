@@ -15,13 +15,15 @@ import { AccountDetailsProps } from "./AccountDetails.interfaces";
 import Button from "@/components/ui/button/Button";
 import { StrapiErrors } from "@/components/ui/strapiErrors/StrapiErrors";
 import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
-import CustomInput from "@/components/ui/accountInput/AccountInput";
+import AccountInput from "@/components/ui/accountInput/AccountInput";
 
 const INITIAL_STATE = {
     zodErrors: null,
     data: null,
     strapiErrors: null,
+    strapiErrorsDetails: null,
     message: null,
+    formData: null,
 };
 
 export default function AccountDetails({
@@ -110,17 +112,22 @@ export default function AccountDetails({
                             />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full h-full">
-                            <CustomInput
-                                defaultValue={userData.username}
+                            <AccountInput
                                 id="username"
                                 name="username"
                                 labelValue="Username"
                                 zodErrorMsg={
                                     accountSettingFormState?.zodErrors?.username
                                 }
+                                defaultValue={
+                                    accountSettingFormState?.formData
+                                        ? accountSettingFormState?.formData.get(
+                                              "username",
+                                          )
+                                        : userData.username
+                                }
                             />
-                            <CustomInput
-                                defaultValue={userData.email}
+                            <AccountInput
                                 id="email"
                                 name="email"
                                 type="email"
@@ -128,13 +135,41 @@ export default function AccountDetails({
                                 zodErrorMsg={
                                     accountSettingFormState?.zodErrors?.email
                                 }
+                                defaultValue={
+                                    accountSettingFormState?.formData
+                                        ? accountSettingFormState?.formData.get(
+                                              "email",
+                                          )
+                                        : userData.email
+                                }
                             />
                             <div className="self-end grid gap-2">
-                                <StrapiErrors
-                                    error={
-                                        accountSettingFormState?.strapiErrors
-                                    }
-                                />
+                                {accountSettingFormState?.strapiErrorsDetails &&
+                                accountSettingFormState?.strapiErrorsDetails
+                                    .length ? (
+                                    accountSettingFormState?.strapiErrorsDetails.map(
+                                        (
+                                            error: {
+                                                path: string;
+                                                message: string;
+                                                name: string;
+                                                value: string;
+                                            },
+                                            i: number,
+                                        ) => (
+                                            <StrapiErrors
+                                                key={i}
+                                                error={error}
+                                            />
+                                        ),
+                                    )
+                                ) : (
+                                    <StrapiErrors
+                                        error={
+                                            accountSettingFormState?.strapiErrors
+                                        }
+                                    />
+                                )}
                                 {isPendingAccountSetting ? (
                                     <Button
                                         text="Loading"
@@ -170,51 +205,100 @@ export default function AccountDetails({
                 >
                     <div className="grid md:flex md:items-start gap-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
-                            <CustomInput
-                                id="reset-password"
-                                name="reset-password"
+                            <AccountInput
+                                id="current-password"
+                                name="current-password"
                                 type="password"
-                                labelValue="Reset password"
+                                labelValue="Current password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors
                                         ?.passwordReset
                                 }
+                                defaultValue={
+                                    changePasswordFormState?.formData
+                                        ? changePasswordFormState?.formData.get(
+                                              "current-password",
+                                          )
+                                        : null
+                                }
                             />
-                            <CustomInput
-                                id="confirm-reset-password"
-                                name="confirm-reset-password"
+                            <AccountInput
+                                id="confirm-current-password"
+                                name="confirm-current-password"
                                 type="password"
-                                labelValue="Confirm reset password"
+                                labelValue="Confirm current password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors
                                         ?.confirmResetPassword
                                 }
+                                defaultValue={
+                                    changePasswordFormState?.formData
+                                        ? changePasswordFormState?.formData.get(
+                                              "confirm-current-password",
+                                          )
+                                        : null
+                                }
                             />
-                            <CustomInput
+                            <AccountInput
                                 id="password"
                                 name="password"
                                 type="password"
-                                labelValue="Password"
+                                labelValue="New password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors?.password
                                 }
+                                defaultValue={
+                                    changePasswordFormState?.formData
+                                        ? changePasswordFormState?.formData.get(
+                                              "password",
+                                          )
+                                        : null
+                                }
                             />
-                            <CustomInput
+                            <AccountInput
                                 id="confirm-password"
                                 name="confirm-password"
                                 type="password"
-                                labelValue="Confirm password"
+                                labelValue="Confirm new password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors
                                         ?.confirmPassword
                                 }
+                                defaultValue={
+                                    changePasswordFormState?.formData
+                                        ? changePasswordFormState?.formData.get(
+                                              "confirm-password",
+                                          )
+                                        : null
+                                }
                             />
                             <div className="grid gap-2">
-                                <StrapiErrors
-                                    error={
-                                        changePasswordFormState?.strapiErrors
-                                    }
-                                />
+                                {changePasswordFormState?.strapiErrorsDetails &&
+                                changePasswordFormState?.strapiErrorsDetails
+                                    .length ? (
+                                    changePasswordFormState?.strapiErrorsDetails.map(
+                                        (
+                                            error: {
+                                                path: string;
+                                                message: string;
+                                                name: string;
+                                                value: string;
+                                            },
+                                            i: number,
+                                        ) => (
+                                            <StrapiErrors
+                                                key={i}
+                                                error={error}
+                                            />
+                                        ),
+                                    )
+                                ) : (
+                                    <StrapiErrors
+                                        error={
+                                            changePasswordFormState?.strapiErrors
+                                        }
+                                    />
+                                )}
                                 {isPendingChangePassword ? (
                                     <Button
                                         text="Loading"
