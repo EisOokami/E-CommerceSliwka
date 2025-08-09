@@ -18,6 +18,19 @@ const nextConfig: NextConfig = {
             bodySizeLimit: "5mb",
         },
     },
+    async headers() {
+        return [
+            {
+                source: "/(.*)",
+                headers: [
+                    {
+                        key: "X-Frame-Options",
+                        value: "DENY",
+                    },
+                ],
+            },
+        ];
+    },
 };
 
 export default nextConfig;
