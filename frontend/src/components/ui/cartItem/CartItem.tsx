@@ -37,14 +37,14 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
     }, []);
 
     const handleAddQuantityToProduct = () => {
-        addQuantityToProductAction(cartItem.product.documentId);
+        addQuantityToProductAction(cartItem.documentId);
         setProductsQuantity({
             [cartItem.documentId]: productsQuantity[cartItem.documentId] + 1,
         });
     };
 
     const handleRemoveQuantityToProduct = () => {
-        removeQuantityToProductAction(cartItem.product.documentId);
+        removeQuantityToProductAction(cartItem.documentId);
         setProductsQuantity({
             [cartItem.documentId]:
                 productsQuantity[cartItem.documentId] > 1
@@ -60,7 +60,7 @@ export default function CartItem({ cartItem }: Readonly<CartItemProps>) {
             300,
         );
 
-        deleteProductFromCartAction(cartItem.product.documentId);
+        deleteProductFromCartAction(cartItem.documentId);
 
         const updatedProductsInCartCount = await getProductsInCartCount();
 

@@ -5,6 +5,7 @@ import useGlobalStore from "@/stores/global";
 import useProductStore from "@/stores/product";
 import { toast } from "sonner";
 import {
+    getCartProductByProductDocumentIdData,
     getCartProductData,
     getProductsInCartCount,
     getProductsInWishlistCount,
@@ -42,11 +43,12 @@ export default function ActionsButton({
 
     useEffect(() => {
         (async () => {
-            const updatedCartData: ICart = await getCartProductData(
-                productData.documentId,
-                optionDocumentId,
-                colorDocumentId,
-            );
+            const updatedCartData: ICart =
+                await getCartProductByProductDocumentIdData(
+                    productData.documentId,
+                    optionDocumentId,
+                    colorDocumentId,
+                );
 
             setIsProductInCart(updatedCartData ? true : false);
         })();
@@ -70,16 +72,19 @@ export default function ActionsButton({
                 optionDocumentId,
                 colorDocumentId,
             );
-            const updatedCart = await getCartProductData(
-                productData.documentId,
-                optionDocumentId,
-                colorDocumentId,
-            );
-            const updatedProductsInCartCount = await getProductsInCartCount();
+
+            if (fetchResult.ok) {
+                const updatedCart = await getCartProductData(
+                    fetchResult.data.documentId,
+                );
+                const updatedProductsInCartCount =
+                    await getProductsInCartCount();
+
+                setIsProductInCart(updatedCart ? true : false);
+                setProductsInCartCount(updatedProductsInCartCount);
+            }
 
             showToast(fetchResult.ok, fetchResult.message);
-            setIsProductInCart(updatedCart ? true : false);
-            setProductsInCartCount(updatedProductsInCartCount);
         });
     };
 
@@ -96,16 +101,19 @@ export default function ActionsButton({
                 optionDocumentId,
                 colorDocumentId,
             );
-            const updatedCart = await getCartProductData(
-                productData.documentId,
-                optionDocumentId,
-                colorDocumentId,
-            );
-            const updatedProductsInCartCount = await getProductsInCartCount();
+
+            if (fetchResult.ok) {
+                const updatedCart = await getCartProductData(
+                    fetchResult.data?.documentId,
+                );
+                const updatedProductsInCartCount =
+                    await getProductsInCartCount();
+
+                setIsProductInCart(updatedCart ? true : false);
+                setProductsInCartCount(updatedProductsInCartCount);
+            }
 
             showToast(fetchResult.ok, fetchResult.message);
-            setIsProductInCart(updatedCart ? true : false);
-            setProductsInCartCount(updatedProductsInCartCount);
         });
     };
 

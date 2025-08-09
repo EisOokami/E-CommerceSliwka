@@ -4,7 +4,7 @@ import qs from "qs";
 import { z } from "zod";
 import { mutateData } from "../services/mutateData";
 import { getUserMeLoader } from "../services/getUserMeLoader";
-import { getCartProductData } from "../loaders";
+import { getCartProductByProductDocumentIdData } from "../loaders";
 import { uploadImagesToStrapi } from "../services/uploadImage";
 import { IImage } from "@/interfaces/interfaces";
 
@@ -24,7 +24,7 @@ export async function addProductToCartAction(
         };
     }
 
-    const productCart = await getCartProductData(
+    const productCart = await getCartProductByProductDocumentIdData(
         productDocumentId,
         optionDocumentId,
         colorDocumentId,
@@ -88,7 +88,11 @@ export async function addProductToCartAction(
         };
     }
 
-    return { ok: true, message: "Product add to cart" };
+    return {
+        ok: true,
+        message: "Product add to cart",
+        data: responseData.data,
+    };
 }
 
 export async function deleteProductFromCartAction(
@@ -107,7 +111,7 @@ export async function deleteProductFromCartAction(
         };
     }
 
-    const productCart = await getCartProductData(
+    const productCart = await getCartProductByProductDocumentIdData(
         productDocumentId,
         optionDocumentId,
         colorDocumentId,
@@ -146,7 +150,13 @@ export async function deleteProductFromCartAction(
         };
     }
 
-    return { ok: true, message: "Product deleted from cart" };
+    return {
+        ok: true,
+        message: "Product deleted from cart",
+        data: {
+            documentId: productCart.documentId,
+        },
+    };
 }
 
 const MAX_FILE_SIZE = 5000000;
@@ -257,7 +267,9 @@ export async function addReviewToProductAction(
     if (!responseData) {
         return {
             ...prevState,
+            formData,
             strapiErrors: null,
+            strapiErrorsDetails: null,
             zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };

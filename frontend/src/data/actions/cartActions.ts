@@ -26,10 +26,6 @@ export async function addQuantityToProductAction(documentId: string) {
     const payload = {
         data: {
             quantity: productCart.quantity + 1,
-            product: {
-                connect: [{ documentId: documentId }],
-            },
-            user: user.data.id,
         },
     };
 
@@ -72,10 +68,6 @@ export async function removeQuantityToProductAction(documentId: string) {
     const payload = {
         data: {
             quantity: productCart.quantity - 1,
-            product: {
-                connect: [{ documentId: documentId }],
-            },
-            user: user.data.id,
         },
     };
 

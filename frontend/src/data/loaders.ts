@@ -583,20 +583,13 @@ export async function getCartProductsData() {
                 },
             },
             user: {
-                fields: ["id"],
+                populate: true,
             },
             option: {
                 populate: true,
             },
             color: {
                 populate: true,
-            },
-        },
-        filters: {
-            user: {
-                id: {
-                    $eq: user.data.id,
-                },
             },
         },
         sort: ["createdAt:asc"],
@@ -607,7 +600,39 @@ export async function getCartProductsData() {
     return fetchedData.data;
 }
 
-export async function getCartProductData(
+export async function getCartProductData(cartDocumentId: string) {
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        return;
+    }
+
+    const url = new URL(`/api/carts/${cartDocumentId}`, baseUrl);
+
+    url.search = qs.stringify({
+        populate: {
+            product: {
+                populate: {
+                    image: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
+            },
+            option: {
+                populate: true,
+            },
+            color: {
+                populate: true,
+            },
+        },
+    });
+
+    const fetchedData = await fetchData(url.href);
+
+    return fetchedData.data;
+}
+
+export async function getCartProductByProductDocumentIdData(
     productDocumentId: string,
     optionDocumentId?: string,
     colorDocumentId?: string,
@@ -615,7 +640,7 @@ export async function getCartProductData(
     const user = await getUserMeLoader();
 
     if (!user.ok) {
-        return undefined;
+        return;
     }
 
     const url = new URL("/api/carts", baseUrl);
@@ -842,7 +867,6 @@ export async function getOrdersData() {
             },
         },
         sort: ["createdAt:desc"],
-        status: "draft",
     });
 
     const fetchedData = await fetchData(url.href);
