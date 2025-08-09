@@ -62,9 +62,7 @@ const SearchBarHeader = memo(function SearchBarHeader({
         <div className="relative">
             <div
                 ref={searchBarRef}
-                className={`flex items-center gap-1 p-2 lg:p-3 text-xl bg-white border border-gray-200 transition-all duration-500 ease-out ${
-                    isMounted ? "rounded-t-lg" : "rounded-lg"
-                }`}
+                className="flex items-center gap-1 p-2 lg:p-3 text-xl bg-white border border-gray-200 rounded-lg"
             >
                 <label htmlFor="searchBar">
                     <IoIosSearch className="text-2xl cursor-text" />
@@ -83,18 +81,14 @@ const SearchBarHeader = memo(function SearchBarHeader({
             {isMounted && (
                 <div
                     ref={resultRef}
-                    className={`absolute left-0 w-full bg-white border border-gray-200 rounded-b-lg shadow-lg z-50 transition-all duration-500 ease-out ${
-                        isVisible ? "max-h-96" : "max-h-0"
+                    className={`absolute left-0 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition-all duration-200 ease-out ${
+                        isVisible
+                            ? "opacity-100 scale-100"
+                            : "opacity-0 scale-95 pointer-events-none"
                     }`}
                 >
                     {products.length > 0 ? (
-                        <div
-                            className={`py-2 transition-all duration-500 ease-out ${
-                                isVisible
-                                    ? "max-h-96 overflow-auto"
-                                    : "max-h-0 overflow-hidden"
-                            }`}
-                        >
+                        <div className="py-2">
                             {products.slice(0, 5).map((productData) => (
                                 <SearchItem
                                     key={productData.documentId}
@@ -114,16 +108,8 @@ const SearchBarHeader = memo(function SearchBarHeader({
                             )}
                         </div>
                     ) : (
-                        <div
-                            className={`p-4 text-center overflow-hidden transition-all duration-500 ease-out ${
-                                isVisible ? "max-h-16" : "max-h-0"
-                            }`}
-                        >
-                            <p
-                                className={`text-gray-500 overflow-hidden transition-all duration-500 ease-out ${
-                                    isVisible ? "max-h-16" : "max-h-0"
-                                }`}
-                            >
+                        <div className="p-4 text-center">
+                            <p className="text-gray-500">
                                 No products found :(
                             </p>
                         </div>
