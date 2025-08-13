@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import useProductStore from "@/stores/product";
 import Image from "next/image";
 import {
@@ -37,7 +37,7 @@ export default function ReviewInput({
     const setUpdatedAverageRating = useProductStore(
         (state) => state.setUpdatedAverageRating,
     );
-    const [rating, setRating] = useState<number>();
+    const [rating, setRating] = useState<number>(0);
     const [imagesFromUpload, setImagesFromUpload] = useState<File[] | null>(
         null,
     );
@@ -105,6 +105,8 @@ export default function ReviewInput({
             prevState,
             formData,
             imagesFromUpload,
+            rating,
+            productData.documentId,
         );
 
         if (!result.strapiErrors && !result.zodErrors) {
@@ -177,23 +179,12 @@ export default function ReviewInput({
                 <div className="grid md:flex md:justify-end md:items-center gap-3 md:gap-5">
                     <div className="flex items-start gap-2">
                         <p className="w-max md:text-lg">Select rating:</p>
-                        <input
-                            type="hidden"
-                            name="rating"
-                            value={rating ?? ""}
-                        />
                         <Rating
                             starsClassName="text-2xl"
                             isEdited
                             onRate={setRating}
                         />
                     </div>
-                    <input
-                        type="hidden"
-                        name="documentId"
-                        value={productData.documentId}
-                    />
-                    <input type="hidden" name="slug" value={productData.slug} />
                     {isPending ? (
                         <Button
                             text="Loading"

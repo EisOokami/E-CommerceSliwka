@@ -121,6 +121,8 @@ export default function ReviewComment({
             imagesFromUpload,
             review.documentId,
             review.publicationDate,
+            review.product.documentId,
+            rating,
         );
 
         if (!result.strapiErrors && !result.zodErrors) {
@@ -166,7 +168,6 @@ export default function ReviewComment({
                                 isEdited
                                 starsClassName="text-xl md:text-2xl"
                             />
-                            <input type="hidden" name="rating" value={rating} />
                             <span className="inline md:hidden text-gray-500">
                                 {review.publicationDate}
                             </span>
@@ -266,16 +267,6 @@ export default function ReviewComment({
                             />
                         </div>
                     </div>
-                    <input
-                        type="hidden"
-                        name="documentId"
-                        value={review.product.documentId}
-                    />
-                    <input
-                        type="hidden"
-                        name="slug"
-                        value={review.product.slug}
-                    />
                     <ZodErrors error={formState?.zodErrors?.description} />
                     <ZodErrors error={formState?.zodErrors?.rating} />
                     <ZodErrors error={formState?.zodErrors?.images} />

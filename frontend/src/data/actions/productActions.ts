@@ -176,11 +176,9 @@ const schemaAddReview = z.object({
         .max(1500, {
             message: "Description must be between 3 and 1500 characters",
         }),
-    rating: z.string().min(1, {
+    rating: z.number().min(1, {
         message: "Please select a rating",
     }),
-    documentId: z.string(),
-    slug: z.string(),
     images: z
         .any()
         .optional()
@@ -205,6 +203,8 @@ export async function addReviewToProductAction(
     prevState: any,
     formData: FormData,
     images: File[] | null,
+    rating: number,
+    productDocumentId: string,
 ) {
     const user = await getUserMeLoader();
 
@@ -219,9 +219,7 @@ export async function addReviewToProductAction(
 
     const validatedFields = schemaAddReview.safeParse({
         description: formData.get("description"),
-        rating: formData.get("rating"),
-        documentId: formData.get("documentId"),
-        slug: formData.get("slug"),
+        rating: rating,
         images: filteredImages,
     });
 
@@ -253,7 +251,7 @@ export async function addReviewToProductAction(
                 ? uploadedImages.map((img: { id: string }) => img.id)
                 : null,
             product: {
-                connect: [{ documentId: validatedFields.data.documentId }],
+                connect: [{ documentId: productDocumentId }],
             },
         },
     };
@@ -308,11 +306,9 @@ const schemaEditReview = z.object({
     description: z.string().min(3).max(1500, {
         message: "Description must be between 3 and 1500 characters",
     }),
-    rating: z.string().min(1, {
+    rating: z.number().min(1, {
         message: "Please select a rating",
     }),
-    documentId: z.string(),
-    slug: z.string(),
     images: z
         .any()
         .optional()
@@ -340,6 +336,8 @@ export async function editReviewAction(
     imagesFromUpload: File[] | null,
     reviewDocumentId: string,
     publicationDate: string,
+    productDocumentId: string,
+    rating: number,
 ) {
     const user = await getUserMeLoader();
 
@@ -354,9 +352,7 @@ export async function editReviewAction(
 
     const validatedFields = schemaEditReview.safeParse({
         description: formData.get("description"),
-        rating: formData.get("rating"),
-        documentId: formData.get("documentId"),
-        slug: formData.get("slug"),
+        rating: rating,
         images: filteredImages,
     });
 
@@ -392,7 +388,7 @@ export async function editReviewAction(
                 ? updatedImages.map((img: { id: string }) => img.id)
                 : null,
             product: {
-                connect: [{ documentId: validatedFields.data.documentId }],
+                connect: [{ documentId: productDocumentId }],
             },
         },
     };
