@@ -249,7 +249,6 @@ const schemaChangePassword = z
     });
 
 export async function changePasswordAction(
-    userId: number,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prevState: any,
     formData: FormData,

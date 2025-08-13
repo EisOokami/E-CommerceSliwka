@@ -35,7 +35,6 @@ export default function AccountDetails({
         userData.id,
         imageFromUpload,
     );
-    const changePasswordWithId = changePasswordAction.bind(null, userData.id);
     const [
         accountSettingFormState,
         accountSettingFormAction,
@@ -45,7 +44,7 @@ export default function AccountDetails({
         changePasswordFormState,
         changePasswordFormAction,
         isPendingChangePassword,
-    ] = useActionState(changePasswordWithId, INITIAL_STATE);
+    ] = useActionState(changePasswordAction, INITIAL_STATE);
 
     const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -212,7 +211,7 @@ export default function AccountDetails({
                                 labelValue="Current password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors
-                                        ?.passwordReset
+                                        ?.currentPassword
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
@@ -229,7 +228,7 @@ export default function AccountDetails({
                                 labelValue="Confirm current password"
                                 zodErrorMsg={
                                     changePasswordFormState?.zodErrors
-                                        ?.confirmResetPassword
+                                        ?.confirmCurrentPassword
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
