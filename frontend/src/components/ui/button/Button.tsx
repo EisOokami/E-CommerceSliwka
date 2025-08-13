@@ -14,13 +14,14 @@ const Button = memo(function Button({
     type = "button",
     isLoading = false,
     spinnerClassName = "",
+    tabIndex,
 }: Readonly<InlineButtonProps>) {
     const styleTheme =
         theme === "dark" && inline
-            ? "hover:text-white hover:bg-black border-black transition"
+            ? "text-black hover:bg-gray-100 border-black transition"
             : theme === "dark" && !inline
-            ? "text-white hover:text-black bg-black hover:bg-white border-black transition"
-            : "text-white hover:text-black hover:bg-white border-white transition";
+            ? "text-white bg-black hover:bg-gray-900 border-black focus:outline-offset-4 focus:outline-gray-500 transition"
+            : "text-white hover:bg-white/20 border-white focus:outline-white transition";
 
     return (
         <>
@@ -30,6 +31,7 @@ const Button = memo(function Button({
                     className={twMerge(
                         `w-fit px-10 py-3 text-sm md:text-base text-center border rounded-md ${styleTheme} ${className}`,
                     )}
+                    tabIndex={tabIndex}
                 >
                     {text}
                 </Link>
@@ -45,6 +47,7 @@ const Button = memo(function Button({
                     )}
                     type={type}
                     disabled={isLoading}
+                    tabIndex={tabIndex}
                 >
                     {text}
                     {isLoading ? (

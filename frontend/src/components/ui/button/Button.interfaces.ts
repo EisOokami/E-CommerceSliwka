@@ -9,4 +9,5 @@ export interface InlineButtonProps {
     type?: "button" | "reset" | "submit";
     isLoading?: boolean;
     spinnerClassName?: string;
+    tabIndex?: number;
 }
