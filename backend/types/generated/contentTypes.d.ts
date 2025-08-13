@@ -719,7 +719,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         finalPrice: Schema.Attribute.Decimal;
         image: Schema.Attribute.Media<"images"> & Schema.Attribute.Required;
         isDiscount: Schema.Attribute.Boolean &
-            Schema.Attribute.Required &
             Schema.Attribute.DefaultTo<false>;
         locale: Schema.Attribute.String & Schema.Attribute.Private;
         localizations: Schema.Attribute.Relation<
