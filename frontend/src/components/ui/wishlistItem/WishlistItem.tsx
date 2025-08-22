@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import useGlobalStore from "@/stores/global";
 import useWishlistStore from "@/stores/wishlist";
 import Link from "next/link";
@@ -52,18 +52,23 @@ export default function WishlistItem({
         setProductsInWishlistCount(updatedProductsInWishlistCount);
     };
 
+    const handleDisableRedirect = (
+        e: MouseEvent<HTMLDivElement | HTMLButtonElement>,
+    ) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
-        <div
+        <Link
+            href={`/catalog/${wishlist.product.slug}`}
             className={`transition-all duration-300 ease-out ${
                 isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
             }`}
         >
             <div className="p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
                 <div className="md:flex">
-                    <Link
-                        href={`/catalog/${wishlist.product.slug}`}
-                        className="flex justify-center md:w-1/4 h-48 md:h-auto"
-                    >
+                    <div className="flex justify-center md:w-1/4 h-48 md:h-auto">
                         <StrapiImage
                             src={wishlist.product.image.url}
                             alt={wishlist.product.name}
@@ -71,12 +76,9 @@ export default function WishlistItem({
                             height={500}
                             className="w-60 object-contain"
                         />
-                    </Link>
+                    </div>
                     <div className="p-4 md:p-6 md:w-3/4 flex flex-col">
-                        <Link
-                            href={`/catalog/${wishlist.product.slug}`}
-                            className="block flex-1"
-                        >
+                        <div className="block flex-1">
                             <h3 className="text-xl font-medium text-gray-900 mb-1 hover:text-blue-600 transition-colors">
                                 {wishlist.product.name}
                             </h3>
@@ -95,14 +97,17 @@ export default function WishlistItem({
                             <p className="text-gray-700 text-sm line-clamp-2 mb-3">
                                 {wishlist.product.description}
                             </p>
-                        </Link>
+                        </div>
                         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                             <div className="text-xl font-bold text-gray-900">
                                 ${wishlist.product.price.toFixed(2)}
                             </div>
                             <div className="flex items-center space-x-2">
                                 <button
-                                    onClick={handleDeleteProductFromWishlist}
+                                    onClick={(e) => {
+                                        handleDisableRedirect(e);
+                                        handleDeleteProductFromWishlist();
+                                    }}
                                     className="p-2 text-gray-500 hover:text-red-600 transition-colors"
                                 >
                                     <FaRegTrashCan className="text-xl" />
@@ -112,12 +117,13 @@ export default function WishlistItem({
                                     isLink
                                     theme="dark"
                                     text="Buy now"
+                                    tabIndex={-1}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
