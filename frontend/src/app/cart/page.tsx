@@ -9,8 +9,8 @@ export default async function CartPage() {
     const data: ICart[] = await getCartProductsData();
 
     return (
-        <main className="container mx-auto px-5 py-10 md:py-20">
-            <div className="flex items-center gap-1">
+        <main className="container mx-auto px-5 py-10 md:py-16">
+            <div className="flex items-center gap-1 mb-3">
                 <IoCartOutline className="md:mt-1 text-3xl" />
                 <h1 className="text-2xl md:text-3xl xl:text-4xl font-medium">
                     Shopping Cart
