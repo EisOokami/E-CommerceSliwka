@@ -72,7 +72,15 @@ export default function AccountDetails({
                         <div className="grid place-items-center gap-3 w-full md:w-auto">
                             <label
                                 htmlFor="avatar"
-                                className="relative block w-64 h-64 mr-5 border-[6px] rounded-full overflow-hidden"
+                                className="group relative block w-64 h-64 mr-5 border-[6px] rounded-full overflow-hidden"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        document
+                                            .getElementById("avatar")
+                                            ?.click();
+                                    }
+                                }}
                             >
                                 <Image
                                     src={
@@ -92,7 +100,7 @@ export default function AccountDetails({
                                     height={300}
                                     className="w-64 h-64 object-cover"
                                 />
-                                <div className="absolute top-0 grid place-content-center w-full h-full bg-gray-400/30 rounded-full opacity-0 hover:opacity-100 transition cursor-pointer">
+                                <div className="absolute top-0 grid place-content-center w-full h-full bg-gray-400/30 rounded-full opacity-0 hover:opacity-100 group-focus:opacity-100 transition cursor-pointer">
                                     <RiImageAddFill className="text-5xl text-white" />
                                 </div>
                             </label>
