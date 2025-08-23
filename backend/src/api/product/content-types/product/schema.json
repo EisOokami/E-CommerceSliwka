@@ -70,6 +70,36 @@
       "repeatable": false,
       "required": true
     },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "color": {
+      "type": "string",
+      "required": false
+    },
+    "productOptions": {
+      "type": "component",
+      "component": "components.product-options",
+      "repeatable": true
+    },
+    "inStock": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "colors": {
+      "type": "component",
+      "component": "components.color",
+      "repeatable": true,
+      "required": false
+    },
+    "options": {
+      "type": "component",
+      "component": "components.option",
+      "repeatable": true
+    },
     "productSpecs": {
       "type": "component",
       "component": "components.product-specifications",

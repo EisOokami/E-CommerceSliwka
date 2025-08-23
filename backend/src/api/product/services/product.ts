@@ -67,18 +67,31 @@ export default factories.createCoreService(
             const updatedFilters = {
                 ...filters,
                 ...(queryParams.price?.length === 2 && {
-                    finalPrice: {
-                        $between: [
-                            +queryParams.price[0],
-                            +queryParams.price[1],
-                        ],
-                    },
+                    $or: [
+                        {
+                            discountedPrice: {
+                                $between: [
+                                    +queryParams.price[0],
+                                    +queryParams.price[1],
+                                ],
+                            },
+                        },
+                        {
+                            price: {
+                                $between: [
+                                    +queryParams.price[0],
+                                    +queryParams.price[1],
+                                ],
+                            },
+                        },
+                    ],
                 }),
             };
 
             const populateFields = {
                 image: true,
                 sliderImages: true,
+                productOptions: true,
                 colors: true,
                 options: true,
                 productInfo: true,
