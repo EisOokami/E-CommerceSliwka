@@ -105,18 +105,6 @@
       "relation": "oneToMany",
       "target": "api::wishlist.wishlist",
       "mappedBy": "product"
-    },
-    "options": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::option.option",
-      "mappedBy": "product"
-    },
-    "colors": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::color.color",
-      "mappedBy": "product"
     }
   }
 }

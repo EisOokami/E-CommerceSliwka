@@ -29,18 +29,6 @@
       "target": "plugin::users-permissions.user",
       "private": true,
       "inversedBy": "productsCart"
-    },
-    "option": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::option.option",
-      "inversedBy": "carts"
-    },
-    "color": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::color.color",
-      "inversedBy": "carts"
     }
   }
 }
