@@ -10,7 +10,7 @@ export default factories.createCoreService(
     ({ strapi }) => ({
         async createOrder(cartItems, user, ctx) {
             const lineItems = await Promise.all(
-                cartItems.map(async (item) => {
+                cartItems.flatMap(async (item) => {
                     const product = await strapi
                         .documents("api::product.product")
                         .findOne({
@@ -20,51 +20,43 @@ export default factories.createCoreService(
                                     fields: ["url", "alternativeText"],
                                 },
                             },
+                            filters: {
+                                quantity: {
+                                    $gte: 1,
+                                },
+                            },
                         });
-                    const color = item.color
-                        ? await strapi.documents("api::color.color").findOne({
-                              documentId: item.color.documentId,
-                          })
-                        : null;
-                    const option = item.option
-                        ? await strapi.documents("api::option.option").findOne({
-                              documentId: item.option.documentId,
-                          })
-                        : null;
-                    const quantity = await strapi
+                    const cartData = await strapi
                         .documents("api::cart.cart")
                         .findOne({
                             documentId: item.documentId,
                             fields: ["quantity"],
                         });
 
-                    const optionPrice = option ? option.priceDifference : 0;
-                    const colorPrice = color ? color.priceDifference : 0;
+                    if (
+                        !product ||
+                        !cartData ||
+                        cartData.quantity > product.quantity ||
+                        cartData.quantity < 1
+                    ) {
+                        return [];
+                    }
 
                     return {
                         price_data: {
                             currency: "usd",
                             product_data: {
                                 name: product.name,
-                                description:
-                                    (option ? `Option: ${option.value} ` : "") +
-                                    (color ? `Color: ${color.colorName}` : ""),
                                 images: [
                                     `${process.env.IMAGES_HOST}${product.image.url}`,
                                 ],
                             },
                             unit_amount:
                                 product.isDiscount && product.discountedPrice
-                                    ? (product.discountedPrice +
-                                          optionPrice +
-                                          colorPrice) *
-                                      100
-                                    : (product.price +
-                                          optionPrice +
-                                          colorPrice) *
-                                      100,
+                                    ? product.discountedPrice * 100
+                                    : product.price * 100,
                         },
-                        quantity: quantity.quantity,
+                        quantity: cartData.quantity,
                     };
                 }),
             );
