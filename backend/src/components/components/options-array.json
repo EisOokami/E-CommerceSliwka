@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_components_options_arrays",
+  "info": {
+    "displayName": "Options Array"
+  },
+  "options": {},
+  "attributes": {
+    "optionName": {
+      "type": "string",
+      "required": true
+    },
+    "productSlug": {
+      "type": "string"
+    },
+    "inStock": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  },
+  "config": {}
+}

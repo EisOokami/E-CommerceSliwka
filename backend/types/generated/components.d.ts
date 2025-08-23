@@ -34,6 +34,27 @@ export interface ComponentsCategory extends Struct.ComponentSchema {
     };
 }
 
+export interface ComponentsColor extends Struct.ComponentSchema {
+    collectionName: "components_components_colors";
+    info: {
+        displayName: "Color";
+    };
+    attributes: {
+        colorHex: Schema.Attribute.String &
+            Schema.Attribute.Required &
+            Schema.Attribute.SetMinMaxLength<{
+                maxLength: 7;
+                minLength: 4;
+            }> &
+            Schema.Attribute.DefaultTo<"#">;
+        colorName: Schema.Attribute.String & Schema.Attribute.Required;
+        inStock: Schema.Attribute.Boolean &
+            Schema.Attribute.Required &
+            Schema.Attribute.DefaultTo<true>;
+        productSlug: Schema.Attribute.String;
+    };
+}
+
 export interface ComponentsDetailedSpecifications
     extends Struct.ComponentSchema {
     collectionName: "components_components_detailed_specifications";
@@ -85,6 +106,35 @@ export interface ComponentsNavigation extends Struct.ComponentSchema {
     };
 }
 
+export interface ComponentsOption extends Struct.ComponentSchema {
+    collectionName: "components_components_options";
+    info: {
+        displayName: "Option";
+    };
+    attributes: {
+        optionsArray: Schema.Attribute.Component<
+            "components.options-array",
+            true
+        > &
+            Schema.Attribute.Required;
+        title: Schema.Attribute.String & Schema.Attribute.Required;
+    };
+}
+
+export interface ComponentsOptionsArray extends Struct.ComponentSchema {
+    collectionName: "components_components_options_arrays";
+    info: {
+        displayName: "Options Array";
+    };
+    attributes: {
+        inStock: Schema.Attribute.Boolean &
+            Schema.Attribute.Required &
+            Schema.Attribute.DefaultTo<true>;
+        optionName: Schema.Attribute.String & Schema.Attribute.Required;
+        productSlug: Schema.Attribute.String;
+    };
+}
+
 export interface ComponentsProductInfo extends Struct.ComponentSchema {
     collectionName: "components_components_product_infos";
     info: {
@@ -94,6 +144,17 @@ export interface ComponentsProductInfo extends Struct.ComponentSchema {
         delivery: Schema.Attribute.String & Schema.Attribute.Required;
         guaranteed: Schema.Attribute.String & Schema.Attribute.Required;
         inStore: Schema.Attribute.String & Schema.Attribute.Required;
+    };
+}
+
+export interface ComponentsProductOptions extends Struct.ComponentSchema {
+    collectionName: "components_components_product_options";
+    info: {
+        displayName: "Product Options";
+    };
+    attributes: {
+        optionName: Schema.Attribute.String & Schema.Attribute.Required;
+        optionType: Schema.Attribute.String & Schema.Attribute.Required;
     };
 }
 
@@ -322,11 +383,15 @@ declare module "@strapi/strapi" {
         export interface ComponentSchemas {
             "components.array": ComponentsArray;
             "components.category": ComponentsCategory;
+            "components.color": ComponentsColor;
             "components.detailed-specifications": ComponentsDetailedSpecifications;
             "components.feature-product": ComponentsFeatureProduct;
             "components.link": ComponentsLink;
             "components.navigation": ComponentsNavigation;
+            "components.option": ComponentsOption;
+            "components.options-array": ComponentsOptionsArray;
             "components.product-info": ComponentsProductInfo;
+            "components.product-options": ComponentsProductOptions;
             "components.product-specifications": ComponentsProductSpecifications;
             "components.review": ComponentsReview;
             "components.specification": ComponentsSpecification;

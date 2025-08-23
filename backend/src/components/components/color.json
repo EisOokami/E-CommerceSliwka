@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_components_colors",
+  "info": {
+    "displayName": "Color"
+  },
+  "options": {},
+  "attributes": {
+    "productSlug": {
+      "type": "string",
+      "required": false,
+      "unique": false
+    },
+    "colorName": {
+      "type": "string",
+      "required": true
+    },
+    "colorHex": {
+      "type": "string",
+      "default": "#",
+      "minLength": 4,
+      "maxLength": 7,
+      "required": true,
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "inStock": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  },
+  "config": {}
+}
