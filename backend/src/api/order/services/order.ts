@@ -37,7 +37,9 @@ export default factories.createCoreService(
                         !product ||
                         !cartData ||
                         cartData.quantity > product.quantity ||
-                        cartData.quantity < 1
+                        cartData.quantity < 1 ||
+                        !product.inStock ||
+                        !product.quantity
                     ) {
                         return [];
                     }
@@ -64,8 +66,8 @@ export default factories.createCoreService(
             try {
                 const session = await stripe.checkout.sessions.create({
                     mode: "payment",
-                    success_url: `${process.env.CLIENT_URL}/cart/success`,
-                    cancel_url: `${process.env.CLIENT_URL}/cart/cancel`,
+                    success_url: `${process.env.CLIENT_URL}/redirect?path=/cart/success`,
+                    cancel_url: `${process.env.CLIENT_URL}/redirect?path=/cart/cancel`,
                     line_items: lineItems,
                     shipping_address_collection: {
                         allowed_countries: [
