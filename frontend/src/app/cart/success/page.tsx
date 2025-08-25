@@ -14,9 +14,13 @@ export default function SuccessPage() {
     const setProductsInCartCount = useGlobalStore(
         (state) => state.setProductsInCartCount,
     );
+    const setIsRefreshedPage = useGlobalStore(
+        (state) => state.setIsRefreshedPage,
+    );
 
     useEffect(() => {
         (async () => {
+            setIsRefreshedPage(false);
             await updateOrderAfterCheckoutAction(true);
             await deleteProductsFromCartAction();
             setProductsInCartCount(0);

@@ -1,10 +1,24 @@
+"use client";
+
+import { useEffect } from "react";
+import useGlobalStore from "@/stores/global";
 import { updateOrderAfterCheckoutAction } from "@/data/actions/cartActions";
 import { MdOutlineCancel } from "react-icons/md";
 
 import Button from "@/components/ui/button/Button";
 
-export default async function CancelPage() {
-    await updateOrderAfterCheckoutAction(false);
+export default function CancelPage() {
+    const setIsRefreshedPage = useGlobalStore(
+        (state) => state.setIsRefreshedPage,
+    );
+
+    useEffect(() => {
+        (async () => {
+            setIsRefreshedPage(false);
+            await updateOrderAfterCheckoutAction(false);
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <main className="grid place-content-center container mx-auto mb-auto px-3 py-10 md:px-5">
