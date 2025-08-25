@@ -5,6 +5,8 @@ interface IGlobalStore {
     setProductsInCartCount: (newProductsInCartCount: number) => void;
     productsInWishlistCount: number | null;
     setProductsInWishlistCount: (newProductsInWishlistCount: number) => void;
+    isRefreshedPage: boolean;
+    setIsRefreshedPage: (newIsRefreshedPage: boolean) => void;
 }
 
 const useGlobalStore = create<IGlobalStore>((set) => ({
@@ -17,6 +19,11 @@ const useGlobalStore = create<IGlobalStore>((set) => ({
     setProductsInWishlistCount: (newProductsInWishlistCount) =>
         set(() => ({
             productsInWishlistCount: newProductsInWishlistCount,
+        })),
+    isRefreshedPage: false,
+    setIsRefreshedPage: (newIsRefreshedPage) =>
+        set(() => ({
+            isRefreshedPage: newIsRefreshedPage,
         })),
 }));
 
