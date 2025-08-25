@@ -113,8 +113,6 @@ export default function WishlistItem({
                                     <FaRegTrashCan className="text-xl" />
                                 </button>
                                 <Button
-                                    href={`/catalog/${wishlist.product.slug}`}
-                                    isLink
                                     theme="dark"
                                     text="Buy now"
                                     tabIndex={-1}
