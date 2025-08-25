@@ -37,6 +37,17 @@ export default factories.createCoreService(
                     },
                     filters: params.filters,
                     sort: params.sort,
+                    ...(params.pagination &&
+                        params.pagination.page &&
+                        params.pagination.pageSize && {
+                            start:
+                                (params.pagination.page - 1) *
+                                params.pagination.pageSize,
+                        }),
+                    ...(params.pagination &&
+                        params.pagination.pageSize && {
+                            limit: params.pagination.pageSize,
+                        }),
                 });
 
             return { data: productData, meta: { pagination } };
