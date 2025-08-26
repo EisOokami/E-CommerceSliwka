@@ -48,14 +48,12 @@ export default function AccordionContainer({
             productRating: string,
             searchValue: string,
         ): IFilterParams => {
-            const params: IFilterParams = {
-                search: null,
-                category: null,
-                price: null,
-                colors: null,
-                options: null,
-                rating: null,
-            };
+            const params: IFilterParams = {};
+
+            const keys = Object.keys(selectedFilters).filter(
+                (key) =>
+                    key !== "category" && key !== "price" && key !== "colors",
+            );
 
             if (searchValue && searchValue.trim().length) {
                 params.search = searchValue;
@@ -78,16 +76,16 @@ export default function AccordionContainer({
             }
 
             if (selectedFilters.colors && selectedFilters.colors.length) {
-                params.colors = selectedFilters.colors;
-            }
-
-            if (selectedFilters.options && selectedFilters.options.length) {
-                params.options = selectedFilters.options;
+                params.color = selectedFilters.colors;
             }
 
             if (selectedFilters.price) {
                 params.price = selectedFilters.price.map((price) => +price);
             }
+
+            keys.forEach((key) => {
+                params[key] = selectedFilters[key];
+            });
 
             return params;
         },
@@ -102,11 +100,7 @@ export default function AccordionContainer({
                 searchValue,
             );
             const { minPrice, maxPrice } = await getProductsPriceRange(
-                filterParams.search,
-                filterParams.category,
-                null,
-                null,
-                null,
+                filterParams,
             );
 
             const productsCategory: IProduct[] = await getProductsCategory();
@@ -155,21 +149,20 @@ export default function AccordionContainer({
                         type: "checkbox",
                         setState: setSelectedFilters,
                     },
-                    {
-                        header: "Options",
-                        content: [
-                            ...new Set(
-                                filtersByCategory.flatMap(
-                                    (product) =>
-                                        product.options?.map(
-                                            (option) => option.value,
-                                        ) ?? [],
+                    ...filtersByCategory[0].options.flatMap((optionData) => {
+                        return {
+                            header: optionData.title,
+                            content: [
+                                ...new Set(
+                                    optionData.optionsArray.map(
+                                        (optionArray) => optionArray.optionName,
+                                    ),
                                 ),
-                            ),
-                        ],
-                        type: "checkbox",
-                        setState: setSelectedFilters,
-                    },
+                            ],
+                            type: "checkbox" as const,
+                            setState: setSelectedFilters,
+                        } as IAccordionItems;
+                    }),
                 );
             }
 
@@ -194,11 +187,7 @@ export default function AccordionContainer({
             );
 
             const { minPrice, maxPrice } = await getProductsPriceRange(
-                filterParams.search,
-                filterParams.category,
-                filterParams.colors,
-                filterParams.options,
-                filterParams.rating,
+                filterParams,
             );
 
             const updatedParams = {
@@ -225,12 +214,7 @@ export default function AccordionContainer({
 
             if (hasFilters) {
                 result = await getFilteredProductsData(
-                    filterParams.search,
-                    filterParams.category,
-                    filterParams.price,
-                    filterParams.colors,
-                    filterParams.options,
-                    filterParams.rating,
+                    filterParams,
                     currentPage,
                     limit,
                 );

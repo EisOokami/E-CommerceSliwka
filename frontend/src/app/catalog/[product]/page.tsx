@@ -41,16 +41,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             price={productData.price}
                             isDiscount={productData.isDiscount}
                             discount={productData.discountedPrice}
-                            colorsData={productData.colors}
-                            optionsData={productData.options}
                         />
                         <ProductStars
                             averageRating={productData.averageRating}
                         />
                     </div>
                     <div className="grid gap-5">
-                        <ColorSelector colorsData={productData.colors} />
-                        <OptionsSelector optionsData={productData.options} />
+                        <ColorSelector productData={productData} />
+                        <OptionsSelector productData={productData} />
                         <ProductSpecs specsData={productData.productSpecs} />
                         <ProductDescription
                             descr={productData.description}

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, MouseEvent, useEffect, useState } from "react";
 import useWishlistStore from "@/stores/wishlist";
 import useGlobalStore from "@/stores/global";
 import Link from "next/link";
@@ -22,19 +22,15 @@ const Card = memo(function Card({
     productDocumentId,
     imageSrc,
     imageAlt,
-    imageWidth,
-    imageHeight,
-    title,
+    name,
     price,
     isDiscount,
     discountedPrice,
     averageRating,
     reviewsCount,
+    quantity,
+    inStock,
     buttonHref,
-    buttonTheme,
-    buttonText,
-    buttonInline,
-    buttonClassName,
 }: Readonly<CardProps>) {
     const wishlist = useWishlistStore((state) => state.wishlist);
     const setProductsInWishlist = useWishlistStore(
@@ -111,42 +107,51 @@ const Card = memo(function Card({
         showToast(result.ok, result.message);
     };
 
+    const handleDisableRedirect = (e: MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
-        <div className="group relative grid justify-items-center gap-3 xl:min-h-[500px] p-3 md:p-8 bg-white border border-gray-200 rounded-3xl hover:shadow-lg cursor-pointer transition">
-            <div className="absolute top-3 right-3 z-10">
+        <Link
+            href={buttonHref}
+            className="group relative grid justify-items-center gap-3 xl:min-h-[500px] p-3 md:p-8 bg-white border border-gray-200 rounded-3xl hover:shadow-lg cursor-pointer transition"
+        >
+            <div
+                className="absolute top-3 right-3 z-10"
+                onClick={(e) => handleDisableRedirect(e)}
+            >
                 {productsInWishlist.includes(productDocumentId) ? (
-                    <div
+                    <button
                         className="h-min p-3 bg-gray-100 hover:bg-gray-100/50 rounded-full transition hover:scale-105"
                         onClick={handleDeleteProductFromWishlist}
                     >
                         <GoHeartFill className="text-2xl md:text-3xl text-red-500" />
-                    </div>
+                    </button>
                 ) : (
-                    <div
+                    <button
                         className="h-min p-3 bg-gray-100/50 hover:bg-gray-100 rounded-full transition hover:scale-105"
                         onClick={handleAddProductToWishlist}
                     >
                         <GoHeart className="text-2xl md:text-3xl text-gray-500" />
-                    </div>
+                    </button>
                 )}
             </div>
-            <Link
-                href={buttonHref}
-                className="grid grid-rows-[min-content_1fr]"
-            >
+            <div className="grid grid-rows-[min-content_1fr]">
                 <div className="grid place-content-center">
                     <StrapiImage
                         src={imageSrc}
                         alt={imageAlt}
-                        width={imageWidth}
-                        height={imageHeight}
+                        width={250}
+                        height={250}
                         className="size-32 sm:size-48 xl:size-64 object-contain transition-transform group-hover:scale-105"
+                        loading="lazy"
                     />
                 </div>
                 <div className="grid justify-items-center gap-1 md:gap-3">
                     <div className="grid place-content-between md:place-content-baseline">
                         <span className="text-center sm:text-lg font-medium">
-                            {title}
+                            {name}
                         </span>
                         <div className="flex justify-center items-center gap-1 sm:gap-2">
                             <div className="flex items-center gap-1">
@@ -178,16 +183,26 @@ const Card = memo(function Card({
                                 ${price}
                             </span>
                         )}
-                        <Button
-                            theme={buttonTheme}
-                            text={buttonText}
-                            inline={buttonInline}
-                            className={buttonClassName}
-                        />
+                        {quantity && inStock ? (
+                            <Button
+                                theme="dark"
+                                text="Buy Now"
+                                className="px-7 md:px-10 text-xs sm:text-sm md:text-base"
+                                tabIndex={-1}
+                            />
+                        ) : (
+                            <Button
+                                theme="dark"
+                                text="Out of stock"
+                                inline
+                                className="px-7 md:px-10 text-xs sm:text-sm md:text-base"
+                                tabIndex={-1}
+                            />
+                        )}
                     </div>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 });
 

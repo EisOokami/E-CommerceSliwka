@@ -55,38 +55,50 @@ export interface ICategory {
     category: string;
 }
 
-export interface IColors {
+export interface IOptionsArray {
     id: number;
-    documentId: string;
-    sliderImages: IImage[];
-    colorHex: string;
-    colorName: string;
-    priceDifference: number;
-    product: IProduct;
+    optionName: string;
+    productSlug: string;
+    inStore: boolean;
 }
 
 export interface IOptions {
     id: number;
-    documentId: string;
-    value: string;
-    priceDifference: number;
-    isStock: boolean;
-    product: IProduct;
+    title: string;
+    optionsArray: IOptionsArray[];
+}
+
+export interface IColors {
+    id: number;
+    productSlug: string;
+    colorName: string;
+    colorHex: string;
+    inStock: boolean;
+}
+
+export interface IProductOptions {
+    id: number;
+    optionType: string;
+    optionName: string;
 }
 
 export interface IProduct {
     id: number;
     documentId: string;
     name: string;
+    image: IImage;
+    sliderImages: IImage[];
     price: number;
     description: string;
     discountedPrice: number | null;
     isDiscount: boolean;
+    quantity: number;
+    color: string;
+    inStock: boolean;
     category: ICategory;
-    image: IImage;
-    sliderImages: IImage[];
-    colors: IColors[] | null;
-    options: IOptions[] | null;
+    productOptions: IProductOptions[];
+    colors: IColors[];
+    options: IOptions[];
     productInfo: IProductInfo;
     productSpecs: IProductSpecs[];
     detailedSpecifications: IDetailedSpecifications[];
@@ -118,8 +130,6 @@ export interface ICart {
         documentId: string;
         id: number;
     };
-    option: IOptions | null;
-    color: IColors | null;
 }
 
 export interface IUser {

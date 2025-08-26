@@ -1,5 +1,5 @@
-import { IOptions } from "@/interfaces/interfaces";
+import { IProduct } from "@/interfaces/interfaces";
 
 export interface OptionsSelectorProps {
-    optionsData: IOptions[] | null;
+    productData: IProduct;
 }

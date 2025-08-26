@@ -1,52 +1,39 @@
 "use client";
 
-import { useEffect } from "react";
-import useProductStore from "@/stores/product";
+import Link from "next/link";
 import { OptionsSelectorProps } from "./OptionsSelector.interfaces";
 
 export default function OptionsSelector({
-    optionsData,
+    productData,
 }: Readonly<OptionsSelectorProps>) {
-    const setOptionDocumentId = useProductStore(
-        (state) => state.setOptionDocumentId,
-    );
-    const selectedOption = useProductStore((state) => state.selectedOption);
-    const setSelectedOption = useProductStore(
-        (state) => state.setSelectedOption,
-    );
-
-    useEffect(() => {
-        if (optionsData && optionsData.length) {
-            setSelectedOption(0);
-            setOptionDocumentId(optionsData[0].documentId);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    if (!optionsData || !optionsData.length) {
-        return null;
-    }
-
-    const handleSelectedOption = (index: number, optionDocumentId: string) => {
-        setSelectedOption(index);
-        setOptionDocumentId(optionDocumentId);
-    };
-
     return (
-        <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-2 md:gap-3">
-            {optionsData.map((option, i) => (
-                <button
-                    key={option.documentId}
-                    className={`text-center w-full py-3 border rounded-xl ${
-                        selectedOption === i
-                            ? "border-black text-black"
-                            : "text-gray-600"
-                    }`}
-                    onClick={() => handleSelectedOption(i, option.documentId)}
-                    disabled={option.isStock}
-                >
-                    {option.value}
-                </button>
+        <div className="grid gap-3">
+            {productData.options.map((option) => (
+                <div key={option.id} className="grid gap-1">
+                    <p>{option.title}</p>
+                    <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-2 md:gap-3">
+                        {option.optionsArray.map((optionArrayData) => (
+                            <Link
+                                key={optionArrayData.id}
+                                href={`/catalog/${optionArrayData.productSlug}`}
+                                className={`text-center w-full py-3 border rounded-xl ${
+                                    productData.slug ===
+                                    optionArrayData.productSlug
+                                        ? "border-black text-black pointer-events-none"
+                                        : "text-gray-600"
+                                }`}
+                                tabIndex={
+                                    productData.slug ===
+                                    optionArrayData.productSlug
+                                        ? -1
+                                        : undefined
+                                }
+                            >
+                                {optionArrayData.optionName}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
             ))}
         </div>
     );

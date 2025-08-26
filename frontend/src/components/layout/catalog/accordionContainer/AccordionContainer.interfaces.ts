@@ -13,12 +13,8 @@ export interface IAccordionItems {
 }
 
 export interface IFilterParams {
-    search: string | null;
-    category: string | null;
-    price: number[] | null;
-    colors: string[] | null;
-    options: string[] | null;
-    rating: number | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any | null;
 }
 
 export interface AccordionContainerProps {

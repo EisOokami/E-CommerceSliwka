@@ -4,15 +4,11 @@ import qs from "qs";
 import { z } from "zod";
 import { mutateData } from "../services/mutateData";
 import { getUserMeLoader } from "../services/getUserMeLoader";
-import { getCartProductByProductDocumentIdData } from "../loaders";
 import { uploadImagesToStrapi } from "../services/uploadImage";
+import { getCartProductDataByProductDocumentId } from "../loaders";
 import { IImage } from "@/interfaces/interfaces";
 
-export async function addProductToCartAction(
-    productDocumentId: string,
-    optionDocumentId: string,
-    colorDocumentId: string,
-) {
+export async function addProductToCartAction(productDocumentId: string) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -24,10 +20,8 @@ export async function addProductToCartAction(
         };
     }
 
-    const productCart = await getCartProductByProductDocumentIdData(
+    const productCart = await getCartProductDataByProductDocumentId(
         productDocumentId,
-        optionDocumentId,
-        colorDocumentId,
     );
 
     if (productCart) {
@@ -45,16 +39,6 @@ export async function addProductToCartAction(
                 connect: [{ documentId: productDocumentId }],
             },
             user: user.data.id,
-            ...(optionDocumentId && {
-                option: {
-                    connect: [{ documentId: optionDocumentId }],
-                },
-            }),
-            ...(colorDocumentId && {
-                color: {
-                    connect: [{ documentId: colorDocumentId }],
-                },
-            }),
         },
     };
 
@@ -95,11 +79,7 @@ export async function addProductToCartAction(
     };
 }
 
-export async function deleteProductFromCartAction(
-    productDocumentId: string,
-    optionDocumentId: string,
-    colorDocumentId: string,
-) {
+export async function deleteProductFromCartAction(productDocumentId: string) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -111,10 +91,8 @@ export async function deleteProductFromCartAction(
         };
     }
 
-    const productCart = await getCartProductByProductDocumentIdData(
+    const productCart = await getCartProductDataByProductDocumentId(
         productDocumentId,
-        optionDocumentId,
-        colorDocumentId,
     );
 
     if (!productCart) {

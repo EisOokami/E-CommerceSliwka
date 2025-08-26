@@ -234,17 +234,18 @@ export async function getProductsData(page: number = 1, limit: number = 8) {
             sliderImages: {
                 fields: ["url", "alternativeText"],
             },
+            productOptions: {
+                populate: true,
+            },
             colors: {
-                populate: {
-                    sliderImages: {
-                        fields: ["url", "alternativeText"],
-                    },
-                },
-                sort: "priceDifference:asc",
+                populate: true,
             },
             options: {
-                populate: true,
-                sort: "priceDifference:asc",
+                populate: {
+                    optionsArray: {
+                        populate: true,
+                    },
+                },
             },
             productInfo: {
                 populate: true,
@@ -315,17 +316,18 @@ export async function getProductData(documentId: string | null, slug?: string) {
             sliderImages: {
                 fields: ["url", "alternativeText"],
             },
+            productOptions: {
+                populate: true,
+            },
             colors: {
-                populate: {
-                    sliderImages: {
-                        fields: ["url", "alternativeText"],
-                    },
-                },
-                sort: "priceDifference:asc",
+                populate: true,
             },
             options: {
-                populate: true,
-                sort: "priceDifference:asc",
+                populate: {
+                    optionsArray: {
+                        populate: true,
+                    },
+                },
             },
             productInfo: {
                 populate: true,
@@ -375,31 +377,54 @@ export async function getProductData(documentId: string | null, slug?: string) {
     return fetchedData.data[0];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const buildFilters = (filterParams: { [key: string]: any | null }) => {
+    const skipKeys = ["search", "category", "color", "rating", "price"];
+
+    const filters = Object.entries(filterParams)
+        .filter(([key]) => !skipKeys.includes(key))
+        .map(([keyFilterParams, valueFilterParams]) => ({
+            productOptions: {
+                optionType: { $eqi: keyFilterParams },
+                optionName: Array.isArray(valueFilterParams)
+                    ? { $in: valueFilterParams }
+                    : { $eqi: valueFilterParams },
+            },
+        }));
+
+    return filters.length ? { $and: filters } : {};
+};
+
 export async function getFilteredProductsData(
-    search: string | null,
-    category: string | null,
-    price: number[] | null,
-    colors: string[] | null,
-    options: string[] | null,
-    rating: number | null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filterParams: { [key: string]: any | null },
     page: number = 1,
     limit: number = 8,
 ) {
     const url = new URL("/api/products/filtered", baseUrl);
 
+    const query = buildFilters(filterParams);
+
     const filters = {
-        ...(search && { name: { $containsi: search } }),
-        ...(category && { category: { category: { $eq: category } } }),
-        ...(colors &&
-            colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
-        ...(options &&
-            options.length > 0 && { options: { value: { $eq: options } } }),
-        ...(rating && { averageRating: { $gte: rating } }),
+        ...(filterParams.search && {
+            name: { $containsi: filterParams.search },
+        }),
+        ...(filterParams.category && {
+            category: { category: { $eq: filterParams.category } },
+        }),
+        ...(filterParams.color &&
+            filterParams.color.length > 0 && {
+                color: { $eq: filterParams.color },
+            }),
+        ...(filterParams.rating && {
+            averageRating: { $gte: filterParams.rating },
+        }),
+        ...query,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const queryParams: Record<string, any> = {
-        ...(price && { price: price }),
+        ...(filterParams.price && { price: filterParams.price }),
     };
 
     url.search = qs.stringify(
@@ -411,17 +436,18 @@ export async function getFilteredProductsData(
                 sliderImages: {
                     fields: ["url", "alternativeText"],
                 },
+                productOptions: {
+                    populate: true,
+                },
                 colors: {
-                    populate: {
-                        sliderImages: {
-                            fields: ["url", "alternativeText"],
-                        },
-                    },
-                    sort: "priceDifference:asc",
+                    populate: true,
                 },
                 options: {
-                    populate: true,
-                    sort: "priceDifference:asc",
+                    populate: {
+                        optionsArray: {
+                            populate: true,
+                        },
+                    },
                 },
                 productInfo: {
                     populate: true,
@@ -490,13 +516,18 @@ export async function getFiltersByCategory(category: string | null) {
 
     url.search = qs.stringify({
         populate: {
+            productOptions: {
+                populate: true,
+            },
             colors: {
                 populate: true,
-                sort: "priceDifference:asc",
             },
             options: {
-                populate: true,
-                sort: "priceDifference:asc",
+                populate: {
+                    optionsArray: {
+                        populate: true,
+                    },
+                },
             },
             category: {
                 populate: true,
@@ -511,22 +542,28 @@ export async function getFiltersByCategory(category: string | null) {
 }
 
 export async function getProductsPriceRange(
-    search: string | null,
-    category: string | null,
-    colors: string[] | null,
-    options: string[] | null,
-    rating: number | null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    filterParams: { [key: string]: any | null },
 ) {
     const url = new URL("/api/products/price-range", baseUrl);
 
+    const query = buildFilters(filterParams);
+
     const filters = {
-        ...(search && { name: { $containsi: search } }),
-        ...(category && { category: { category: { $eq: category } } }),
-        ...(colors &&
-            colors.length > 0 && { colors: { colorName: { $eq: colors } } }),
-        ...(options &&
-            options.length > 0 && { options: { value: { $eq: options } } }),
-        ...(rating && { averageRating: { $gte: rating } }),
+        ...(filterParams.search && {
+            name: { $containsi: filterParams.search },
+        }),
+        ...(filterParams.category && {
+            category: { category: { $eq: filterParams.category } },
+        }),
+        ...(filterParams.color &&
+            filterParams.color.length > 0 && {
+                color: { $eq: filterParams.color },
+            }),
+        ...(filterParams.rating && {
+            averageRating: { $gte: filterParams.rating },
+        }),
+        ...query,
     };
 
     url.search = qs.stringify({ filters }, { encodeValuesOnly: true });
@@ -585,12 +622,6 @@ export async function getCartProductsData() {
             user: {
                 populate: true,
             },
-            option: {
-                populate: true,
-            },
-            color: {
-                populate: true,
-            },
         },
         sort: ["createdAt:asc"],
     });
@@ -618,12 +649,6 @@ export async function getCartProductData(cartDocumentId: string) {
                     },
                 },
             },
-            option: {
-                populate: true,
-            },
-            color: {
-                populate: true,
-            },
         },
     });
 
@@ -632,10 +657,8 @@ export async function getCartProductData(cartDocumentId: string) {
     return fetchedData.data;
 }
 
-export async function getCartProductByProductDocumentIdData(
+export async function getCartProductDataByProductDocumentId(
     productDocumentId: string,
-    optionDocumentId?: string,
-    colorDocumentId?: string,
 ) {
     const user = await getUserMeLoader();
 
@@ -657,12 +680,6 @@ export async function getCartProductByProductDocumentIdData(
             user: {
                 fields: ["id"],
             },
-            option: {
-                populate: true,
-            },
-            color: {
-                populate: true,
-            },
         },
         filters: {
             product: {
@@ -670,20 +687,6 @@ export async function getCartProductByProductDocumentIdData(
                     $eq: productDocumentId,
                 },
             },
-            ...(optionDocumentId && {
-                option: {
-                    documentId: {
-                        $eq: optionDocumentId,
-                    },
-                },
-            }),
-            ...(colorDocumentId && {
-                color: {
-                    documentId: {
-                        $eq: colorDocumentId,
-                    },
-                },
-            }),
             user: {
                 id: {
                     $eq: user.data.id,

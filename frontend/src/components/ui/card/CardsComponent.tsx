@@ -36,18 +36,15 @@ export default function CardsComponent({
             productDocumentId={product.documentId}
             imageSrc={product.image.url}
             imageAlt={product.image.alternativeText ?? product.name}
-            imageWidth={250}
-            imageHeight={250}
-            title={product.name}
+            name={product.name}
             price={product.price}
             isDiscount={product.isDiscount}
             discountedPrice={product.discountedPrice}
             averageRating={product.averageRating}
             reviewsCount={product.reviews ? product.reviews.length : 0}
+            quantity={product.quantity}
+            inStock={product.inStock}
             buttonHref={`/catalog/${product.slug}`}
-            buttonTheme="dark"
-            buttonText="Buy Now"
-            buttonClassName="px-7 md:px-10 text-xs sm:text-sm md:text-base"
         />
     ));
 }

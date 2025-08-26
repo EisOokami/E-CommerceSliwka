@@ -6,33 +6,29 @@ import { redirectToCheckoutAction } from "@/data/actions/cartActions";
 import { OrderSummaryProps } from "./OrderSummary.interfaces";
 
 import Button from "@/components/ui/button/Button";
+import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 
 export default function OrderSummary({
     cartItemsData,
 }: Readonly<OrderSummaryProps>) {
     const deletedProducts = useCartStore((state) => state.deletedProducts);
     const productsQuantity = useCartStore((state) => state.productsQuantity);
+    const isCheckoutBlocked = useCartStore((state) => state.isCheckoutBlocked);
     const [isPending, startTransition] = useTransition();
 
     const subtotal = cartItemsData.reduce((accumulator, currentValue) => {
-        if (deletedProducts.includes(currentValue.documentId)) {
+        if (
+            deletedProducts.includes(currentValue.documentId) ||
+            !currentValue.product.quantity
+        ) {
             return accumulator;
         }
-
-        const optionPrice = currentValue.option
-            ? currentValue.option.priceDifference
-            : 0;
-        const colorPrice = currentValue.color
-            ? currentValue.color.priceDifference
-            : 0;
 
         const price =
             currentValue.product.isDiscount &&
             currentValue.product.discountedPrice
-                ? currentValue.product.discountedPrice +
-                  optionPrice +
-                  colorPrice
-                : currentValue.product.price + optionPrice + colorPrice;
+                ? currentValue.product.discountedPrice
+                : currentValue.product.price;
 
         return (
             accumulator +
@@ -87,12 +83,25 @@ export default function OrderSummary({
                     className="w-full"
                     isLoading
                 />
+            ) : isCheckoutBlocked ? (
+                <Button
+                    text="Checkout"
+                    theme="dark"
+                    className="w-full ring-4 ring-red-500 cursor-not-allowed"
+                />
             ) : (
                 <Button
                     text="Checkout"
                     theme="dark"
                     className="w-full"
                     onClick={handlePayment}
+                />
+            )}
+            {isCheckoutBlocked && (
+                <ZodErrors
+                    error={[
+                        "Please check if the product is in stock or specify the correct quantity",
+                    ]}
                 />
             )}
         </div>

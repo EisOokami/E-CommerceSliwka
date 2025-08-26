@@ -2,10 +2,9 @@
 
 import { useEffect, useState, useTransition } from "react";
 import useGlobalStore from "@/stores/global";
-import useProductStore from "@/stores/product";
 import { toast } from "sonner";
 import {
-    getCartProductByProductDocumentIdData,
+    getCartProductDataByProductDocumentId,
     getCartProductData,
     getProductsInCartCount,
     getProductsInWishlistCount,
@@ -32,8 +31,6 @@ export default function ActionsButton({
     const setProductsInWishlistCount = useGlobalStore(
         (state) => state.setProductsInWishlistCount,
     );
-    const optionDocumentId = useProductStore((state) => state.optionDocumentId);
-    const colorDocumentId = useProductStore((state) => state.colorDocumentId);
     const [isProductInCart, setIsProductInCart] = useState<boolean>(false);
     const [wishlist, setWishlist] = useState<IWishlist | undefined>(
         wishlistData,
@@ -44,16 +41,14 @@ export default function ActionsButton({
     useEffect(() => {
         (async () => {
             const updatedCartData: ICart =
-                await getCartProductByProductDocumentIdData(
+                await getCartProductDataByProductDocumentId(
                     productData.documentId,
-                    optionDocumentId,
-                    colorDocumentId,
                 );
 
             setIsProductInCart(updatedCartData ? true : false);
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [colorDocumentId, optionDocumentId]);
+    }, []);
 
     const showToast = (ok: boolean, message: string) => {
         const toastFn = ok ? toast.success : toast.error;
@@ -69,8 +64,6 @@ export default function ActionsButton({
         startTransitionCart(async () => {
             const fetchResult = await addProductToCartAction(
                 productData.documentId,
-                optionDocumentId,
-                colorDocumentId,
             );
 
             if (fetchResult.ok) {
@@ -98,8 +91,6 @@ export default function ActionsButton({
         startTransitionCart(async () => {
             const fetchResult = await deleteProductFromCartAction(
                 productData.documentId,
-                optionDocumentId,
-                colorDocumentId,
             );
 
             if (fetchResult.ok) {
@@ -184,7 +175,14 @@ export default function ActionsButton({
                     onClick={handleAddProductToWishlist}
                 />
             )}
-            {isPendingCart ? (
+            {!productData.quantity || !productData.inStock ? (
+                <Button
+                    theme="dark"
+                    text="Out of stock"
+                    inline
+                    className="w-full text-center hover:bg-white cursor-not-allowed"
+                />
+            ) : isPendingCart ? (
                 <Button
                     theme="dark"
                     text="Loading"
@@ -194,7 +192,7 @@ export default function ActionsButton({
             ) : isProductInCart ? (
                 <Button
                     theme="dark"
-                    text="Delete From Cart"
+                    text="Delete from Cart"
                     className="w-full text-center"
                     onClick={handleDeleteProductFromCart}
                 />

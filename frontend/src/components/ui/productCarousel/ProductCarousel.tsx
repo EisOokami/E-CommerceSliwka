@@ -1,20 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import useProductStore from "@/stores/product";
+import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
+import { getStrapiMedia } from "@/lib/utils";
 import styles from "./ProductCarousel.module.scss";
 import { ProductCarouselProps } from "./ProductCarousel.interfaces";
 
 import ProductImageThumbs from "./ProductCarouselThumbs";
-import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function ProductCarousel({
     images,
 }: Readonly<ProductCarouselProps>) {
-    const colorSliderImages = useProductStore(
-        (state) => state.colorSliderImages,
-    );
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [emblaMainRef, emblaMainApi] = useEmblaCarousel();
     const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -56,29 +55,23 @@ export default function ProductCarousel({
         <section className={styles["embla"]}>
             <div className={styles["embla__viewport"]} ref={emblaMainRef}>
                 <div className={styles["embla__container"]}>
-                    {colorSliderImages && colorSliderImages.length
-                        ? colorSliderImages.map((image, i) => (
-                              <div className={styles["embla__slide"]} key={i}>
-                                  <StrapiImage
-                                      className={styles["embla__slide__images"]}
-                                      src={image.url}
-                                      alt={image.alternativeText ?? ""}
-                                      width={1000}
-                                      height={1000}
-                                  />
-                              </div>
-                          ))
-                        : images.map((image, i) => (
-                              <div className={styles["embla__slide"]} key={i}>
-                                  <StrapiImage
-                                      className={styles["embla__slide__images"]}
-                                      src={image.url}
-                                      alt={image.alternativeText ?? ""}
-                                      width={1000}
-                                      height={1000}
-                                  />
-                              </div>
-                          ))}
+                    {images.map((image, i) => (
+                        <div className={styles["embla__slide"]} key={i}>
+                            <PhotoProvider>
+                                <PhotoView src={`${getStrapiMedia(image.url)}`}>
+                                    <Image
+                                        className={
+                                            styles["embla__slide__images"]
+                                        }
+                                        src={`${getStrapiMedia(image.url)}`}
+                                        alt={image.alternativeText ?? ""}
+                                        width={1000}
+                                        height={1000}
+                                    />
+                                </PhotoView>
+                            </PhotoProvider>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div
@@ -86,23 +79,14 @@ export default function ProductCarousel({
                 ref={emblaThumbsRef}
             >
                 <div className={styles["embla-thumbs__container"]}>
-                    {colorSliderImages && colorSliderImages.length
-                        ? colorSliderImages.map((image, i) => (
-                              <ProductImageThumbs
-                                  key={i}
-                                  onClick={() => onThumbClick(i)}
-                                  selected={i === selectedIndex}
-                                  image={image}
-                              />
-                          ))
-                        : images.map((image, i) => (
-                              <ProductImageThumbs
-                                  key={i}
-                                  onClick={() => onThumbClick(i)}
-                                  selected={i === selectedIndex}
-                                  image={image}
-                              />
-                          ))}
+                    {images.map((image, i) => (
+                        <ProductImageThumbs
+                            key={i}
+                            onClick={() => onThumbClick(i)}
+                            selected={i === selectedIndex}
+                            image={image}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

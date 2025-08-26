@@ -174,15 +174,6 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                                     <div>
                                         <h5 className="text-gray-900 font-medium">
                                             {cartItem.product.name}
-                                            {cartItem.option || cartItem.color
-                                                ? " | "
-                                                : " "}
-                                            {cartItem.option
-                                                ? cartItem.option.value
-                                                : ""}{" "}
-                                            {cartItem.color
-                                                ? cartItem.color.colorName
-                                                : ""}
                                         </h5>
                                         <p className="text-sm text-gray-600">
                                             Qty: {cartItem.quantity}
