@@ -6,6 +6,8 @@ interface IWishlistStore {
     setWishlist: (newWishlist: IWishlist[]) => void;
     productsInWishlist: string[];
     setProductsInWishlist: (newProductsInWishlist: string[]) => void;
+    removedProducts: string[];
+    setRemovedProducts: (newRemovedProducts: string[]) => void;
 }
 
 const useWishlistStore = create<IWishlistStore>((set) => ({
@@ -18,6 +20,11 @@ const useWishlistStore = create<IWishlistStore>((set) => ({
     setProductsInWishlist: (newProductsInWishlist) =>
         set(() => ({
             productsInWishlist: newProductsInWishlist,
+        })),
+    removedProducts: [],
+    setRemovedProducts: (newRemovedProducts) =>
+        set(() => ({
+            removedProducts: newRemovedProducts,
         })),
 }));
 
