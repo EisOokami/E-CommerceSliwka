@@ -1,7 +1,7 @@
-// "use server";
+"use server";
 
 import qs from "qs";
-import { getAuthToken } from "./getToken";
+import { getAuthToken, getCSRFToken } from "./getToken";
 import { getStrapiURL } from "@/lib/utils";
 
 export async function getUserMeLoader() {
@@ -10,8 +10,13 @@ export async function getUserMeLoader() {
     const url = new URL("/api/users/me", baseUrl);
 
     const authToken = await getAuthToken();
+    const CSRFToken = await getCSRFToken();
 
     if (!authToken) {
+        return { ok: false, data: null, error: null };
+    }
+
+    if (!CSRFToken) {
         return { ok: false, data: null, error: null };
     }
 
