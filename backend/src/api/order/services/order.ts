@@ -164,7 +164,19 @@ export default factories.createCoreService(
         },
 
         async findOrder(params, user) {
-            const { results, pagination } = await super.find(params);
+            const updatedParams = {
+                ...params,
+                filters: {
+                    ...params.filters,
+                    user: {
+                        documentId: {
+                            $eq: user.documentId,
+                        },
+                    },
+                },
+            };
+
+            const { results, pagination } = await super.find(updatedParams);
 
             const orderData = await strapi
                 .documents("api::order.order")
@@ -185,6 +197,17 @@ export default factories.createCoreService(
                     },
                     fields: params.fields,
                     sort: params.sort,
+                    ...(params.pagination &&
+                        params.pagination.page &&
+                        params.pagination.pageSize && {
+                            start:
+                                (params.pagination.page - 1) *
+                                params.pagination.pageSize,
+                        }),
+                    ...(params.pagination &&
+                        params.pagination.pageSize && {
+                            limit: params.pagination.pageSize,
+                        }),
                 });
 
             return { data: orderData, meta: { pagination } };
