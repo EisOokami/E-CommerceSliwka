@@ -2,6 +2,7 @@
 
 import qs from "qs";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { mutateData } from "../services/mutateData";
 import { getUserMeLoader } from "../services/getUserMeLoader";
 import { getCartProductData, getCartProductsData } from "../loaders";
@@ -87,6 +88,54 @@ export async function removeQuantityToProductAction(documentId: string) {
     }
 }
 
+const schemaChangeQuantity = z.object({
+    value: z.number().min(1),
+});
+
+export async function changeQuantityToProductAction(
+    documentId: string,
+    value: number,
+) {
+    const validatedFields = schemaChangeQuantity.safeParse({
+        value: +value,
+    });
+
+    if (!validatedFields.success) {
+        throw new Error("Ops! Something went wrong. Please try again.");
+    }
+
+    const user = await getUserMeLoader();
+
+    if (!user.ok) {
+        throw new Error("User not found");
+    }
+
+    const query = qs.stringify({
+        populate: "*",
+    });
+
+    const payload = {
+        data: {
+            quantity: +value,
+        },
+    };
+
+    const responseData = await mutateData(
+        "PUT",
+        `/api/carts/${documentId}?${query}`,
+        payload,
+    );
+
+    if (!responseData) {
+        throw new Error("Ops! Something went wrong. Please try again.");
+    }
+
+    if (responseData.error) {
+        console.error(responseData.error);
+        throw new Error("Failed to Change Quantity to Product.");
+    }
+}
+
 export async function deleteProductFromCartAction(documentId: string) {
     const productCart = await getCartProductData(documentId);
     const user = await getUserMeLoader();
@@ -144,6 +193,10 @@ export async function redirectToCheckoutAction(cartItemsData: ICart[]) {
     if (responseData.error) {
         console.error(responseData.error);
         throw new Error("Failed to Redirect to Checkout");
+    }
+
+    if (!responseData.stripeSession || !responseData.stripeSession.url) {
+        redirect("/cart");
     }
 
     const url = responseData.stripeSession.url;
