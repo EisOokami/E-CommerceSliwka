@@ -4,6 +4,7 @@ import qs from "qs";
 import { getStrapiURL } from "@/lib/utils";
 import { getAuthToken } from "./services/getToken";
 import { getUserMeLoader } from "./services/getUserMeLoader";
+import { DeliveryStatus } from "@/types/types";
 
 const baseUrl = getStrapiURL();
 
@@ -844,7 +845,11 @@ export async function getProductsInWishlistCount() {
     return fetchedData.data;
 }
 
-export async function getOrdersData() {
+export async function getOrdersData(
+    page: number = 1,
+    limit: number = 8,
+    status?: DeliveryStatus | "All",
+) {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -868,13 +873,25 @@ export async function getOrdersData() {
                     $eq: user.data.id,
                 },
             },
+            ...(status && {
+                deliveryStatus: {
+                    $eq: status,
+                },
+            }),
         },
         sort: ["createdAt:desc"],
+        pagination: {
+            page,
+            pageSize: limit,
+        },
     });
 
     const fetchedData = await fetchData(url.href);
 
-    return fetchedData.data;
+    return {
+        data: fetchedData.data,
+        totalPages: fetchedData.meta.pagination.pageCount,
+    };
 }
 
 export async function getReviewsData(productDocumentId: string) {

@@ -1,10 +1,17 @@
+"use client";
+
+import useOrderStore from "@/stores/order";
 import { FiPackage } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import { LuClock, LuTruck } from "react-icons/lu";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import { OrderStatusCardsProps } from "./OrderStatusCards.interfaces";
+import { DeliveryStatus } from "@/types/types";
+import {
+    IStatusConfig,
+    OrderStatusCardsProps,
+} from "./OrderStatusCards.interfaces";
 
-const statusConfig = [
+const statusConfig: IStatusConfig[] = [
     {
         key: "Delivered",
         label: "Delivered",
@@ -36,6 +43,10 @@ const statusConfig = [
 export default function OrderStatusCards({
     ordersData,
 }: Readonly<OrderStatusCardsProps>) {
+    const setSelectedDeliveryStatus = useOrderStore(
+        (state) => state.setSelectedDeliveryStatus,
+    );
+
     const countByStatus = ordersData.reduce<Record<string, number>>(
         (acc, order) => {
             acc[order.deliveryStatus] = (acc[order.deliveryStatus] || 0) + 1;
@@ -44,10 +55,17 @@ export default function OrderStatusCards({
         {},
     );
 
+    const handleChangeDeliveryStatus = (status: DeliveryStatus | "All") => {
+        setSelectedDeliveryStatus(status);
+    };
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-            <div className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm">
-                <div className="flex justify-between items-center">
+            <button
+                className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                onClick={() => handleChangeDeliveryStatus("All")}
+            >
+                <div className="flex justify-between items-center text-left">
                     <div>
                         <p className="text-sm text-gray-600 font-medium">
                             Total Orders
@@ -58,13 +76,14 @@ export default function OrderStatusCards({
                     </div>
                     <FiPackage className="text-3xl text-blue-500" />
                 </div>
-            </div>
+            </button>
             {statusConfig.map(({ key, label, icon, textColor }) => (
-                <div
+                <button
                     key={key}
-                    className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm"
+                    className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                    onClick={() => handleChangeDeliveryStatus(label)}
                 >
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-left">
                         <div>
                             <p className="text-sm text-gray-600 font-medium">
                                 {label}
@@ -75,7 +94,7 @@ export default function OrderStatusCards({
                         </div>
                         {icon}
                     </div>
-                </div>
+                </button>
             ))}
         </div>
     );

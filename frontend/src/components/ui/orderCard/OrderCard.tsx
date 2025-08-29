@@ -66,8 +66,15 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
         return accumulator + price;
     }, 0);
 
+    const handleDropdown = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     return (
-        <div className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-shadow">
+        <button
+            className="text-left w-full bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-shadow"
+            onClick={handleDropdown}
+        >
             <div className="p-6">
                 <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -84,9 +91,8 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                                 </div>
                             )}
                         </div>
-
                         <div
-                            className={`inline-flex items-center gap-2 px-3 py-1 text-sm font-medium border rounded-full 
+                            className={`inline-flex items-center gap-2 w-min px-3 py-1 text-sm font-medium border rounded-full 
                                 ${getStatusColor(
                                     orderData.deliveryStatus.toLowerCase(),
                                 )}
@@ -101,7 +107,7 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div className="text-right">
+                        <div className="text-left lg:text-right">
                             <p className="text-sm text-gray-600">Total</p>
                             <p className="text-xl text-gray-900 font-bold">
                                 ${total}
@@ -130,10 +136,7 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                         </div>
                     )}
                 </div>
-                <button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 transition-colors"
-                >
+                <div className="flex items-center gap-2 mt-4 text-blue-600 hover:text-blue-700 transition-colors">
                     {isExpanded ? (
                         <>
                             <IoChevronUp className="text-base" />
@@ -145,7 +148,7 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                             Show details
                         </>
                     )}
-                </button>
+                </div>
             </div>
             {isExpanded && (
                 <div className="p-6 bg-gray-50 border-t border-gray-100">
@@ -204,6 +207,6 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
                     </div>
                 </div>
             )}
-        </div>
+        </button>
     );
 }

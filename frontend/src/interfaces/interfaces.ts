@@ -1,3 +1,5 @@
+import { DeliveryStatus } from "@/types/types";
+
 export interface IImage {
     id: number;
     documentId: string;
@@ -168,7 +170,7 @@ export interface IOrder {
     createdAt: string;
     orderId: string;
     isSuccess: boolean | null;
-    deliveryStatus: "Delivered" | "Shipped" | "Processing" | "Cancelled";
+    deliveryStatus: DeliveryStatus;
     estimatedDelivery: string;
     trackingNumber: string;
     cartItems: ICart[];
