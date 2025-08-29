@@ -12,9 +12,11 @@ import Products from "@/components/layout/catalog/products/Products";
 import RatingSelect from "@/components/ui/ratingSelect/RatingSelect";
 
 export default function CatalogPage() {
+    const currentPage = useCatalogStore((state) => state.currentPage);
+    const setCurrentPage = useCatalogStore((state) => state.setCurrentPage);
+    const totalPages = useCatalogStore((state) => state.totalPages);
     const setSearchValue = useCatalogStore((state) => state.setSearchValue);
     const setProductRating = useCatalogStore((state) => state.setProductRating);
-    const setCurrentPage = useCatalogStore((state) => state.setCurrentPage);
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const pathname = usePathname();
 
@@ -43,7 +45,11 @@ export default function CatalogPage() {
                 </div>
                 <Products productsData={filteredProducts} />
             </section>
-            <Pagination />
+            <Pagination
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalPages={totalPages}
+            />
         </>
     );
 }
