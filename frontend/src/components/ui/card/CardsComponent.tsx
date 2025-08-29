@@ -10,25 +10,22 @@ import Card from "./Card";
 export default function CardsComponent({
     productsData,
 }: Readonly<CardsComponentProps>) {
-    const wishlist = useWishlistStore((state) => state.wishlist);
     const setWishlist = useWishlistStore((state) => state.setWishlist);
     const setProductsInWishlist = useWishlistStore(
         (state) => state.setProductsInWishlist,
     );
 
     useEffect(() => {
-        getWishlistProductsData().then((data) => {
-            setWishlist(data);
-        });
-    }, [setWishlist]);
+        (async () => {
+            const result: IWishlist[] = await getWishlistProductsData();
 
-    useEffect(() => {
-        if (wishlist.length) {
+            setWishlist(result);
+
             setProductsInWishlist(
-                wishlist.map((item) => item.product.documentId),
+                result.map((item) => item.product.documentId),
             );
-        }
-    }, [wishlist, setProductsInWishlist]);
+        })();
+    }, [setProductsInWishlist, setWishlist]);
 
     return productsData.map((product) => (
         <Card

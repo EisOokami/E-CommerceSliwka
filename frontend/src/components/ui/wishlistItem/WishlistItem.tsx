@@ -15,7 +15,6 @@ import StrapiImage from "../strapiImage/StrapiImage";
 
 export default function WishlistItem({
     wishlist,
-    setRemovedProducts,
 }: Readonly<WishlistItemProps>) {
     const setProductsInWishlistCount = useGlobalStore(
         (state) => state.setProductsInWishlistCount,
@@ -26,16 +25,16 @@ export default function WishlistItem({
     const setProductsInWishlist = useWishlistStore(
         (state) => state.setProductsInWishlist,
     );
+    const deletedProducts = useWishlistStore((state) => state.deletedProducts);
+    const setDeletedProducts = useWishlistStore(
+        (state) => state.setDeletedProducts,
+    );
     const [isVisible, setIsVisible] = useState<boolean>(true);
 
     const handleDeleteProductFromWishlist = async () => {
         setIsVisible(false);
         setTimeout(
-            () =>
-                setRemovedProducts((prevState) => [
-                    ...prevState,
-                    wishlist.documentId,
-                ]),
+            () => setDeletedProducts([...deletedProducts, wishlist.documentId]),
             300,
         );
         deleteProductFromWishlistAction(wishlist.documentId);
@@ -98,11 +97,11 @@ export default function WishlistItem({
                                 {wishlist.product.description}
                             </p>
                         </div>
-                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div className="grid md:flex items-center justify-between gap-3 md:gap-0 mt-4 pt-4 border-t border-gray-100">
                             <div className="text-xl font-bold text-gray-900">
                                 ${wishlist.product.price.toFixed(2)}
                             </div>
-                            <div className="flex items-center space-x-2">
+                            <div className="flex flex-row-reverse md:flex-row items-center gap-2 md:gap-0 md:space-x-2">
                                 <button
                                     onClick={(e) => {
                                         handleDisableRedirect(e);
@@ -115,6 +114,7 @@ export default function WishlistItem({
                                 <Button
                                     theme="dark"
                                     text="Buy now"
+                                    className="w-max"
                                     tabIndex={-1}
                                 />
                             </div>
