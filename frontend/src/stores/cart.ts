@@ -7,6 +7,8 @@ interface ICartStore {
     setProductsQuantity: (newProductsQuantity: {
         [key: string]: number;
     }) => void;
+    isCheckoutBlocked: boolean;
+    setIsCheckoutBlocked: (newIsCheckoutBlocked: boolean) => void;
 }
 
 const useCartStore = create<ICartStore>((set) => ({
@@ -22,6 +24,11 @@ const useCartStore = create<ICartStore>((set) => ({
                 ...state.productsQuantity,
                 ...newProductsQuantity,
             },
+        })),
+    isCheckoutBlocked: false,
+    setIsCheckoutBlocked: (newIsCheckoutBlocked) =>
+        set(() => ({
+            isCheckoutBlocked: newIsCheckoutBlocked,
         })),
 }));
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import useCartStore from "@/stores/cart";
 import { TbShoppingCartX } from "react-icons/tb";
 import { CartListProps } from "./CartList.interfaces";
@@ -8,6 +10,24 @@ import CartItem from "@/components/ui/cartItem/CartItem";
 
 export default function CartList({ cartItemsData }: Readonly<CartListProps>) {
     const deletedProducts = useCartStore((state) => state.deletedProducts);
+    const setIsCheckoutBlocked = useCartStore(
+        (state) => state.setIsCheckoutBlocked,
+    );
+
+    useEffect(() => {
+        cartItemsData.some((cartItem) => {
+            if (
+                (!cartItem.product.quantity || !cartItem.product.inStock) &&
+                !deletedProducts.includes(cartItem.documentId)
+            ) {
+                setIsCheckoutBlocked(true);
+
+                return true;
+            }
+
+            setIsCheckoutBlocked(false);
+        });
+    }, [cartItemsData, deletedProducts, setIsCheckoutBlocked]);
 
     return (
         <div className="grid w-full md:w-1/2">
