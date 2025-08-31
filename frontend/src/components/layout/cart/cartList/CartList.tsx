@@ -35,25 +35,32 @@ export default function CartList({ cartItemsData }: Readonly<CartListProps>) {
 
     return (
         <div className="grid w-full md:w-1/2">
-            {cartItemsData.map((cartItem, i) =>
-                !deletedProducts.includes(cartItem.documentId) ? (
-                    <CartItem key={i} cartItem={cartItem} />
-                ) : null,
-            )}
-            {(!cartItemsData.length ||
-                deletedProducts.length === cartItemsData.length) && (
-                <div className="grid place-content-center gap-2 w-full my-10 md:my-0 md:mt-5">
-                    <div className="flex justify-center">
-                        <TbShoppingCartX className="text-8xl text-gray-300" />
+            {(() => {
+                const visibleCartItems = cartItemsData.filter(
+                    (item) => !deletedProducts.includes(item.documentId),
+                );
+
+                return visibleCartItems.length > 0 ? (
+                    visibleCartItems.map((cartItem) => (
+                        <CartItem
+                            key={cartItem.documentId}
+                            cartItem={cartItem}
+                        />
+                    ))
+                ) : (
+                    <div className="grid place-content-center gap-2 w-full my-10 md:my-0 md:mt-5">
+                        <div className="flex justify-center">
+                            <TbShoppingCartX className="text-8xl text-gray-300" />
+                        </div>
+                        <h1 className="text-center text-3xl text-gray-800 font-medium">
+                            No products found
+                        </h1>
+                        <p className="text-center text-2xl text-gray-500">
+                            Try add product
+                        </p>
                     </div>
-                    <h1 className="text-center text-3xl text-gray-800 font-medium">
-                        No products found
-                    </h1>
-                    <p className="text-center text-2xl text-gray-500">
-                        Try add product
-                    </p>
-                </div>
-            )}
+                );
+            })()}
         </div>
     );
 }
