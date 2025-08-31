@@ -291,6 +291,7 @@ export async function getProductsData(page: number = 1, limit: number = 8) {
             page,
             pageSize: limit,
         },
+        sort: ["quantity:desc", "inStock:desc", "averageRating:desc", "name"],
     });
 
     const fetchedData = await fetchData(url.href);
@@ -428,76 +429,74 @@ export async function getFilteredProductsData(
         ...(filterParams.price && { price: filterParams.price }),
     };
 
-    url.search = qs.stringify(
-        {
-            populate: {
-                image: {
-                    fields: ["url", "alternativeText"],
-                },
-                sliderImages: {
-                    fields: ["url", "alternativeText"],
-                },
-                productOptions: {
-                    populate: true,
-                },
-                colors: {
-                    populate: true,
-                },
-                options: {
-                    populate: {
-                        optionsArray: {
-                            populate: true,
-                        },
+    url.search = qs.stringify({
+        populate: {
+            image: {
+                fields: ["url", "alternativeText"],
+            },
+            sliderImages: {
+                fields: ["url", "alternativeText"],
+            },
+            productOptions: {
+                populate: true,
+            },
+            colors: {
+                populate: true,
+            },
+            options: {
+                populate: {
+                    optionsArray: {
+                        populate: true,
                     },
                 },
-                productInfo: {
-                    populate: true,
-                },
-                productSpecs: {
-                    populate: true,
-                },
-                category: {
-                    populate: true,
-                },
-                detailedSpecifications: {
-                    populate: {
-                        specifications: {
-                            populate: {
-                                specifications: {
-                                    populate: true,
-                                },
+            },
+            productInfo: {
+                populate: true,
+            },
+            productSpecs: {
+                populate: true,
+            },
+            category: {
+                populate: true,
+            },
+            detailedSpecifications: {
+                populate: {
+                    specifications: {
+                        populate: {
+                            specifications: {
+                                populate: true,
                             },
-                        },
-                    },
-                },
-                reviews: {
-                    populate: {
-                        user: {
-                            populate: {
-                                avatar: {
-                                    fields: ["url", "alternativeText"],
-                                },
-                            },
-                            fields: ["username"],
-                        },
-                        product: {
-                            fields: ["documentId"],
-                        },
-                        images: {
-                            fields: ["url", "alternativeText"],
                         },
                     },
                 },
             },
-            filters,
-            queryParams,
-            pagination: {
-                page,
-                pageSize: limit,
+            reviews: {
+                populate: {
+                    user: {
+                        populate: {
+                            avatar: {
+                                fields: ["url", "alternativeText"],
+                            },
+                        },
+                        fields: ["username"],
+                    },
+                    product: {
+                        fields: ["documentId"],
+                    },
+                    images: {
+                        fields: ["url", "alternativeText"],
+                    },
+                },
             },
         },
-        { encodeValuesOnly: true },
-    );
+        filters,
+        queryParams,
+        pagination: {
+            page,
+            pageSize: limit,
+        },
+        sort: ["quantity:desc", "inStock:desc", "averageRating:desc", "name"],
+    });
 
     const fetchedData = await fetchData(url.href);
 
@@ -567,7 +566,7 @@ export async function getProductsPriceRange(
         ...query,
     };
 
-    url.search = qs.stringify({ filters }, { encodeValuesOnly: true });
+    url.search = qs.stringify({ filters });
 
     const { minPrice, maxPrice } = await fetchData(url.href);
 
