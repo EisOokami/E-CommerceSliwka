@@ -145,7 +145,6 @@ const Card = memo(function Card({
                         width={250}
                         height={250}
                         className="size-32 sm:size-48 xl:size-64 object-contain transition-transform group-hover:scale-105"
-                        loading="lazy"
                     />
                 </div>
                 <div className="grid justify-items-center gap-1 md:gap-3">

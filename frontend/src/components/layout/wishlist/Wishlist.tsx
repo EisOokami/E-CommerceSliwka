@@ -5,7 +5,11 @@ import useWishlistStore from "@/stores/wishlist";
 import { GoHeart } from "react-icons/go";
 import { WishlistProps } from "./Wishlist.interfaces";
 
-import WishlistItem from "@/components/ui/wishlistItem/WishlistItem";
+import WishlistItemSkeleton from "@/components/ui/wishlistItem/WishlistItemSkeleton";
+const WishlistItem = dynamic(
+    () => import("@/components/ui/wishlistItem/WishlistItem"),
+    { ssr: false, loading: () => <WishlistItemSkeleton /> },
+);
 
 export default function Wishlist({ wishlistData }: Readonly<WishlistProps>) {
     const deletedProducts = useWishlistStore((state) => state.deletedProducts);

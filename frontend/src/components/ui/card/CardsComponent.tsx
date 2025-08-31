@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import useWishlistStore from "@/stores/wishlist";
 import { getWishlistProductsData } from "@/data/loaders";
+import { IWishlist } from "@/interfaces/interfaces";
 import { CardsComponentProps } from "./Card.interfaces";
 
-import Card from "./Card";
+import CardSkeleton from "./CardSkeleton";
+const Card = dynamic(() => import("./Card"), {
+    ssr: false,
+    loading: () => <CardSkeleton />,
+});
 
 export default function CardsComponent({
     productsData,

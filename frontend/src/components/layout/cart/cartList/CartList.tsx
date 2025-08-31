@@ -6,7 +6,11 @@ import useCartStore from "@/stores/cart";
 import { TbShoppingCartX } from "react-icons/tb";
 import { CartListProps } from "./CartList.interfaces";
 
-import CartItem from "@/components/ui/cartItem/CartItem";
+import CartItemSkeleton from "@/components/ui/cartItem/CartItemSkeleton";
+const CartItem = dynamic(() => import("@/components/ui/cartItem/CartItem"), {
+    ssr: false,
+    loading: () => <CartItemSkeleton />,
+});
 
 export default function CartList({ cartItemsData }: Readonly<CartListProps>) {
     const deletedProducts = useCartStore((state) => state.deletedProducts);

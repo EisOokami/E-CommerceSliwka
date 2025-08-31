@@ -1,11 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./ProductsCarousel.module.scss";
 import { ProductsCarouselProps } from "./ProductsCarousel.interfaces";
 
-import ProductsCarouselSlide from "./ProductsCarouselSlide";
+import ProductsCarouselSlideSkeleton from "./ProductsCarouselSlideSkeleton";
+const ProductsCarouselSlide = dynamic(() => import("./ProductsCarouselSlide"), {
+    ssr: false,
+    loading: () => <ProductsCarouselSlideSkeleton />,
+});
 
 export default function ProductsCarousel({
     productsData,

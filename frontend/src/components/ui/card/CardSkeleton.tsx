@@ -1,5 +1,4 @@
 import { memo } from "react";
-import Image from "next/image";
 
 const CardSkeleton = memo(function CardSkeleton() {
     return (
@@ -7,26 +6,18 @@ const CardSkeleton = memo(function CardSkeleton() {
             <div className="absolute top-3 right-3 z-10">
                 <div className="size-12 bg-gray-200 rounded-full"></div>
             </div>
-            <div className="grid place-items-start w-full">
-                <div className="grid place-content-center w-full">
-                    <Image
-                        src="/skeleton-loader.png"
-                        alt="skeleton-loader"
-                        width={300}
-                        height={300}
-                        className="size-32 sm:size-48 xl:size-64 object-contain rounded-lg"
-                    />
-                </div>
+            <div className="grid place-content-center">
+                <div className="size-28 sm:size-36 lg:size-40 xl:size-60 bg-gray-200 rounded-lg"></div>
             </div>
             <div className="grid justify-items-center gap-1 md:gap-3 w-full">
                 <div className="grid justify-items-center gap-1 w-full">
-                    <div className="w-32 md:w-40 h-5 bg-gray-100 rounded-lg"></div>
-                    <div className="w-32 md:w-48 h-5 bg-gray-100 rounded-lg"></div>
+                    <div className="w-24 md:w-full h-5 xl:h-8 bg-gray-200 rounded-lg"></div>
+                    <div className="w-20 md:w-24 xl:w-36 h-6 bg-gray-200 rounded-lg"></div>
                 </div>
                 <div className="grid content-end justify-items-center gap-2">
-                    <div className="w-28 h-6 md:h-8 bg-gray-100 rounded-lg"></div>
-                    <div className="w-28 h-6 md:h-8 bg-gray-100 rounded-lg"></div>
-                    <div className="w-32 h-14 bg-gray-100 rounded-lg"></div>
+                    <div className="w-20 md:w-28 h-6 md:h-8 bg-gray-200 rounded-lg"></div>
+                    <div className="w-20 md:w-28 h-6 md:h-8 bg-gray-200 rounded-lg"></div>
+                    <div className="w-24 md:w-32 h-10 md:h-14 bg-gray-200 rounded-lg"></div>
                 </div>
             </div>
         </div>

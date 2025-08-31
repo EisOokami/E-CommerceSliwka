@@ -1,12 +1,33 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { LuFilterX } from "react-icons/lu";
 import { IProduct } from "@/interfaces/interfaces";
 import { ProductsProps } from "./Products.interfaces";
 
-import CardsComponent from "@/components/ui/card/CardsComponent";
-import CategoriesCarousel from "@/components/ui/categoriesCarousel/CategoriesCarousel";
+import CategoriesCarouselSkeleton from "@/components/ui/categoriesCarousel/CategoriesCarouselSkeleton";
+import CardSkeleton from "@/components/ui/card/CardSkeleton";
+const CardsComponent = dynamic(
+    () => import("@/components/ui/card/CardsComponent"),
+    {
+        ssr: false,
+        loading: () => (
+            <>
+                {[...Array(4)].map((_, i) => (
+                    <CardSkeleton key={i} />
+                ))}
+            </>
+        ),
+    },
+);
+const CategoriesCarousel = dynamic(
+    () => import("@/components/ui/categoriesCarousel/CategoriesCarousel"),
+    {
+        ssr: false,
+        loading: () => <CategoriesCarouselSkeleton />,
+    },
+);
 
 export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
     const [activeTab, setActiveTab] = useState<number>(0);
