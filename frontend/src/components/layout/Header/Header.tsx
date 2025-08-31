@@ -53,13 +53,15 @@ export default function Header({
         <header className="sticky top-0 p-3 md:px-5 bg-white border-b z-50">
             <div className="flex justify-between items-center container mx-auto">
                 <div className="lg:flex-1">
-                    <Logo
-                        width={50}
-                        height={50}
-                        src={logoImage.url}
-                        alt={logoImage.alternativeText}
-                        link={logoLink.url}
-                    />
+                    <div className="w-max">
+                        <Logo
+                            width={50}
+                            height={50}
+                            src={logoImage.url}
+                            alt={logoImage.alternativeText}
+                            link={logoLink.url}
+                        />
+                    </div>
                 </div>
                 <div className="hidden md:flex-1 md:flex md:justify-center">
                     <Navigation
