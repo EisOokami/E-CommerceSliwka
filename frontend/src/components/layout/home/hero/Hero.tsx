@@ -31,6 +31,7 @@ export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
                     alt={image.alternativeText ?? product.name}
                     width={800}
                     height={800}
+                    priority
                 />
             </div>
         </section>
