@@ -12,6 +12,8 @@ export default function Tooltip({ message, children }: Readonly<TooltipProps>) {
                 className="flex justify-center"
                 onMouseEnter={() => setShow(true)}
                 onMouseLeave={() => setShow(false)}
+                onFocus={() => setShow(true)}
+                onBlur={() => setShow(false)}
             >
                 {children}
             </span>
