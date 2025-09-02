@@ -51,10 +51,17 @@ const RatingSelect = memo(function RatingSelect() {
     };
 
     return (
-        <div className="relative w-full md:w-52">
+        <div
+            className="relative w-full md:w-52"
+            onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                    handleCloseList();
+                }
+            }}
+        >
             <button
                 ref={btnRef}
-                className="flex justify-between items-center w-full px-4 py-2 text-left outline outline-1 outline-[#e5e7eb] rounded-md"
+                className="flex justify-between items-center w-full px-4 py-2 text-left outline outline-1 outline-[#e5e7eb] focus:outline-black rounded-md"
                 onClick={toggleList}
             >
                 {selectedValue}
@@ -78,9 +85,10 @@ const RatingSelect = memo(function RatingSelect() {
                                     option.label,
                                 )
                             }
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition"
                         >
-                            {option.label}
+                            <button className="text-left w-full px-4 py-2 hover:bg-gray-100 cursor-pointer transition">
+                                {option.label}
+                            </button>
                         </li>
                     ))}
                 </ul>

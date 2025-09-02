@@ -9,15 +9,14 @@ const DropdownLink = memo(function DropdownLink({
     onClick,
 }: Readonly<DropdownLinkProps>) {
     return (
-        <button className="w-full text-left" onClick={onClick}>
-            <Link
-                href={href}
-                className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700 hover:text-black hover:bg-gray-100 transition"
-            >
-                {icon}
-                {label}
-            </Link>
-        </button>
+        <Link
+            href={href}
+            className="flex items-center gap-2 w-full px-5 py-2 text-lg text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            onClick={onClick}
+        >
+            {icon}
+            {label}
+        </Link>
     );
 });
 

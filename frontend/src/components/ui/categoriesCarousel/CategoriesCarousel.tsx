@@ -69,6 +69,7 @@ export default function CategoriesCarousel({
                     <button
                         onClick={onPrevButtonClick}
                         disabled={prevBtnDisabled}
+                        tabIndex={-1}
                         className={`p-2 transition rounded-full ${
                             !prevBtnDisabled
                                 ? "hover:bg-gray-300"
@@ -80,6 +81,7 @@ export default function CategoriesCarousel({
                     <button
                         onClick={onNextButtonClick}
                         disabled={nextBtnDisabled}
+                        tabIndex={-1}
                         className={`p-2 transition rounded-full ${
                             !nextBtnDisabled
                                 ? "hover:bg-gray-300"
@@ -100,7 +102,7 @@ export default function CategoriesCarousel({
                                 ];
 
                             return (
-                                <div
+                                <button
                                     key={category.id}
                                     className={`${styles["embla__slide"]} ${
                                         activeCategory === category.category
@@ -117,7 +119,7 @@ export default function CategoriesCarousel({
                                     <span className="text-base md:text-xl font-medium">
                                         {category.category}
                                     </span>
-                                </div>
+                                </button>
                             );
                         })}
                     </div>

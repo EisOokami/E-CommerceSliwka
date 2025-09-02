@@ -71,19 +71,17 @@ export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
             <div className="grid gap-7 container mx-auto px-5 py-10">
                 <div className="flex gap-5 md:gap-10 whitespace-nowrap overflow-y-auto">
                     {tabs.map((tab, i) => (
-                        <div
+                        <button
                             key={tab.id}
-                            className={`cursor-pointer ${
+                            className={`text-lg md:text-xl font-medium cursor-pointer ${
                                 activeTab === i
                                     ? "text-black border-b-[3px] border-black"
                                     : "text-gray-500"
                             }`}
                             onClick={() => handleChangeActiveTab(i)}
                         >
-                            <span className="text-lg md:text-xl font-medium">
-                                {tab.item}
-                            </span>
-                        </div>
+                            {tab.item}
+                        </button>
                     ))}
                 </div>
                 {productsData.length ? (

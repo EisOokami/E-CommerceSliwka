@@ -150,7 +150,15 @@ export default function ReviewInput({
                     className="hidden"
                     accept=".jpg, .jpeg, .png, .webp"
                 />
-                <label htmlFor="images">
+                <label
+                    htmlFor="images"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            document.getElementById("images")?.click();
+                        }
+                    }}
+                >
                     <MdOutlineImage className="text-2xl md:text-3xl text-gray-500 cursor-pointer" />
                 </label>
             </div>
@@ -217,7 +225,7 @@ export default function ReviewInput({
                     ) => <StrapiErrors key={i} error={error} />,
                 )
             ) : (
-            <StrapiErrors error={formState?.strapiErrors} />
+                <StrapiErrors error={formState?.strapiErrors} />
             )}
             <div className="grid gap-1 md:min-w-72">
                 <ZodErrors error={formState?.zodErrors?.description} />

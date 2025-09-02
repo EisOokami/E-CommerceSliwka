@@ -32,16 +32,6 @@ const SearchBarHeader = memo(function SearchBarHeader({
         setIsVisible(false);
     };
 
-    const toggleMenu = () => {
-        if (isVisible) {
-            handleCloseResult();
-        }
-
-        if (!isVisible) {
-            handleOpenResult();
-        }
-    };
-
     const handleChangeInputValue = useDebouncedCallback(async (value) => {
         const trimmedValue = value.trim();
         const isValid = /^[a-zA-Z0-9'",.\- ]+$/.test(trimmedValue);
@@ -59,7 +49,14 @@ const SearchBarHeader = memo(function SearchBarHeader({
     }, 700);
 
     return (
-        <div className="relative">
+        <div
+            className="relative"
+            onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                    handleCloseResult();
+                }
+            }}
+        >
             <div
                 ref={searchBarRef}
                 className="flex items-center gap-1 p-2 lg:p-3 text-xl bg-white border border-gray-200 rounded-lg"
@@ -75,13 +72,13 @@ const SearchBarHeader = memo(function SearchBarHeader({
                     onChange={(e) => {
                         handleChangeInputValue(e.target.value);
                     }}
-                    onFocus={toggleMenu}
+                    onFocus={handleOpenResult}
                 />
             </div>
             {isMounted && (
                 <div
                     ref={resultRef}
-                    className={`absolute left-0 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition-all duration-200 ease-out ${
+                    className={`absolute left-0 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 transition-all duration-200 ease-out ${
                         isVisible
                             ? "opacity-100 scale-100"
                             : "opacity-0 scale-95 pointer-events-none"

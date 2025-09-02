@@ -249,7 +249,16 @@ export default function ReviewComment({
                                     </button>
                                 </div>
                             ))}
-                        <div>
+                        <div
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    document
+                                        .getElementById("upload-images")
+                                        ?.click();
+                                }
+                            }}
+                        >
                             <label
                                 htmlFor="upload-images"
                                 className="grid place-content-center w-20 md:w-32 h-16 md:h-24 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer"
@@ -284,7 +293,7 @@ export default function ReviewComment({
                             ) => <StrapiErrors key={i} error={error} />,
                         )
                     ) : (
-                    <StrapiErrors error={formState?.strapiErrors} />
+                        <StrapiErrors error={formState?.strapiErrors} />
                     )}
                 </form>
             ) : (
