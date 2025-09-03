@@ -30,6 +30,7 @@ export default function AccordionContainer({
     const setProductsCount = useCatalogStore((state) => state.setProductsCount);
     const productRating = useCatalogStore((state) => state.productRating);
     const searchValue = useCatalogStore((state) => state.searchValue);
+    const sortValue = useCatalogStore((state) => state.sortValue);
     const setIsProductLoading = useCatalogStore(
         (state) => state.setIsProductLoading,
     );
@@ -212,11 +213,12 @@ export default function AccordionContainer({
                 (v) => v !== null,
             );
 
-            if (hasFilters) {
+            if (hasFilters || sortValue.length) {
                 result = await getFilteredProductsData(
                     filterParams,
                     currentPage,
                     limit,
+                    sortValue,
                 );
             } else {
                 const { products, totalPages } = await getProductsData(
@@ -245,6 +247,7 @@ export default function AccordionContainer({
         setTotalPages,
         setProductsCount,
         searchValue,
+        sortValue,
         setIsProductLoading,
     ]);
 

@@ -402,6 +402,7 @@ export async function getFilteredProductsData(
     filterParams: { [key: string]: any | null },
     page: number = 1,
     limit: number = 8,
+    sort?: string[],
 ) {
     const url = new URL("/api/products/filtered", baseUrl);
 
@@ -495,7 +496,12 @@ export async function getFilteredProductsData(
             page,
             pageSize: limit,
         },
-        sort: ["quantity:desc", "inStock:desc", "averageRating:desc", "name"],
+        sort: sort ?? [
+            "quantity:desc",
+            "inStock:desc",
+            "averageRating:desc",
+            "name",
+        ],
     });
 
     const fetchedData = await fetchData(url.href);

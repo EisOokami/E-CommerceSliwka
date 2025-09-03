@@ -74,7 +74,7 @@ export default factories.createCoreService(
             return { minPrice, maxPrice };
         },
 
-        async getFilteredProducts(filters, queryParams, pagination) {
+        async getFilteredProducts(filters, queryParams, pagination, sort) {
             const updatedFilters = {
                 ...filters,
                 ...(queryParams.price?.length === 2 && {
@@ -127,6 +127,7 @@ export default factories.createCoreService(
                     populate: populateFields,
                     start: (pagination.page - 1) * pagination.pageSize,
                     limit: pagination.pageSize,
+                    sort: sort,
                 });
 
             const count = await strapi.documents("api::product.product").count({

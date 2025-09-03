@@ -10,6 +10,7 @@ import { AccordionContainerProps } from "./Accordion.interfaces";
 
 import SearchBarCatalog from "../searchBarCatalog/SearchBarCatalog";
 import AccordionItem from "./AccordionItem";
+import SortAccordion from "../sortAccordion/SortAccordion";
 
 const schema = z.object({
     value: z
@@ -179,6 +180,7 @@ export default function Accordion({
                             transitionTimeout={250}
                             className="w-auto"
                         >
+                            <SortAccordion />
                             {items.map(
                                 (
                                     {

@@ -14,6 +14,8 @@ interface ICatalogStore {
     setProductRating: (newProductRating: string) => void;
     searchValue: string;
     setSearchValue: (newSearchValue: string) => void;
+    sortValue: string[];
+    setSortValue: (newSortValue: string[]) => void;
     isProductLoading: boolean;
     setIsProductLoading: (newIsProductLoading: boolean) => void;
 }
@@ -48,6 +50,11 @@ const useCatalogStore = create<ICatalogStore>((set) => ({
     setSearchValue: (newSearchValue) =>
         set(() => ({
             searchValue: newSearchValue,
+        })),
+    sortValue: [],
+    setSortValue: (newSortValue) =>
+        set(() => ({
+            sortValue: newSortValue,
         })),
     isProductLoading: true,
     setIsProductLoading: (newIsProductLoading) =>

@@ -33,10 +33,11 @@ export default factories.createCoreController(
             const filters = ctx.query.filters || {};
             const queryParams = ctx.query.queryParams;
             const pagination = ctx.query.pagination;
+            const sort = ctx.query.sort;
 
             const result = await strapi
                 .service("api::product.product")
-                .getFilteredProducts(filters, queryParams, pagination);
+                .getFilteredProducts(filters, queryParams, pagination, sort);
 
             ctx.send(result);
         },
