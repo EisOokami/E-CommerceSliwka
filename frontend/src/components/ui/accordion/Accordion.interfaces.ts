@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface AccordionItemProps {
     header: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export interface AccordionContainerProps {

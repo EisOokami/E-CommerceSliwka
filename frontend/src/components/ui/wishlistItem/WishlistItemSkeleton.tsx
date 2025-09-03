@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function WishlistItemSkeleton() {
     return (
         <div className="transition-all duration-300 ease-out opacity-100 scale-100">

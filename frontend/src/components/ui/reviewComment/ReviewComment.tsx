@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useState } from "react";
 import useProductStore from "@/stores/product";
 import Image from "next/image";
 import { PhotoProvider, PhotoView } from "react-photo-view";
@@ -80,7 +80,7 @@ export default function ReviewComment({
         }
     };
 
-    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const filesArray = Array.from(event.target.files);
 

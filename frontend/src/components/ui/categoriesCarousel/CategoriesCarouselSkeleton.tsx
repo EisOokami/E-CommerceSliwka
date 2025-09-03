@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function CategoriesCarouselSkeleton() {
     return (
         <div className="grid gap-7 container mx-auto p-3 md:p-0 animate-pulse">

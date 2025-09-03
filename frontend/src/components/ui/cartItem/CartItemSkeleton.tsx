@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function CartItemSkeleton() {
     return (
         <div className="flex items-center gap-6 w-full min-h-48 px-3 py-8 border-t animate-pulse">

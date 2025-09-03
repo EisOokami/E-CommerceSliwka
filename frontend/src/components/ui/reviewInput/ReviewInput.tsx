@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import useProductStore from "@/stores/product";
 import Image from "next/image";
 import {
@@ -78,7 +78,7 @@ export default function ReviewInput({
         );
     }
 
-    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const filesArray = Array.from(event.target.files);
 

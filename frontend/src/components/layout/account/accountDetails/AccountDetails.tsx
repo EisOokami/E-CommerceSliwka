@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useState } from "react";
 import Image from "next/image";
 import {
     changePasswordAction,
@@ -46,7 +46,7 @@ export default function AccountDetails({
         isPendingChangePassword,
     ] = useActionState(changePasswordAction, INITIAL_STATE);
 
-    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const filesArray = Array.from(event.target.files);
 
