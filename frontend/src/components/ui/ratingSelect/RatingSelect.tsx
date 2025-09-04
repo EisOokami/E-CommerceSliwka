@@ -8,10 +8,10 @@ import { IoChevronDown } from "react-icons/io5";
 const options = [
     { label: "All", value: "all" },
     { label: "5.0", value: "5.0" },
-    { label: "Above 4.8", value: "4.8" },
     { label: "Above 4.5", value: "4.5" },
     { label: "Above 4.0", value: "4.0" },
-    { label: "Below 4.0", value: "0.0" },
+    { label: "Above 3.0", value: "3.0" },
+    { label: "Below 3.0", value: "0.0" },
 ];
 
 const RatingSelect = memo(function RatingSelect() {
