@@ -347,16 +347,16 @@ export default function ReviewComment({
                                         key={i}
                                         src={`${getStrapiMedia(image.url)}`}
                                     >
-                                        <StrapiImage
+                                        <Image
                                             key={image.id}
-                                            src={image.url}
+                                            src={`${getStrapiMedia(image.url)}`}
                                             alt={
                                                 image.alternativeText ??
                                                 review.user.username
                                             }
                                             width={300}
                                             height={300}
-                                            className="w-20 md:w-32 h-16 md:h-24 rounded-xl cursor-pointer"
+                                            className="w-20 md:w-32 h-16 md:h-24 rounded-xl cursor-pointer object-cover"
                                         />
                                     </PhotoView>
                                 ))}
