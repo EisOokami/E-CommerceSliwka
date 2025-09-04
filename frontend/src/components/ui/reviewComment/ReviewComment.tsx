@@ -114,6 +114,23 @@ export default function ReviewComment({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleSubmitEditReview(prevState: any, formData: FormData) {
+        const descriptionValue = formData.get("description")?.toString();
+
+        if (
+            descriptionValue?.trim() === review.description &&
+            (!imagesFromUpload ||
+                (imagesFromUpload && !imagesFromUpload.length))
+        ) {
+            return {
+                ...prevState,
+                formData,
+                strapiErrorsDetails: null,
+                strapiErrors: null,
+                zodErrors: { description: ["Please change the description."] },
+                message: "Please change the description.",
+            };
+        }
+
         const result = await editReviewAction(
             prevState,
             formData,
@@ -135,6 +152,8 @@ export default function ReviewComment({
 
             setUpdatedReviewsData(updatedReviewsData);
             setUpdatedAverageRating(updatedAverageRating);
+
+            handleEditReview();
         }
 
         return result;
@@ -236,7 +255,7 @@ export default function ReviewComment({
                                         alt={image.name}
                                         width={300}
                                         height={300}
-                                        className="w-20 md:w-32 h-16 md:h-24 rounded-xl"
+                                        className="w-20 md:w-32 h-16 md:h-24 rounded-xl object-cover"
                                     />
                                     <button
                                         type="button"
