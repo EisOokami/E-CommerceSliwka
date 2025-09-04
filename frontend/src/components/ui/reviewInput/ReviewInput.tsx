@@ -46,6 +46,14 @@ export default function ReviewInput({
         INITIAL_STATE,
     );
 
+    useEffect(() => {
+        if (productData.reviews && productData.averageRating) {
+            setUpdatedReviewsData(productData.reviews);
+            setUpdatedAverageRating(productData.averageRating);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     if (!user.ok) {
         return (
             <WarningMsg message="Please sign in to your account to leave a comment." />
