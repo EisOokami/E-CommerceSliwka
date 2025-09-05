@@ -48,6 +48,12 @@ const ProfileButton = memo(function ProfileButton({
         }
     };
 
+    const handleLogoutAction = async () => {
+        await logoutAction();
+
+        window.location.reload();
+    };
+
     return (
         <div className="relative">
             {!isVisible && (
@@ -73,7 +79,7 @@ const ProfileButton = memo(function ProfileButton({
             {isMounted && (
                 <div
                     ref={dropdownRef}
-                    className={`absolute right-0 w-56 mt-3 py-1 bg-white border border-gray-300 rounded-lg shadow-lg ring-1 ring-black/5 z-10 transform transition-all duration-200 ease-out
+                    className={`absolute right-0 w-56 mt-3 py-1 bg-white border border-gray-300 rounded-lg shadow-lg ring-1 ring-black/5 z-20 transform transition-all duration-200 ease-out
                             ${
                                 isVisible
                                     ? "opacity-100 scale-100"
@@ -95,7 +101,7 @@ const ProfileButton = memo(function ProfileButton({
                                 onClick={() => handleCloseDropdown(true)}
                             />
                             <form
-                                action={logoutAction}
+                                action={handleLogoutAction}
                                 onSubmit={() => handleCloseDropdown(true)}
                                 className="mt-1 pt-1 border-t border-gray-300"
                             >
