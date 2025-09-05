@@ -171,7 +171,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
 
 export async function logoutAction() {
     const cookieStore = await cookies();
+
     cookieStore.set("jwt", "", { ...config, maxAge: 0 });
     cookieStore.set("csrfToken", "", { ...config, maxAge: 0 });
-    redirect("/");
 }
