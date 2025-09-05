@@ -26,36 +26,32 @@ const Rating = memo(function Rating({
     return (
         <div className="flex items-center gap-0.5">
             {[...Array(rating)].map((_, i) => (
-                <FaStar
+                <button
                     key={i + 20}
-                    className={twMerge(
-                        `transition-colors duration-200 ${
-                            (hover ?? rating) >= i + 1
-                                ? "fill-yellow-400 stroke-yellow-400"
-                                : "fill-gray-300 stroke-gray-300"
-                        } ${
-                            isEdited ? "cursor-pointer" : ""
-                        } ${starsClassName}`,
-                    )}
+                    type="button"
                     onMouseEnter={() =>
                         isEdited ? setHover(i + 1) : undefined
                     }
                     onMouseLeave={() => setHover(null)}
                     onClick={() => (isEdited ? handleClick(i + 1) : undefined)}
-                />
+                >
+                    <FaStar
+                        className={twMerge(
+                            `transition-colors duration-200 ${
+                                (hover ?? rating) >= i + 1
+                                    ? "text-yellow-300"
+                                    : "text-gray-300"
+                            } ${
+                                isEdited ? "cursor-pointer" : ""
+                            } ${starsClassName}`,
+                        )}
+                    />
+                </button>
             ))}
             {[...Array(maxStars - rating)].map((_, i) => (
-                <FaRegStar
+                <button
                     key={i}
-                    className={twMerge(
-                        `transition-colors duration-200 ${
-                            (hover ?? rating + i + 1) >= rating + i + 1
-                                ? "fill-yellow-400 stroke-yellow-400"
-                                : "fill-gray-300 stroke-gray-300"
-                        } ${
-                            isEdited ? "cursor-pointer" : ""
-                        } ${starsClassName}`,
-                    )}
+                    type="button"
                     onMouseEnter={() =>
                         isEdited ? setHover(rating + i + 1) : undefined
                     }
@@ -63,7 +59,19 @@ const Rating = memo(function Rating({
                     onClick={() =>
                         isEdited ? handleClick(rating + i + 1) : undefined
                     }
-                />
+                >
+                    <FaRegStar
+                        className={twMerge(
+                            `transition-colors duration-200 ${
+                                (hover ?? rating + i + 1) >= rating + i + 1
+                                    ? "text-yellow-300"
+                                    : "text-gray-300"
+                            } ${
+                                isEdited ? "cursor-pointer" : ""
+                            } ${starsClassName}`,
+                        )}
+                    />
+                </button>
             ))}
         </div>
     );
