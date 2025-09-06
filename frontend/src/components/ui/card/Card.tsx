@@ -123,14 +123,14 @@ const Card = memo(function Card({
             >
                 {productsInWishlist.includes(productDocumentId) ? (
                     <button
-                        className="h-min p-3 bg-gray-100 hover:bg-gray-100/50 rounded-full transition hover:scale-105"
+                        className="h-min p-2 md:p-3 bg-gray-100 hover:bg-gray-100/50 rounded-full transition hover:scale-105"
                         onClick={handleDeleteProductFromWishlist}
                     >
                         <GoHeartFill className="text-2xl md:text-3xl text-red-500" />
                     </button>
                 ) : (
                     <button
-                        className="h-min p-3 bg-gray-100/50 hover:bg-gray-100 rounded-full transition hover:scale-105"
+                        className="h-min p-2 md:p-3 bg-gray-100/50 hover:bg-gray-100 rounded-full transition hover:scale-105"
                         onClick={handleAddProductToWishlist}
                     >
                         <GoHeart className="text-2xl md:text-3xl text-gray-500" />
@@ -186,7 +186,7 @@ const Card = memo(function Card({
                             <Button
                                 theme="dark"
                                 text="Buy Now"
-                                className="px-7 md:px-10 text-xs sm:text-sm md:text-base"
+                                className="md:w-max text-xs sm:text-sm md:text-base"
                                 tabIndex={-1}
                             />
                         ) : (
@@ -194,7 +194,7 @@ const Card = memo(function Card({
                                 theme="dark"
                                 text="Out of stock"
                                 inline
-                                className="px-7 md:px-10 text-xs sm:text-sm md:text-base"
+                                className="md:w-max text-xs sm:text-sm md:text-base"
                                 tabIndex={-1}
                             />
                         )}
