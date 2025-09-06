@@ -17,7 +17,12 @@ export default function ProductsCarousel({
     options,
 }: Readonly<ProductsCarouselProps>) {
     const [emblaRef] = useEmblaCarousel(options, [
-        Autoplay({ playOnInit: true, delay: 2000, stopOnInteraction: false }),
+        Autoplay({
+            playOnInit: true,
+            delay: 2000,
+            stopOnInteraction: false,
+            stopOnMouseEnter: true,
+        }),
     ]);
 
     return (
