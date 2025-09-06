@@ -9,7 +9,7 @@ export default function ProductsCarouselSlide({
 }: Readonly<ProductsCarouselSlideProps>) {
     return (
         <div className={styles["embla__slide"]} key={product.id}>
-            <div className="flex flex-col justify-between gap-5 p-8 bg-gray-100 h-full">
+            <div className="flex flex-col justify-between gap-5 h-full p-8 bg-gray-100 select-none">
                 <div className="grid gap-3">
                     <div className="justify-self-center self-center grid place-content-center h-40 sm:h-48 md:h-80">
                         <StrapiImage
