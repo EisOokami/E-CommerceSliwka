@@ -18,10 +18,10 @@ const Button = memo(function Button({
 }: Readonly<InlineButtonProps>) {
     const styleTheme =
         theme === "dark" && inline
-            ? "text-black hover:bg-gray-100 border-black transition"
+            ? "text-black hover:bg-gray-100 border-black focus:ring-4 focus:ring-gray-300 transition"
             : theme === "dark" && !inline
-            ? "text-white bg-black hover:bg-gray-900 border-black focus:outline-offset-4 focus:outline-gray-500 transition"
-            : "text-white hover:bg-white/20 border-white focus:outline-white transition";
+            ? "text-white bg-black hover:bg-gray-900 border-black focus:ring-4 focus:ring-gray-300 transition"
+            : "text-white hover:bg-white/20 border-white focus:ring-4 focus:ring-gray-300 transition";
 
     return (
         <>
@@ -29,7 +29,7 @@ const Button = memo(function Button({
                 <Link
                     href={href}
                     className={twMerge(
-                        `w-fit px-10 py-3 text-sm md:text-base text-center border rounded-md ${styleTheme} ${className}`,
+                        `w-fit px-6 sm:px-10 py-3 text-sm md:text-base text-center border rounded-md ${styleTheme} ${className}`,
                     )}
                     tabIndex={tabIndex}
                 >
@@ -39,7 +39,7 @@ const Button = memo(function Button({
                 <button
                     onClick={onClick}
                     className={twMerge(
-                        `w-fit px-10 py-3 text-sm md:text-base border rounded-md ${styleTheme} ${className} ${
+                        `w-fit px-6 sm:px-10 py-3 text-sm md:text-base border rounded-md ${styleTheme} ${className} ${
                             isLoading
                                 ? "flex justify-center items-center gap-1"
                                 : ""
