@@ -48,7 +48,7 @@ jobs:
                   API_TOKEN_SALT: w;Sc5ytAP7CVFM`-q'W4Y%
                   ADMIN_JWT_SECRET: f+#UErT7~d-4px(:vA;e?z
                   TRANSFER_TOKEN_SALT: V;Aj'!eqY^?duz_ZF76x29
-                  STRIPE_SECRET_KEY: "empty"
+                  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
               run: |
                   nohup npm run start &
 
