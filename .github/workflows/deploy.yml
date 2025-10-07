@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
     push:
-        branches: 
+        branches:
             - main
             - dev
 
@@ -30,7 +30,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                node-version: 20
+                  node-version: 20
 
             - name: Install backend dependencies (Strapi)
               working-directory: ./backend
@@ -43,22 +43,23 @@ jobs:
             - name: Start Strapi in background
               working-directory: ./backend
               env:
-                # these are random symbols :D
-                APP_KEYS: t*vz2>x&/+(H^<rR9PqG?h,B&UaZ+:Q2bD`)]Y;8nR}mH,nws+!c:E3h]5XtjD$.Ga})
-                API_TOKEN_SALT: w;Sc5ytAP7CVFM`-q'W4Y%
-                ADMIN_JWT_SECRET: f+#UErT7~d-4px(:vA;e?z
-                TRANSFER_TOKEN_SALT: V;Aj'!eqY^?duz_ZF76x29
+                  # these are random symbols :D
+                  APP_KEYS: t*vz2>x&/+(H^<rR9PqG?h,B&UaZ+:Q2bD`)]Y;8nR}mH,nws+!c:E3h]5XtjD$.Ga})
+                  API_TOKEN_SALT: w;Sc5ytAP7CVFM`-q'W4Y%
+                  ADMIN_JWT_SECRET: f+#UErT7~d-4px(:vA;e?z
+                  TRANSFER_TOKEN_SALT: V;Aj'!eqY^?duz_ZF76x29
+                  STRIPE_SECRET_KEY: "empty"
               run: |
-                nohup npm run start &
+                  nohup npm run start &
 
             - name: Wait for Strapi to start
               run: |
-                echo "Waiting for Strapi..."
-                until curl -s -o /dev/null http://127.0.0.1:1337/admin; do
-                    sleep 1
-                    echo "Still waiting..."
-                done
-                echo "Strapi is up!"
+                  echo "Waiting for Strapi..."
+                  until curl -s -o /dev/null http://127.0.0.1:1337/admin; do
+                      sleep 1
+                      echo "Still waiting..."
+                  done
+                  echo "Strapi is up!"
 
             - name: Install frontend dependencies (Next.js)
               working-directory: ./frontend
@@ -67,6 +68,6 @@ jobs:
             - name: Build frontend
               working-directory: ./frontend
               env:
-                NEXT_PUBLIC_DB_URL: http://127.0.0.1:1337
-                NEXT_PUBLIC_STRAPI_URL: http://127.0.0.1:1337
+                  NEXT_PUBLIC_DB_URL: http://127.0.0.1:1337
+                  NEXT_PUBLIC_STRAPI_URL: http://127.0.0.1:1337
               run: npm run build
