@@ -18,10 +18,10 @@ const Button = memo(function Button({
 }: Readonly<InlineButtonProps>) {
     const styleTheme =
         theme === "dark" && inline
-            ? "text-black hover:bg-gray-100 border-black focus:ring-4 focus:ring-gray-300 transition"
+            ? "text-black hover:bg-gray-100 border-black focus:ring-2 focus:ring-gray-300 transition"
             : theme === "dark" && !inline
-            ? "text-white bg-black hover:bg-gray-900 border-black focus:ring-4 focus:ring-gray-300 transition"
-            : "text-white hover:bg-white/20 border-white focus:ring-4 focus:ring-gray-300 transition";
+            ? "text-white bg-black hover:bg-gray-900 border-black focus:ring-2 focus:ring-gray-300 transition"
+            : "text-white hover:bg-white/20 border-white focus:ring-2 focus:ring-gray-300 transition";
 
     return (
         <>
