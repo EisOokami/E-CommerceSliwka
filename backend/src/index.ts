@@ -112,28 +112,28 @@ const updateUserBodySchema = yup.object().shape({
             /^[A-Za-z\s]+$/,
             "Username must contain only letters and spaces",
         ),
-    password: yup.mixed(),
-    // .string()
-    // .required("Password must be between 8 and 100 characters")
-    // .min(8, "Password must be between 8 and 100 characters")
-    // .max(100, "Password must be between 8 and 100 characters")
-    // .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    // .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    // .matches(/\d/, "Password must contain at least one number")
-    // .matches(
-    //     /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
-    //     "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
-    // )
-    // .test(
-    //     "password-validation",
-    //     "Password must be at least 1 character",
-    //     function validatePassword(value) {
-    //         if (value == null || value === "") {
-    //             return true;
-    //         }
-    //         return typeof value === "string" && value.length >= 1;
-    //     },
-    // ),
+    password: yup
+        .string()
+        .required("Password must be between 8 and 100 characters")
+        .min(8, "Password must be between 8 and 100 characters")
+        .max(100, "Password must be between 8 and 100 characters")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+        .matches(/\d/, "Password must contain at least one number")
+        .matches(
+            /[@$!%*?&#^()\-=+~`'"/|.,;:\[\]{}]/,
+            "Password must contain at least one special character (@$!%*?&#^()-=+~`'\"/|.,;:[]{})",
+        )
+        .test(
+            "password-validation",
+            "Password must be at least 1 character",
+            function validatePassword(value) {
+                if (value == null || value === "") {
+                    return true;
+                }
+                return typeof value === "string" && value.length >= 1;
+            },
+        ),
     role: yup.lazy((value) =>
         typeof value === "object"
             ? yup.object().shape({
