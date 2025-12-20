@@ -6,9 +6,7 @@ import { FeatureProductsProps } from "./FeatureProducts.interfaces";
 
 export default function FeatureProducts({
     data,
-}: Readonly<{
-    data: FeatureProductsProps;
-}>) {
+}: Readonly<FeatureProductsProps>) {
     const { featureProduct } = data;
 
     return (

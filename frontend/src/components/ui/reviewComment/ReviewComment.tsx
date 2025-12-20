@@ -19,6 +19,7 @@ import { IoClose } from "react-icons/io5";
 import { FiPlusCircle } from "react-icons/fi";
 import { ReviewCommentProps } from "./ReviewComment.interfaces";
 import { IImage } from "@/interfaces/interfaces";
+import { IEditReviewAction } from "@/interfaces/data";
 
 import RatingStars from "../ratingStars/RatingStars";
 import Rating from "../rating/Rating";
@@ -29,7 +30,6 @@ import StrapiImage from "../strapiImage/StrapiImage";
 const INITIAL_STATE = {
     zodErrors: null,
     strapiErrors: null,
-    data: null,
     message: null,
     strapiErrorsDetails: null,
     formData: null,
@@ -75,7 +75,7 @@ export default function ReviewComment({
                 productDocumentId,
             );
 
-            setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedReviewsData(updatedReviewsData ?? null);
             setUpdatedAverageRating(updatedAverageRating);
         }
     };
@@ -112,8 +112,11 @@ export default function ReviewComment({
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async function handleSubmitEditReview(prevState: any, formData: FormData) {
+    async function handleSubmitEditReview(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        prevState: any,
+        formData: FormData,
+    ): Promise<IEditReviewAction | undefined> {
         const descriptionValue = formData.get("description")?.toString();
 
         if (
@@ -142,7 +145,7 @@ export default function ReviewComment({
             rating,
         );
 
-        if (!result.strapiErrors && !result.zodErrors) {
+        if (result && !result.strapiErrors && !result.zodErrors) {
             const updatedReviewsData = await getReviewsData(
                 review.product.documentId,
             );
@@ -150,7 +153,7 @@ export default function ReviewComment({
                 productDocumentId,
             );
 
-            setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedReviewsData(updatedReviewsData ?? null);
             setUpdatedAverageRating(updatedAverageRating);
 
             handleEditReview();
@@ -217,8 +220,8 @@ export default function ReviewComment({
                         id="description"
                         defaultValue={
                             formState?.formData
-                                ? formState?.formData.get("description")
-                                : review.description
+                                ?.get("description")
+                                ?.toString() ?? review.description
                         }
                         className="text-gray-600 bg-gray-100"
                     ></textarea>
@@ -300,17 +303,9 @@ export default function ReviewComment({
                     <ZodErrors error={formState?.zodErrors?.images} />
                     {formState?.strapiErrorsDetails &&
                     formState?.strapiErrorsDetails.length ? (
-                        formState?.strapiErrorsDetails.map(
-                            (
-                                error: {
-                                    path: string;
-                                    message: string;
-                                    name: string;
-                                    value: string;
-                                },
-                                i: number,
-                            ) => <StrapiErrors key={i} error={error} />,
-                        )
+                        formState?.strapiErrorsDetails.map((error, i) => (
+                            <StrapiErrors key={i} error={error} />
+                        ))
                     ) : (
                         <StrapiErrors error={formState?.strapiErrors} />
                     )}

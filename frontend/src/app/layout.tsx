@@ -12,14 +12,15 @@ import "./globals.scss";
 
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/footer/Footer";
+import ErrorPage from "@/components/layout/errorPage/ErrorPage";
 
 export async function generateMetadata(): Promise<Metadata> {
     const metadata = await getGlobalPageMetadata();
 
     return {
-        title: metadata?.data?.title ?? "E-Commerce Sliwka",
+        title: metadata.data.title ?? "E-Commerce Sliwka",
         description:
-            metadata?.data?.description ??
+            metadata.data.description ??
             "Buy the latest products at great prices. Fast delivery only from us!",
         icons: "/icon.ico",
         keywords: [
@@ -57,29 +58,14 @@ export default async function RootLayout({
     const productsInCartCount = await getProductsInCartCount();
     const productsInWishlistCount = await getProductsInWishlistCount();
 
-    if (globalData.message || (user.data && user.data.message)) {
-        return (
-            <html lang="en">
-                <body className="flex flex-col">
-                    <main className="grid justify-items-center content-center mb-auto py-10 md:py-20 text-center">
-                        <h3 className="font-bold text-xl md:text-4xl">
-                            Oops! Something went wrong.
-                        </h3>
-                        <h3 className="font-bold text-xl md:text-4xl">
-                            This is an error page. Please try again later.
-                        </h3>
-                        <h1 className="text-[200px] md:text-[300px] xl:text-[400px] font-bold text-gray-300">
-                            404
-                        </h1>
-                        <p>
-                            {globalData.message
-                                ? globalData.message
-                                : user.data.message}
-                        </p>
-                    </main>
-                </body>
-            </html>
-        );
+    const userError = user?.data?.message;
+
+    if ("message" in globalData) {
+        return <ErrorPage message={globalData.message} />;
+    }
+
+    if (userError) {
+        return <ErrorPage message={userError} />;
     }
 
     return (

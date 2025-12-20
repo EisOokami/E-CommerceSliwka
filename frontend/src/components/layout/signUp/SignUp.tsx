@@ -14,7 +14,6 @@ import { ZodErrors } from "@/components/ui/zodErrors/ZodErrors";
 const INITIAL_STATE = {
     zodErrors: null,
     strapiErrors: null,
-    data: null,
     message: null,
     strapiErrorsDetails: null,
     formData: null,
@@ -64,9 +63,8 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         labelValue="Username"
                         zodErrorMsg={formState?.zodErrors?.username}
                         defaultValue={
-                            formState?.formData
-                                ? formState?.formData.get("username")
-                                : null
+                            formState?.formData?.get("username")?.toString() ??
+                            undefined
                         }
                     />
                     <AuthInput
@@ -76,9 +74,8 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         labelValue="Email"
                         zodErrorMsg={formState?.zodErrors?.email}
                         defaultValue={
-                            formState?.formData
-                                ? formState?.formData.get("email")
-                                : null
+                            formState?.formData?.get("email")?.toString() ??
+                            undefined
                         }
                     />
                     <AuthInput
@@ -88,9 +85,8 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                         labelValue="Password"
                         zodErrorMsg={formState?.zodErrors?.password}
                         defaultValue={
-                            formState?.formData
-                                ? formState?.formData.get("password")
-                                : null
+                            formState?.formData?.get("password")?.toString() ??
+                            undefined
                         }
                     />
                     <div className="relative">
@@ -113,17 +109,9 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                     </div>
                     {formState?.strapiErrorsDetails &&
                     formState?.strapiErrorsDetails.length ? (
-                        formState?.strapiErrorsDetails.map(
-                            (
-                                error: {
-                                    path: string;
-                                    message: string;
-                                    name: string;
-                                    value: string;
-                                },
-                                i: number,
-                            ) => <StrapiErrors key={i} error={error} />,
-                        )
+                        formState?.strapiErrorsDetails.map((error, i) => (
+                            <StrapiErrors key={i} error={error} />
+                        ))
                     ) : (
                         <StrapiErrors error={formState?.strapiErrors} />
                     )}

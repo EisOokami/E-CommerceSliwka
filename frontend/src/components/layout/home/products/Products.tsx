@@ -29,7 +29,7 @@ const CategoriesCarousel = dynamic(
     },
 );
 
-export default function Products({ data }: Readonly<{ data: ProductsProps }>) {
+export default function Products({ data }: Readonly<ProductsProps>) {
     const [activeTab, setActiveTab] = useState<number>(0);
     const [activeCategory, setActiveCategory] = useState<string>("all");
     const [productsData, setProductsData] = useState<IProduct[]>([]);

@@ -1,8 +1,5 @@
-import { IImage, ILink } from "@/interfaces/interfaces";
+import { IAuthPage } from "@/interfaces/authPage";
 
 export interface SignInProps {
-    pageData: {
-        link: ILink;
-        banner: IImage;
-    };
+    pageData: IAuthPage;
 }

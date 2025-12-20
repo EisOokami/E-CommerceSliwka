@@ -3,7 +3,7 @@ import { HeroProps } from "./Hero.interfaces";
 import Button from "@/components/ui/button/Button";
 import StrapiImage from "@/components/ui/strapiImage/StrapiImage";
 
-export default async function Hero({ data }: Readonly<{ data: HeroProps }>) {
+export default async function Hero({ data }: Readonly<HeroProps>) {
     const { heading, subHeading, image, product } = data;
 
     return (

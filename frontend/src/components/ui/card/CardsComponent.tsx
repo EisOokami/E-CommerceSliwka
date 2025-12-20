@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import useWishlistStore from "@/stores/wishlist";
 import { getWishlistProductsData } from "@/data/loaders";
-import { IWishlist } from "@/interfaces/interfaces";
 import { CardsComponentProps } from "./Card.interfaces";
 
 import CardSkeleton from "./CardSkeleton";
@@ -23,7 +22,7 @@ export default function CardsComponent({
 
     useEffect(() => {
         (async () => {
-            const result: IWishlist[] = await getWishlistProductsData();
+            const result = await getWishlistProductsData();
 
             setWishlist(result);
 

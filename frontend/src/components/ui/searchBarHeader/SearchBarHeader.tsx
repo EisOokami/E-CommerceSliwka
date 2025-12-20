@@ -16,7 +16,19 @@ const SearchBarHeader = memo(function SearchBarHeader({
 }: Readonly<SearchBarHeaderProps>) {
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [products, setProducts] = useState<IProduct[]>([]);
+    const [products, setProducts] = useState<
+        Omit<
+            IProduct,
+            | "wishlist"
+            | "productOptions"
+            | "sliderImages"
+            | "colors"
+            | "options"
+            | "productInfo"
+            | "productSpecs"
+            | "detailedSpecifications"
+        >[]
+    >([]);
     const searchBarRef = useRef(null);
     const resultRef = useRef(null);
 
@@ -40,9 +52,7 @@ const SearchBarHeader = memo(function SearchBarHeader({
             return;
         }
 
-        const productsData: IProduct[] = await getProductsBySearchData(
-            trimmedValue,
-        );
+        const productsData = await getProductsBySearchData(trimmedValue);
 
         setProducts(productsData);
         handleOpenResult();

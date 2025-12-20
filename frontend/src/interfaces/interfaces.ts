@@ -1,92 +1,88 @@
 import { DeliveryStatus } from "@/types/types";
 
-export interface IImage {
+export interface BaseSchema {
     id: number;
     documentId: string;
+    createdAt: globalThis.Date | string;
+    createdBy: globalThis.Date | string;
+    locale: string | null;
+    publishedAt: globalThis.Date | string | null;
+}
+
+export interface BlockBase<TComponent extends string>
+    extends Pick<BaseSchema, "id"> {
+    __component: TComponent;
+}
+
+export interface IImage extends BaseSchema {
     url: string;
     alternativeText: string | null;
 }
 
-export interface IProductInfo {
-    id: number;
-    documentId: string;
+export interface IProductInfo extends BaseSchema {
     delivery: string;
     inStore: string;
     guaranteed: string;
 }
 
-export interface IProductSpecs {
-    id: number;
-    documentId: string;
+export interface IProductSpecs extends BaseSchema {
     icon: string;
     name: string;
     specification: string;
 }
 
-export interface IArray {
-    id: number;
+export interface IArray extends Pick<BaseSchema, "id"> {
     item: string;
 }
 
-export interface ISpecifications {
-    id: number;
+export interface ISpecifications extends Pick<BaseSchema, "id"> {
     name: string;
     specifications: IArray[];
 }
 
-export interface IDetailedSpecifications {
-    id: number;
+export interface IDetailedSpecifications extends Pick<BaseSchema, "id"> {
     name: string;
     specifications: ISpecifications[];
 }
 
-export interface IReviews {
-    id: number;
-    documentId: string;
+export interface IReview extends BaseSchema {
     description: string;
     rating: number;
     publicationDate: string;
     images: IImage[] | null;
-    user: IUser;
-    product: IProduct;
+    user: Pick<IUser, "username" | "avatar" | "documentId" | "id">;
+    product: Pick<IProduct, "documentId" | "id">;
     lastEdited: string | null;
 }
 
-export interface ICategory {
-    id: number;
+export interface ICategory extends Pick<BaseSchema, "id"> {
     category: string;
 }
 
-export interface IOptionsArray {
-    id: number;
+export interface IOptionsArray extends Pick<BaseSchema, "id"> {
     optionName: string;
     productSlug: string;
     inStore: boolean;
 }
 
-export interface IOptions {
-    id: number;
+export interface IOptions extends Pick<BaseSchema, "id"> {
     title: string;
     optionsArray: IOptionsArray[];
 }
 
-export interface IColors {
-    id: number;
+export interface IColors extends Pick<BaseSchema, "id"> {
     productSlug: string;
     colorName: string;
     colorHex: string;
     inStock: boolean;
 }
 
-export interface IProductOptions {
-    id: number;
+export interface IProductOptions extends Pick<BaseSchema, "id"> {
     optionType: string;
     optionName: string;
 }
 
-export interface IProduct {
-    id: number;
-    documentId: string;
+export interface IProduct extends BaseSchema {
     name: string;
     image: IImage;
     sliderImages: IImage[];
@@ -105,27 +101,23 @@ export interface IProduct {
     productSpecs: IProductSpecs[];
     detailedSpecifications: IDetailedSpecifications[];
     averageRating: number;
-    reviews: IReviews[];
+    reviews: IReview[];
     wishlist: IWishlist[];
     slug: string;
 }
 
-export interface ILink {
-    id: number;
+export interface ILink extends Pick<BaseSchema, "id"> {
     url: string;
     text: string;
     isExternal: boolean;
 }
 
-export interface IUtilityLink {
-    id: number;
+export interface IUtilityLink extends Pick<BaseSchema, "id"> {
     title: string;
     links: ILink[];
 }
 
-export interface ICart {
-    id: number;
-    documentId: string;
+export interface ICart extends BaseSchema {
     quantity: number;
     product: IProduct;
     user: {
@@ -134,16 +126,11 @@ export interface ICart {
     };
 }
 
-export interface IUser {
-    id: number;
-    documentId: string;
+export interface IUser extends BaseSchema {
     username: string;
     email: string;
     confirmed: boolean;
     blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
     provider: string;
     productsCart: ICart[];
     avatar: IImage;
@@ -157,17 +144,22 @@ export interface IUserMeLoader {
     error: Error | null;
 }
 
-export interface IWishlist {
-    documentId: string;
-    id: number;
+export interface IWishlist extends BaseSchema {
     user: IUser;
-    product: IProduct;
+    product: Omit<
+        IProduct,
+        | "wishlist"
+        | "productOptions"
+        | "sliderImages"
+        | "colors"
+        | "options"
+        | "productInfo"
+        | "productSpecs"
+        | "detailedSpecifications"
+    >;
 }
 
-export interface IOrder {
-    documentId: string;
-    id: number;
-    createdAt: string;
+export interface IOrder extends BaseSchema {
     orderId: string;
     isSuccess: boolean | null;
     deliveryStatus: DeliveryStatus;

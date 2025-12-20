@@ -1,6 +1,6 @@
 export interface AccountInputProps {
     defaultValue?: string | number;
-    zodErrorMsg: string[];
+    zodErrorMsg: string[] | undefined;
     id: string;
     name: string;
     type?: string;

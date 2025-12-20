@@ -1,7 +1,10 @@
 import { getStrapiURL } from "@/lib/utils";
 import { getAuthToken, getCSRFToken } from "./getToken";
+import { IImage } from "@/interfaces/interfaces";
 
-export async function uploadImagesToStrapi(images: File[]) {
+export async function uploadImagesToStrapi(
+    images: File[],
+): Promise<IImage[] | null | undefined> {
     if (!Array.isArray(images) || images.length === 0 || !images[0].size) {
         return null;
     }

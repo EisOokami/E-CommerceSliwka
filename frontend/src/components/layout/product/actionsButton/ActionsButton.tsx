@@ -16,7 +16,7 @@ import {
     deleteProductFromWishlistAction,
     deleteProductFromCartAction,
 } from "@/data/actions/productActions";
-import { ICart, IWishlist } from "@/interfaces/interfaces";
+import { IWishlist } from "@/interfaces/interfaces";
 import { ActionsButtonProps } from "./ActionsButton.interfaces";
 
 import Button from "@/components/ui/button/Button";
@@ -40,10 +40,9 @@ export default function ActionsButton({
 
     useEffect(() => {
         (async () => {
-            const updatedCartData: ICart =
-                await getCartProductDataByProductDocumentId(
-                    productData.documentId,
-                );
+            const updatedCartData = await getCartProductDataByProductDocumentId(
+                productData.documentId,
+            );
 
             setIsProductInCart(updatedCartData ? true : false);
         })();
@@ -95,7 +94,7 @@ export default function ActionsButton({
 
             if (fetchResult.ok) {
                 const updatedCart = await getCartProductData(
-                    fetchResult.data?.documentId,
+                    fetchResult.data!.documentId,
                 );
                 const updatedProductsInCartCount =
                     await getProductsInCartCount();

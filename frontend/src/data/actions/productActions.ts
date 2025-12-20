@@ -7,6 +7,7 @@ import { getUserMeLoader } from "../services/getUserMeLoader";
 import { uploadImagesToStrapi } from "../services/uploadImage";
 import { getCartProductDataByProductDocumentId } from "../loaders";
 import { IImage } from "@/interfaces/interfaces";
+import { IAddReviewAction, IEditReviewAction } from "@/interfaces/data";
 
 export async function addProductToCartAction(productDocumentId: string) {
     const user = await getUserMeLoader();
@@ -183,7 +184,7 @@ export async function addReviewToProductAction(
     images: File[] | null,
     rating: number,
     productDocumentId: string,
-) {
+): Promise<IAddReviewAction | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -226,7 +227,7 @@ export async function addReviewToProductAction(
             publicationDate: new Date().toISOString().slice(0, 10),
             lastEdited: null,
             images: uploadedImages
-                ? uploadedImages.map((img: { id: string }) => img.id)
+                ? uploadedImages.map((img) => img.id.toString())
                 : null,
             product: {
                 connect: [{ documentId: productDocumentId }],
@@ -316,7 +317,7 @@ export async function editReviewAction(
     publicationDate: string,
     productDocumentId: string,
     rating: number,
-) {
+): Promise<IEditReviewAction | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -363,7 +364,7 @@ export async function editReviewAction(
             publicationDate: publicationDate,
             lastEdited: new Date().toISOString().slice(0, 10),
             images: updatedImages.length
-                ? updatedImages.map((img: { id: string }) => img.id)
+                ? updatedImages.map((img) => img.id.toString())
                 : null,
             product: {
                 connect: [{ documentId: productDocumentId }],
@@ -412,7 +413,9 @@ export async function editReviewAction(
     };
 }
 
-export async function deleteReviewAction(reviewDocumentId: string) {
+export async function deleteReviewAction(
+    reviewDocumentId: string,
+): Promise<{ data: string }> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -543,7 +546,7 @@ export async function deleteProductFromWishlistAction(
 
 export async function updateProductAverageRatingAction(
     productDocumentId: string,
-) {
+): Promise<number> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {

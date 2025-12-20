@@ -104,7 +104,7 @@ export default function AccordionContainer({
                 filterParams,
             );
 
-            const productsCategory: IProduct[] = await getProductsCategory();
+            const productsCategory = await getProductsCategory();
 
             const baseItems: IAccordionItems[] = [
                 {
@@ -131,8 +131,9 @@ export default function AccordionContainer({
             ];
 
             if (filterParams.category) {
-                const filtersByCategory: IProduct[] =
-                    await getFiltersByCategory(filterParams.category);
+                const filtersByCategory = await getFiltersByCategory(
+                    filterParams.category,
+                );
 
                 baseItems.push(
                     {

@@ -1,7 +1,6 @@
 import { getProductData, getWishlistProductData } from "@/data/loaders";
 import { getUserMeLoader } from "@/data/services/getUserMeLoader";
 import { ProductPageProps } from "./page.interfaces";
-import { IProduct, IWishlist } from "@/interfaces/interfaces";
 
 import ColorSelector from "@/components/ui/colorSelector/ColorSelector";
 import ProductCarousel from "@/components/ui/productCarousel/ProductCarousel";
@@ -21,10 +20,8 @@ import ProductStars from "@/components/ui/productStars/ProductStars";
 
 export default async function ProductPage({ params }: ProductPageProps) {
     const { product } = await params;
-    const productData: IProduct = await getProductData(null, product);
-    const wishlistData: IWishlist = await getWishlistProductData(
-        productData.documentId,
-    );
+    const productData = await getProductData(null, product);
+    const wishlistData = await getWishlistProductData(productData.documentId);
     const user = await getUserMeLoader();
 
     return (

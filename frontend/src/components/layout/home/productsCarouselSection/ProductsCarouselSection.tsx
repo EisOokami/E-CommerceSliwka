@@ -10,7 +10,7 @@ const options: EmblaOptionsType = {
 
 export default function ProductsCarouselSection({
     data,
-}: Readonly<{ data: ProductsCarouselSectionProps }>) {
+}: Readonly<ProductsCarouselSectionProps>) {
     const { products } = data;
 
     return (

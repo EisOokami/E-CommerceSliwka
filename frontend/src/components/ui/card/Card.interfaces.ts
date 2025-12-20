@@ -4,17 +4,20 @@ export interface CardsComponentProps {
     productsData: IProduct[];
 }
 
-export interface CardProps {
+export interface CardProps
+    extends Pick<
+        IProduct,
+        | "name"
+        | "price"
+        | "isDiscount"
+        | "discountedPrice"
+        | "averageRating"
+        | "quantity"
+        | "inStock"
+    > {
     productDocumentId: string;
     imageSrc: string;
     imageAlt: string;
-    name: string;
-    price: number;
-    isDiscount: boolean;
-    discountedPrice: number | null;
-    averageRating: number;
     reviewsCount: number;
-    quantity: number;
-    inStock: boolean;
     buttonHref: string;
 }

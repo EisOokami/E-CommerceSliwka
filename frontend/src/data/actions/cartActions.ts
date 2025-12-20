@@ -205,7 +205,7 @@ export async function redirectToCheckoutAction(cartItemsData: ICart[]) {
 }
 
 export async function deleteProductsFromCartAction() {
-    const cartData: ICart[] = await getCartProductsData();
+    const cartData = await getCartProductsData();
     const user = await getUserMeLoader();
 
     if (!cartData.length) {

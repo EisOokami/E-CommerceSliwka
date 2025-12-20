@@ -1,7 +1,5 @@
-import { IProduct } from "@/interfaces/interfaces";
+import { ProductsCarouselSectionBlock } from "@/interfaces/homePage";
 
 export interface ProductsCarouselSectionProps {
-    id: number;
-    __component: string;
-    products: IProduct[];
+    data: ProductsCarouselSectionBlock;
 }

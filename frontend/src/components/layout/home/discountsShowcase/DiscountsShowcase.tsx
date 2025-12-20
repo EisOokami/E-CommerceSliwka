@@ -4,9 +4,7 @@ import CardsComponent from "@/components/ui/card/CardsComponent";
 
 export default function DiscountsShowcase({
     data,
-}: Readonly<{
-    data: DiscountsShowcaseProps;
-}>) {
+}: Readonly<DiscountsShowcaseProps>) {
     const { products } = data;
 
     return (

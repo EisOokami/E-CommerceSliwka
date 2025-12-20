@@ -1,14 +1,5 @@
+import { IDetailsError, IRestError } from "@/interfaces/data";
+
 export interface StrapiErrorsProps {
-    error:
-        | {
-              message: string | null;
-              name: string;
-              status: string | null;
-          }
-        | {
-              path: string;
-              message: string;
-              name: string;
-              value: string;
-          };
+    error: IRestError["error"] | IDetailsError | null | undefined;
 }

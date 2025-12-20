@@ -1,13 +1,7 @@
-import { IImage, ILink } from "@/interfaces/interfaces";
+import { IHeader } from "@/interfaces/globalData";
 
 export interface HeaderProps {
-    data: {
-        id: number;
-        logoImage: IImage;
-        iconsLink: ILink[];
-        navigationLinks: ILink[];
-        logoLink: ILink;
-    };
+    data: IHeader;
     isUserSingIn: boolean;
     globalProductsInCartCount: number;
     globalProductsInWishlistCount: number;

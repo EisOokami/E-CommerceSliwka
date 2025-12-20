@@ -21,7 +21,6 @@ import { ZodErrors } from "../zodErrors/ZodErrors";
 const INITIAL_STATE = {
     zodErrors: null,
     strapiErrors: null,
-    data: null,
     message: null,
     strapiErrorsDetails: null,
     formData: null,
@@ -69,16 +68,19 @@ export default function ReviewInput({
         );
     }
 
-    const hasProduct = user.data?.orders.some((order) =>
-        order.cartItems &&
-        order.deliveryStatus === "Delivered" &&
-        order.isSuccess
-            ? order.cartItems.some(
-                  (cartItem) =>
-                      cartItem.product.documentId === productData.documentId,
-              )
-            : false,
-    );
+    const hasProduct = user.data
+        ? user.data.orders.some((order) =>
+              order.cartItems &&
+              order.deliveryStatus === "Delivered" &&
+              order.isSuccess
+                  ? order.cartItems.some(
+                        (cartItem) =>
+                            cartItem.product.documentId ===
+                            productData.documentId,
+                    )
+                  : false,
+          )
+        : null;
 
     if (!hasProduct) {
         return (
@@ -117,7 +119,7 @@ export default function ReviewInput({
             productData.documentId,
         );
 
-        if (!result.strapiErrors && !result.zodErrors) {
+        if (result && !result.strapiErrors && !result.zodErrors) {
             const updatedReviewsData = await getReviewsData(
                 productData.documentId,
             );
@@ -125,7 +127,7 @@ export default function ReviewInput({
                 productData.documentId,
             );
 
-            setUpdatedReviewsData(updatedReviewsData);
+            setUpdatedReviewsData(updatedReviewsData ?? null);
             setUpdatedAverageRating(updatedAverageRating);
         }
 
@@ -144,9 +146,8 @@ export default function ReviewInput({
                     rows={1}
                     className="w-full md:text-xl outline-none"
                     defaultValue={
-                        formState?.formData
-                            ? formState?.formData.get("description")
-                            : null
+                        formState?.formData?.get("description")?.toString() ??
+                        ""
                     }
                 />
                 <input
@@ -221,17 +222,9 @@ export default function ReviewInput({
             </div>
             {formState?.strapiErrorsDetails &&
             formState?.strapiErrorsDetails.length ? (
-                formState?.strapiErrorsDetails.map(
-                    (
-                        error: {
-                            path: string;
-                            message: string;
-                            name: string;
-                            value: string;
-                        },
-                        i: number,
-                    ) => <StrapiErrors key={i} error={error} />,
-                )
+                formState?.strapiErrorsDetails.map((error, i) => (
+                    <StrapiErrors key={i} error={error} />
+                ))
             ) : (
                 <StrapiErrors error={formState?.strapiErrors} />
             )}

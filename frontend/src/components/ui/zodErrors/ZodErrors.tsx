@@ -1,6 +1,7 @@
 import { MdErrorOutline } from "react-icons/md";
+import { ZodErrorsProps } from "./ZodErrors.interfaces";
 
-export function ZodErrors({ error }: Readonly<{ error: string[] }>) {
+export function ZodErrors({ error }: Readonly<ZodErrorsProps>) {
     if (!error) {
         return null;
     }

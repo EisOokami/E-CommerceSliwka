@@ -5,6 +5,16 @@ import { getStrapiURL } from "@/lib/utils";
 import { getAuthToken } from "./services/getToken";
 import { getUserMeLoader } from "./services/getUserMeLoader";
 import { DeliveryStatus } from "@/types/types";
+import {
+    ICart,
+    IOrder,
+    IProduct,
+    IReview,
+    IWishlist,
+} from "@/interfaces/interfaces";
+import { IAuthPage } from "@/interfaces/authPage";
+import { IHomePage } from "@/interfaces/homePage";
+import { IGlobalData } from "@/interfaces/globalData";
 
 const baseUrl = getStrapiURL();
 
@@ -29,7 +39,10 @@ async function fetchData(url: string) {
     }
 }
 
-export async function getAuthPageData() {
+export async function getAuthPageData(): Promise<{
+    signIn: IAuthPage;
+    signUp: IAuthPage;
+}> {
     const url = new URL("/api/auth-page", baseUrl);
 
     url.search = qs.stringify({
@@ -69,7 +82,10 @@ export async function getAuthPageData() {
     };
 }
 
-export async function getHomePageData() {
+export async function getHomePageData(): Promise<{
+    data: IHomePage;
+    meta: Record<string, unknown>;
+}> {
     const url = new URL("/api/home-page", baseUrl);
 
     url.search = qs.stringify({
@@ -185,7 +201,9 @@ export async function getHomePageData() {
     return await fetchData(url.href);
 }
 
-export async function getGlobalData() {
+export async function getGlobalData(): Promise<
+    { data: IGlobalData; meta: Record<string, unknown> } | { message: string }
+> {
     const url = new URL("/api/global", baseUrl);
 
     url.search = qs.stringify({
@@ -214,7 +232,10 @@ export async function getGlobalData() {
     return await fetchData(url.href);
 }
 
-export async function getGlobalPageMetadata() {
+export async function getGlobalPageMetadata(): Promise<{
+    data: Omit<IGlobalData, "header" | "footer">;
+    meta: Record<string, unknown>;
+}> {
     const url = new URL("/api/global", baseUrl);
 
     url.search = qs.stringify({
@@ -224,7 +245,10 @@ export async function getGlobalPageMetadata() {
     return await fetchData(url.href);
 }
 
-export async function getProductsData(page: number = 1, limit: number = 8) {
+export async function getProductsData(
+    page: number = 1,
+    limit: number = 8,
+): Promise<{ products: IProduct[]; totalPages: number }> {
     const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
@@ -302,7 +326,10 @@ export async function getProductsData(page: number = 1, limit: number = 8) {
     };
 }
 
-export async function getProductData(documentId: string | null, slug?: string) {
+export async function getProductData(
+    documentId: string | null,
+    slug?: string,
+): Promise<IProduct> {
     const url = new URL("/api/products", baseUrl);
 
     const filters = {
@@ -403,7 +430,11 @@ export async function getFilteredProductsData(
     page: number = 1,
     limit: number = 8,
     sort?: string[],
-) {
+): Promise<{
+    products: IProduct[];
+    totalPages: number;
+    productsCount: number;
+}> {
     const url = new URL("/api/products/filtered", baseUrl);
 
     const query = buildFilters(filterParams);
@@ -513,7 +544,9 @@ export async function getFilteredProductsData(
     };
 }
 
-export async function getFiltersByCategory(category: string | null) {
+export async function getFiltersByCategory(
+    category: string | null,
+): Promise<IProduct[]> {
     const url = new URL("/api/products", baseUrl);
 
     const filters = {
@@ -550,7 +583,7 @@ export async function getFiltersByCategory(category: string | null) {
 export async function getProductsPriceRange(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filterParams: { [key: string]: any | null },
-) {
+): Promise<{ minPrice: number; maxPrice: number }> {
     const url = new URL("/api/products/price-range", baseUrl);
 
     const query = buildFilters(filterParams);
@@ -579,7 +612,7 @@ export async function getProductsPriceRange(
     return { minPrice, maxPrice };
 }
 
-export async function getProductsCategory() {
+export async function getProductsCategory(): Promise<IProduct[]> {
     const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
@@ -595,7 +628,7 @@ export async function getProductsCategory() {
     return fetchedData.data;
 }
 
-export async function getProductsCount() {
+export async function getProductsCount(): Promise<number> {
     const url = new URL("/api/products/products-count", baseUrl);
 
     url.search = qs.stringify({
@@ -607,7 +640,7 @@ export async function getProductsCount() {
     return fetchedData.data;
 }
 
-export async function getCartProductsData() {
+export async function getCartProductsData(): Promise<ICart[]> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -637,7 +670,9 @@ export async function getCartProductsData() {
     return fetchedData.data;
 }
 
-export async function getCartProductData(cartDocumentId: string) {
+export async function getCartProductData(
+    cartDocumentId: string,
+): Promise<ICart | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -665,7 +700,7 @@ export async function getCartProductData(cartDocumentId: string) {
 
 export async function getCartProductDataByProductDocumentId(
     productDocumentId: string,
-) {
+): Promise<ICart | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -706,7 +741,21 @@ export async function getCartProductDataByProductDocumentId(
     return fetchedData.data[0];
 }
 
-export async function getProductsBySearchData(searchValue: string) {
+export async function getProductsBySearchData(
+    searchValue: string,
+): Promise<
+    Omit<
+        IProduct,
+        | "wishlist"
+        | "productOptions"
+        | "sliderImages"
+        | "colors"
+        | "options"
+        | "productInfo"
+        | "productSpecs"
+        | "detailedSpecifications"
+    >[]
+> {
     const url = new URL("/api/products", baseUrl);
 
     url.search = qs.stringify({
@@ -741,7 +790,7 @@ export async function getProductsBySearchData(searchValue: string) {
     return fetchedData.data;
 }
 
-export async function getWishlistProductsData() {
+export async function getWishlistProductsData(): Promise<IWishlist[]> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -781,7 +830,9 @@ export async function getWishlistProductsData() {
     return fetchedData.data;
 }
 
-export async function getWishlistProductData(documentId: string) {
+export async function getWishlistProductData(
+    documentId: string,
+): Promise<IWishlist | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -826,7 +877,7 @@ export async function getWishlistProductData(documentId: string) {
     return fetchedData.data[0];
 }
 
-export async function getProductsInCartCount() {
+export async function getProductsInCartCount(): Promise<number> {
     const url = new URL("/api/carts/carts-count", baseUrl);
 
     url.search = qs.stringify({
@@ -838,7 +889,7 @@ export async function getProductsInCartCount() {
     return fetchedData.data;
 }
 
-export async function getProductsInWishlistCount() {
+export async function getProductsInWishlistCount(): Promise<number> {
     const url = new URL("/api/wishlists/wishlists-count", baseUrl);
 
     url.search = qs.stringify({
@@ -854,7 +905,7 @@ export async function getOrdersData(
     page: number = 1,
     limit: number = 8,
     status?: DeliveryStatus | "All",
-) {
+): Promise<{ data: IOrder[]; totalPages: number } | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -899,11 +950,13 @@ export async function getOrdersData(
     };
 }
 
-export async function getReviewsData(productDocumentId: string) {
+export async function getReviewsData(
+    productDocumentId: string,
+): Promise<IReview[] | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
-        return undefined;
+        return;
     }
 
     const url = new URL("/api/reviews", baseUrl);

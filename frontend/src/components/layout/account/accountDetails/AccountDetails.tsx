@@ -128,10 +128,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     accountSettingFormState?.formData
-                                        ? accountSettingFormState?.formData.get(
-                                              "username",
-                                          )
-                                        : userData.username
+                                        ?.get("username")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <AccountInput
@@ -144,10 +142,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     accountSettingFormState?.formData
-                                        ? accountSettingFormState?.formData.get(
-                                              "email",
-                                          )
-                                        : userData.email
+                                        ?.get("email")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <div className="self-end grid gap-2">
@@ -155,15 +151,7 @@ export default function AccountDetails({
                                 accountSettingFormState?.strapiErrorsDetails
                                     .length ? (
                                     accountSettingFormState?.strapiErrorsDetails.map(
-                                        (
-                                            error: {
-                                                path: string;
-                                                message: string;
-                                                name: string;
-                                                value: string;
-                                            },
-                                            i: number,
-                                        ) => (
+                                        (error, i) => (
                                             <StrapiErrors
                                                 key={i}
                                                 error={error}
@@ -223,10 +211,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
-                                        ? changePasswordFormState?.formData.get(
-                                              "current-password",
-                                          )
-                                        : null
+                                        ?.get("current-password")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <AccountInput
@@ -240,10 +226,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
-                                        ? changePasswordFormState?.formData.get(
-                                              "confirm-current-password",
-                                          )
-                                        : null
+                                        ?.get("confirm-current-password")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <AccountInput
@@ -256,10 +240,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
-                                        ? changePasswordFormState?.formData.get(
-                                              "password",
-                                          )
-                                        : null
+                                        ?.get("password")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <AccountInput
@@ -273,10 +255,8 @@ export default function AccountDetails({
                                 }
                                 defaultValue={
                                     changePasswordFormState?.formData
-                                        ? changePasswordFormState?.formData.get(
-                                              "confirm-password",
-                                          )
-                                        : null
+                                        ?.get("confirm-password")
+                                        ?.toString() ?? ""
                                 }
                             />
                             <div className="grid gap-2">
@@ -284,15 +264,7 @@ export default function AccountDetails({
                                 changePasswordFormState?.strapiErrorsDetails
                                     .length ? (
                                     changePasswordFormState?.strapiErrorsDetails.map(
-                                        (
-                                            error: {
-                                                path: string;
-                                                message: string;
-                                                name: string;
-                                                value: string;
-                                            },
-                                            i: number,
-                                        ) => (
+                                        (error, i) => (
                                             <StrapiErrors
                                                 key={i}
                                                 error={error}

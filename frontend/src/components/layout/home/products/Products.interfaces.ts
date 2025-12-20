@@ -1,11 +1,5 @@
-import { IArray, ICategory, IProduct } from "@/interfaces/interfaces";
+import { ProductsSectionBlock } from "@/interfaces/homePage";
 
 export interface ProductsProps {
-    id: number;
-    __component: string;
-    categories: ICategory[];
-    tabs: IArray[];
-    newArrival: IProduct[];
-    bestseller: IProduct[];
-    featuredProducts: IProduct[];
+    data: ProductsSectionBlock;
 }

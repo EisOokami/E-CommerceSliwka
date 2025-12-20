@@ -1,11 +1,10 @@
 import { getWishlistProductsData } from "@/data/loaders";
 import { GoHeart } from "react-icons/go";
-import { IWishlist } from "@/interfaces/interfaces";
 
 import Wishlist from "@/components/layout/wishlist/Wishlist";
 
 export default async function WishlistPage() {
-    const data: IWishlist[] = await getWishlistProductsData();
+    const data = await getWishlistProductsData();
 
     return (
         <main className="container mx-auto mb-auto px-3 py-10 md:px-5">

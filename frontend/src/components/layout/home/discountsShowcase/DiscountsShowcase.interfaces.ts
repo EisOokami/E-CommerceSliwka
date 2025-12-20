@@ -1,7 +1,5 @@
-import { IProduct } from "@/interfaces/interfaces";
+import { DiscountsSectionBlock } from "@/interfaces/homePage";
 
 export interface DiscountsShowcaseProps {
-    id: number;
-    __component: string;
-    products: IProduct[];
+    data: DiscountsSectionBlock;
 }

@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IRestError } from "@/interfaces/data";
 import { getAuthToken, getCSRFToken } from "./getToken";
 import { getStrapiURL } from "@/lib/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function mutateData(method: string, path: string, payload?: any) {
+export async function mutateData(
+    method: string,
+    path: string,
+    payload?: any,
+): Promise<any | IRestError | undefined> {
     const baseUrl = getStrapiURL();
     const authToken = await getAuthToken();
     const csrfToken = await getCSRFToken();
@@ -26,9 +31,7 @@ export async function mutateData(method: string, path: string, payload?: any) {
             return response.ok;
         }
 
-        const data = await response?.json();
-
-        return data;
+        return response.json();
     } catch (error) {
         console.log("error", error);
         throw error;

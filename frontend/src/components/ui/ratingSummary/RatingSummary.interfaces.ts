@@ -1,6 +1,6 @@
-import { IReviews } from "@/interfaces/interfaces";
+import { IReview } from "@/interfaces/interfaces";
 
 export interface RatingSummaryProps {
-    reviewsData: IReviews[];
+    reviewsData: IReview[];
     averageRating: number;
 }

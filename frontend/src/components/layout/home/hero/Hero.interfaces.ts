@@ -1,11 +1,5 @@
-import { IImage, IProduct } from "@/interfaces/interfaces";
+import { HeroSectionBlock } from "@/interfaces/homePage";
 
 export interface HeroProps {
-    id: number;
-    documentId: string;
-    __component: string;
-    heading: string;
-    subHeading: string;
-    image: IImage;
-    product: IProduct;
+    data: HeroSectionBlock;
 }

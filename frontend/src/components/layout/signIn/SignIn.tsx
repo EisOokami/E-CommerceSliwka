@@ -13,7 +13,6 @@ import AuthInput from "@/components/ui/authInput/AuthInput";
 const INITIAL_STATE = {
     zodErrors: null,
     strapiErrors: null,
-    data: null,
     message: null,
     strapiErrorsDetails: null,
     formData: null,
@@ -64,9 +63,8 @@ export default function SignIn({ pageData }: Readonly<SignInProps>) {
                         labelValue="Email"
                         zodErrorMsg={formState?.zodErrors?.identifier}
                         defaultValue={
-                            formState?.formData
-                                ? formState?.formData.get("email")
-                                : null
+                            formState?.formData?.get("email")?.toString() ??
+                            undefined
                         }
                     />
                     <AuthInput
@@ -76,24 +74,15 @@ export default function SignIn({ pageData }: Readonly<SignInProps>) {
                         labelValue="Password"
                         zodErrorMsg={formState?.zodErrors?.password}
                         defaultValue={
-                            formState?.formData
-                                ? formState?.formData.get("password")
-                                : null
+                            formState?.formData?.get("password")?.toString() ??
+                            undefined
                         }
                     />
                     {formState?.strapiErrorsDetails &&
                     formState?.strapiErrorsDetails.length ? (
-                        formState?.strapiErrorsDetails.map(
-                            (
-                                error: {
-                                    path: string;
-                                    message: string;
-                                    name: string;
-                                    value: string;
-                                },
-                                i: number,
-                            ) => <StrapiErrors key={i} error={error} />,
-                        )
+                        formState?.strapiErrorsDetails.map((error, i) => (
+                            <StrapiErrors key={i} error={error} />
+                        ))
                     ) : (
                         <StrapiErrors error={formState?.strapiErrors} />
                     )}

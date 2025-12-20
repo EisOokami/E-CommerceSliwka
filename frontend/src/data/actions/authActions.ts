@@ -4,6 +4,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { registerUserService, loginUserService } from "../services/authService";
+import { ILoginAction, IRegisterAction } from "@/interfaces/data";
 
 const config = {
     maxAge: 60 * 60 * 24 * 7,
@@ -44,8 +45,11 @@ const schemaRegister = z.object({
         .transform(() => true),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function registerUserAction(prevState: any, formData: FormData) {
+export async function registerUserAction(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prevState: any,
+    formData: FormData,
+): Promise<IRegisterAction | undefined> {
     const validatedFields = schemaRegister.safeParse({
         username: formData.get("username"),
         email: formData.get("email"),
@@ -77,7 +81,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
         };
     }
 
-    if (responseData.error) {
+    if ("error" in responseData && responseData.error) {
         return {
             ...prevState,
             formData,
@@ -91,11 +95,13 @@ export async function registerUserAction(prevState: any, formData: FormData) {
         };
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set("jwt", responseData.jwt, config);
-    cookieStore.set("csrfToken", responseData.csrfToken, config);
+    if ("jwt" in responseData) {
+        const cookieStore = await cookies();
+        cookieStore.set("jwt", responseData.jwt, config);
+        cookieStore.set("csrfToken", responseData.csrfToken, config);
 
-    redirect("/");
+        redirect("/");
+    }
 }
 
 const schemaLogin = z.object({
@@ -117,8 +123,11 @@ const schemaLogin = z.object({
         ),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function loginUserAction(prevState: any, formData: FormData) {
+export async function loginUserAction(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prevState: any,
+    formData: FormData,
+): Promise<ILoginAction | undefined> {
     const validatedFields = schemaLogin.safeParse({
         identifier: formData.get("email"),
         password: formData.get("password"),
@@ -141,14 +150,14 @@ export async function loginUserAction(prevState: any, formData: FormData) {
         return {
             ...prevState,
             formData,
-            strapiErrors: responseData.error,
+            strapiErrors: null,
             strapiErrorsDetails: null,
             zodErrors: null,
             message: "Ops! Something went wrong. Please try again.",
         };
     }
 
-    if (responseData.error) {
+    if ("error" in responseData && responseData.error) {
         return {
             ...prevState,
             formData,
@@ -162,11 +171,13 @@ export async function loginUserAction(prevState: any, formData: FormData) {
         };
     }
 
-    const cookieStore = await cookies();
-    cookieStore.set("jwt", responseData.jwt, config);
-    cookieStore.set("csrfToken", responseData.csrfToken, config);
+    if ("jwt" in responseData) {
+        const cookieStore = await cookies();
+        cookieStore.set("jwt", responseData.jwt, config);
+        cookieStore.set("csrfToken", responseData.csrfToken, config);
 
-    redirect("/");
+        redirect("/");
+    }
 }
 
 export async function logoutAction() {

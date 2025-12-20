@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { getUserMeLoader } from "../services/getUserMeLoader";
 import { uploadImagesToStrapi } from "../services/uploadImage";
 import { cookies } from "next/headers";
+import { IChangePasswordAction, IUpdateProfileAction } from "@/interfaces/data";
 
 const config = {
     maxAge: 60 * 60 * 24 * 7,
@@ -70,7 +71,7 @@ export async function updateProfileAction(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prevState: any,
     formData: FormData,
-) {
+): Promise<IUpdateProfileAction | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -134,7 +135,7 @@ export async function updateProfileAction(
     };
 
     if (uploadedImage) {
-        payload.avatar = uploadedImage.map((img: { id: string }) => img.id);
+        payload.avatar = uploadedImage.map((img) => img.id.toString());
     }
 
     const responseData = await mutateData(
@@ -252,7 +253,7 @@ export async function changePasswordAction(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prevState: any,
     formData: FormData,
-) {
+): Promise<IChangePasswordAction | undefined> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {

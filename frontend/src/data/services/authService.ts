@@ -1,9 +1,28 @@
+import { IRestError } from "@/interfaces/data";
+import { IUser } from "@/interfaces/interfaces";
 import { getStrapiURL } from "@/lib/utils";
-import { LoginUserProps, RegisterUserProps } from "./authService.interfaces";
+
+export interface RegisterUserProps {
+    username: string;
+    password: string;
+    email: string;
+}
+
+export interface LoginUserProps {
+    identifier: string;
+    password: string;
+}
 
 const baseUrl = getStrapiURL();
 
-export async function registerUserService(userData: RegisterUserProps) {
+export async function registerUserService(
+    userData: RegisterUserProps,
+): Promise<
+    | { jwt: string; csrfToken: string; user: IUser }
+    | { message: string }
+    | IRestError
+    | undefined
+> {
     const url = new URL("/api/auth/local/register", baseUrl);
 
     try {
@@ -22,7 +41,14 @@ export async function registerUserService(userData: RegisterUserProps) {
     }
 }
 
-export async function loginUserService(userData: LoginUserProps) {
+export async function loginUserService(
+    userData: LoginUserProps,
+): Promise<
+    | { jwt: string; csrfToken: string; user: IUser }
+    | { message: string }
+    | IRestError
+    | undefined
+> {
     const url = new URL("/api/auth/local", baseUrl);
 
     try {

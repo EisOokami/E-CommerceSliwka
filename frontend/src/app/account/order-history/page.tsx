@@ -1,15 +1,11 @@
 import { getOrdersData } from "@/data/loaders";
 import { LuClock } from "react-icons/lu";
-import { IOrder } from "@/interfaces/interfaces";
 
 import OrderStatusCards from "@/components/layout/account/orderStatusCards/OrderStatusCards";
 import OrderList from "@/components/layout/account/orderList/OrderList";
 
 export default async function OrderHistoryPage() {
-    const ordersData = (await getOrdersData(1, 999999)) as {
-        data: IOrder[];
-        totalPages: number;
-    };
+    const ordersData = await getOrdersData(1, 999999);
 
     return (
         <main className="grid gap-10 w-full">
@@ -19,7 +15,9 @@ export default async function OrderHistoryPage() {
                     Order History
                 </h1>
             </div>
-            <OrderStatusCards ordersData={ordersData.data} />
+            {ordersData && ordersData.data.length ? (
+                <OrderStatusCards ordersData={ordersData.data} />
+            ) : null}
             <OrderList />
         </main>
     );
