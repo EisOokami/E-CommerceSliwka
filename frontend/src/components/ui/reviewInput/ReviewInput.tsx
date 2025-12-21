@@ -129,17 +129,15 @@ export default function ReviewInput({
 
             setUpdatedReviewsData(updatedReviewsData ?? null);
             setUpdatedAverageRating(updatedAverageRating);
+            setRating(0);
+            setImagesFromUpload(null);
         }
 
         return result;
     }
 
     return (
-        <form
-            action={formAction}
-            className="grid gap-5"
-            style={INITIAL_STATE.data ? { opacity: 0 } : {}}
-        >
+        <form action={formAction} className="grid gap-5">
             <div className="flex items-center gap-2 px-5 md:px-10 py-2.5 md:py-5 border rounded-xl">
                 <textarea
                     name="description"
@@ -200,6 +198,7 @@ export default function ReviewInput({
                             starsClassName="text-2xl"
                             isEdited
                             onRate={setRating}
+                            currentRating={rating}
                         />
                     </div>
                     {isPending ? (

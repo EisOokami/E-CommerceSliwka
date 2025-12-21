@@ -1,12 +1,13 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { FaStar, FaRegStar } from "react-icons/fa6";
 import { RatingProps } from "./Rating.interfaces";
 
 const Rating = memo(function Rating({
     maxStars = 5,
+    currentRating,
     onRate,
     initialRating = 0,
     isEdited = false,
@@ -14,6 +15,14 @@ const Rating = memo(function Rating({
 }: Readonly<RatingProps>) {
     const [rating, setRating] = useState<number>(initialRating);
     const [hover, setHover] = useState<number | null>(null);
+
+    useEffect(() => {
+        console.dir(currentRating);
+
+        if (typeof currentRating === "number") {
+            setRating(currentRating);
+        }
+    }, [currentRating]);
 
     const handleClick = (value: number) => {
         setRating(value);
