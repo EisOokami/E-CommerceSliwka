@@ -19,7 +19,7 @@ export async function registerUserService(
     userData: RegisterUserProps,
 ): Promise<
     | { jwt: string; csrfToken: string; user: IUser }
-    | { message: string }
+    | { message: { error: { name: string; message: string; status: number } } }
     | IRestError
     | undefined
 > {
@@ -45,7 +45,7 @@ export async function loginUserService(
     userData: LoginUserProps,
 ): Promise<
     | { jwt: string; csrfToken: string; user: IUser }
-    | { message: string }
+    | { message: { error: { name: string; message: string; status: number } } }
     | IRestError
     | undefined
 > {

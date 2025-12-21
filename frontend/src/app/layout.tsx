@@ -61,7 +61,7 @@ export default async function RootLayout({
     const userError = user?.data?.message;
 
     if ("message" in globalData) {
-        return <ErrorPage message={globalData.message} />;
+        return <ErrorPage message={globalData.message.error.message} />;
     }
 
     if (userError) {

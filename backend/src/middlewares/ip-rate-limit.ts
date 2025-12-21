@@ -6,13 +6,14 @@ const IP_BASED_LIMITS = {
     "auth/local/register": {
         interval: 60 * 60 * 1000,
         max: 1,
-        message: "Too many registration attempts from this IP, try again later."
+        message:
+            "Too many registration attempts from this IP, try again later.",
     },
     "auth/local": {
         interval: 60 * 1000,
         max: 10,
-        message: "Too many login attempts, try again later."
-    }
+        message: "Too many login attempts, try again later.",
+    },
 };
 
 export default (_config: any, { strapi }: { strapi: Core.Strapi }) => {
@@ -20,7 +21,7 @@ export default (_config: any, { strapi }: { strapi: Core.Strapi }) => {
         const path = ctx.request.url.replace(/^\/api\//, "");
 
         const matchedLimit = Object.entries(IP_BASED_LIMITS).find(([key]) =>
-            path.startsWith(key)
+            path.startsWith(key),
         );
 
         if (!matchedLimit) {
@@ -33,7 +34,13 @@ export default (_config: any, { strapi }: { strapi: Core.Strapi }) => {
             interval,
             max,
             prefixKey: path,
-            message,
+            message: {
+                error: {
+                    name: "RateLimitError",
+                    message,
+                    status: 429,
+                },
+            },
             headers: true,
             keyGenerator: (ctx) => ctx.ip,
         })(ctx, next);

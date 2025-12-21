@@ -95,6 +95,17 @@ export async function registerUserAction(
         };
     }
 
+    if ("message" in responseData && responseData.message) {
+        return {
+            ...prevState,
+            formData,
+            strapiErrors: responseData.message.error,
+            strapiErrorsDetails: null,
+            zodErrors: null,
+            message: "Failed to Register.",
+        };
+    }
+
     if ("jwt" in responseData) {
         const cookieStore = await cookies();
         cookieStore.set("jwt", responseData.jwt, config);
@@ -168,6 +179,17 @@ export async function loginUserAction(
                     : null,
             zodErrors: null,
             message: "Failed to Login.",
+        };
+    }
+
+    if ("message" in responseData && responseData.message) {
+        return {
+            ...prevState,
+            formData,
+            strapiErrors: responseData.message.error,
+            strapiErrorsDetails: null,
+            zodErrors: null,
+            message: "Failed to Register.",
         };
     }
 

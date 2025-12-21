@@ -1,9 +1,9 @@
-import { IReviews } from "@/interfaces/interfaces";
+import { IReview } from "@/interfaces/interfaces";
 import { create } from "zustand";
 
 interface IProductStore {
-    updatedReviewsData: IReviews[] | null;
-    setUpdatedReviewsData: (newUpdatedReviewsData: IReviews[] | null) => void;
+    updatedReviewsData: IReview[] | null;
+    setUpdatedReviewsData: (newUpdatedReviewsData: IReview[] | null) => void;
     updatedAverageRating: number | null;
     setUpdatedAverageRating: (newUpdatedAverageRating: number | null) => void;
 }

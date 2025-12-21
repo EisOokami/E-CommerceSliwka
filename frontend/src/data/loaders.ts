@@ -202,7 +202,8 @@ export async function getHomePageData(): Promise<{
 }
 
 export async function getGlobalData(): Promise<
-    { data: IGlobalData; meta: Record<string, unknown> } | { message: string }
+    | { data: IGlobalData; meta: Record<string, unknown> }
+    | { message: { error: { name: string; message: string; status: number } } }
 > {
     const url = new URL("/api/global", baseUrl);
 
