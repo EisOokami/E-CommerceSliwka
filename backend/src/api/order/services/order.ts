@@ -66,8 +66,8 @@ export default factories.createCoreService(
             try {
                 const session = await stripe.checkout.sessions.create({
                     mode: "payment",
-                    success_url: `${process.env.CLIENT_URL}/redirect?path=/cart/success`,
-                    cancel_url: `${process.env.CLIENT_URL}/redirect?path=/cart/cancel`,
+                    success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${process.env.CLIENT_URL}/cancel`,
                     line_items: lineItems,
                     shipping_address_collection: {
                         allowed_countries: [
@@ -213,91 +213,79 @@ export default factories.createCoreService(
             return { data: orderData, meta: { pagination } };
         },
 
-        async webhook(ctx, signature) {
-            let event;
+        // async webhook(ctx, signature) {
+        //     let event;
 
-            try {
-                event = stripe.webhooks.constructEvent(
-                    ctx.request.body,
-                    signature,
-                    process.env.STRIPE_WEBHOOK_SECRET,
-                );
-            } catch (err) {
-                console.log(
-                    "Webhook signature verification failed",
-                    err.message,
-                );
-                ctx.status = 400;
+        //     try {
+        //         event = stripe.webhooks.constructEvent(
+        //             ctx.request.body,
+        //             signature,
+        //             process.env.STRIPE_WEBHOOK_SECRET,
+        //         );
+        //     } catch (err) {
+        //         console.log(
+        //             "Webhook signature verification failed",
+        //             err.message,
+        //         );
+        //         ctx.status = 400;
 
-                return (ctx.body = `Webhook Error: ${err.message}`);
-            }
+        //         return (ctx.body = `Webhook Error: ${err.message}`);
+        //     }
 
-            if (event.type === "checkout.session.completed") {
-                const session = event.data.object;
+        //     if (event.type === "checkout.session.completed") {
+        //         const session = event.data.object;
 
-                const order = await strapi
-                    .documents("api::order.order")
-                    .findFirst({
-                        filters: {
-                            stripeId: {
-                                $eq: session.id,
-                            },
-                        },
-                    });
+        //         const order = await strapi
+        //             .documents("api::order.order")
+        //             .findFirst({
+        //                 filters: {
+        //                     stripeId: {
+        //                         $eq: session.id,
+        //                     },
+        //                 },
+        //             });
 
-                await strapi.documents("api::order.order").update({
-                    documentId: order.documentId,
-                    data: { isSuccess: true },
-                });
+        //         await strapi.documents("api::order.order").update({
+        //             documentId: order.documentId,
+        //             data: { isSuccess: true },
+        //         });
 
-                console.log("Order marked as success:", session.id);
-            }
+        //         console.log("Order marked as success:", session.id);
+        //     }
 
-            if (event.type === "checkout.session.expired") {
-                const session = event.data.object;
+        //     if (event.type === "checkout.session.expired") {
+        //         const session = event.data.object;
 
-                const order = await strapi
-                    .documents("api::order.order")
-                    .findFirst({
-                        filters: {
-                            stripeId: {
-                                $eq: session.id,
-                            },
-                        },
-                    });
+        //         const order = await strapi
+        //             .documents("api::order.order")
+        //             .findFirst({
+        //                 filters: {
+        //                     stripeId: {
+        //                         $eq: session.id,
+        //                     },
+        //                 },
+        //             });
 
-                await strapi.documents("api::order.order").update({
-                    documentId: order.documentId,
-                    data: { isSuccess: true },
-                });
+        //         await strapi.documents("api::order.order").update({
+        //             documentId: order.documentId,
+        //             data: { isSuccess: true },
+        //         });
 
-                console.log("Order marked as cancelled:", session.id);
-            }
+        //         console.log("Order marked as cancelled:", session.id);
+        //     }
 
-            return { received: true };
-        },
+        //     return { received: true };
+        // },
 
-        async updateOrderAfterCheckout(user, isSuccess) {
+        async confirm(user, checkoutSession) {
             if (!user) {
                 return;
             }
 
-            const lastOrder = await strapi
-                .documents("api::order.order")
-                .findMany({
-                    sort: "createdAt:desc",
-                    limit: 1,
-                    populate: "*",
-                    filters: {
-                        user: {
-                            documentId: {
-                                $eq: user.documentId,
-                            },
-                        },
-                    },
-                });
+            const session =
+                await stripe.checkout.sessions.retrieve(checkoutSession);
 
-            if (isSuccess) {
+            if (session.payment_status === "paid") {
                 const daysToAdd = Math.floor(Math.random() * 5) + 3;
                 const estimatedDelivery = new Date(
                     Date.now() + daysToAdd * 24 * 60 * 60 * 1000,
@@ -312,10 +300,26 @@ export default factories.createCoreService(
                 );
                 const trackingNumber = `${prefix}${number}`;
 
+                const order = await strapi
+                    .documents("api::order.order")
+                    .findMany({
+                        populate: "*",
+                        filters: {
+                            user: {
+                                documentId: {
+                                    $eq: user.documentId,
+                                },
+                            },
+                            stripeId: {
+                                $eq: checkoutSession,
+                            },
+                        },
+                    });
+
                 await strapi.documents("api::order.order").update({
-                    documentId: lastOrder[0].documentId,
+                    documentId: order[0].documentId,
                     data: {
-                        isSuccess,
+                        isSuccess: "true",
                         deliveryStatus: "Processing",
                         trackingNumber,
                         estimatedDelivery,
@@ -330,14 +334,30 @@ export default factories.createCoreService(
                     status: "published",
                 });
 
-                return {};
+                return { isSuccess: true };
             }
 
-            if (!isSuccess) {
+            if (session.payment_status !== "paid") {
+                const order = await strapi
+                    .documents("api::order.order")
+                    .findMany({
+                        populate: "*",
+                        filters: {
+                            user: {
+                                documentId: {
+                                    $eq: user.documentId,
+                                },
+                            },
+                            stripeId: {
+                                $eq: checkoutSession,
+                            },
+                        },
+                    });
+
                 await strapi.documents("api::order.order").update({
-                    documentId: lastOrder[0].documentId,
+                    documentId: order[0].documentId,
                     data: {
-                        isSuccess,
+                        isSuccess: "false",
                         deliveryStatus: "Cancelled",
                     },
                     filters: {
@@ -350,7 +370,7 @@ export default factories.createCoreService(
                     status: "published",
                 });
 
-                return {};
+                return { isSuccess: false };
             }
         },
     }),

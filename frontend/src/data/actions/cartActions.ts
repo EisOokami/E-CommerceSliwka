@@ -204,7 +204,7 @@ export async function redirectToCheckoutAction(cartItemsData: ICart[]) {
     redirect(url);
 }
 
-export async function deleteProductsFromCartAction() {
+export async function deleteProductsFromCartAction(): Promise<boolean | void> {
     const cartData = await getCartProductsData();
     const user = await getUserMeLoader();
 
@@ -233,7 +233,9 @@ export async function deleteProductsFromCartAction() {
     }
 }
 
-export async function updateOrderAfterCheckoutAction(isSuccess: boolean) {
+export async function confirmAction(
+    checkoutSession: string,
+): Promise<{ isSuccess: boolean } | void> {
     const user = await getUserMeLoader();
 
     if (!user.ok) {
@@ -246,13 +248,13 @@ export async function updateOrderAfterCheckoutAction(isSuccess: boolean) {
 
     const payload = {
         data: {
-            isSuccess: isSuccess,
+            checkoutSession: checkoutSession,
         },
     };
 
     const responseData = await mutateData(
         "POST",
-        `/api/orders/update-order-after-checkout?${query}`,
+        `/api/orders/confirm?${query}`,
         payload,
     );
 
@@ -262,6 +264,8 @@ export async function updateOrderAfterCheckoutAction(isSuccess: boolean) {
 
     if (responseData.error) {
         console.error(responseData.error);
-        throw new Error("Failed to Redirect to Checkout");
+        throw new Error("Failed to Confirm a Order");
     }
+
+    return responseData;
 }

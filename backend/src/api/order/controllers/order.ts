@@ -58,18 +58,34 @@ export default factories.createCoreController(
         //     ctx.send(result);
         // },
 
-        async updateOrderAfterCheckout(ctx) {
+        async confirm(ctx) {
             const user = ctx.state.user;
 
             if (!user) {
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const { isSuccess } = ctx.request.body.data;
+            const contentType = strapi.contentType("api::order.order");
+            const auth = { auth: ctx.state.auth };
+
+            await strapi.contentAPI.validate.query(
+                ctx.query,
+                contentType,
+                auth,
+            );
+
+            const sanitizedData: Record<string, any> =
+                await strapi.contentAPI.sanitize.input(
+                    ctx.request.body,
+                    contentType,
+                    auth,
+                );
+
+            const { checkoutSession } = sanitizedData.data;
 
             const result = await strapi
                 .service("api::order.order")
-                .updateOrderAfterCheckout(user, isSuccess);
+                .confirm(user, checkoutSession);
 
             ctx.send(result);
         },

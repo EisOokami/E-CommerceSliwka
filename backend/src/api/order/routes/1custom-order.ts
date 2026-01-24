@@ -2,8 +2,8 @@ export default {
     routes: [
         {
             method: "POST",
-            path: "/orders/update-order-after-checkout",
-            handler: "order.updateOrderAfterCheckout",
+            path: "/orders/confirm",
+            handler: "order.confirm",
             config: {
                 policies: ["global::consent"],
             },

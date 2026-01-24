@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     deleteProductsFromCartAction,
-    updateOrderAfterCheckoutAction,
+    confirmAction,
 } from "@/data/actions/cartActions";
 import useGlobalStore from "@/stores/global";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
@@ -11,19 +12,41 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import Button from "@/components/ui/button/Button";
 
 export default function SuccessPage() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const search = searchParams.get("session_id");
     const setProductsInCartCount = useGlobalStore(
         (state) => state.setProductsInCartCount,
     );
+    const isRefreshedPage = useGlobalStore((state) => state.isRefreshedPage);
     const setIsRefreshedPage = useGlobalStore(
         (state) => state.setIsRefreshedPage,
     );
 
     useEffect(() => {
         (async () => {
-            setIsRefreshedPage(false);
-            await updateOrderAfterCheckoutAction(true);
-            await deleteProductsFromCartAction();
-            setProductsInCartCount(0);
+            if (!isRefreshedPage) {
+                setIsRefreshedPage(true);
+                router.refresh();
+            }
+
+            const confirmData = await confirmAction(search ?? "");
+
+            if (confirmData && confirmData.isSuccess) {
+                try {
+                    await deleteProductsFromCartAction();
+                } catch (e) {
+                    console.error(e);
+                    router.push("/");
+                }
+
+                setProductsInCartCount(0);
+                setIsRefreshedPage(false);
+            }
+
+            if (!confirmData || (confirmData && !confirmData.isSuccess)) {
+                router.push("/error");
+            }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

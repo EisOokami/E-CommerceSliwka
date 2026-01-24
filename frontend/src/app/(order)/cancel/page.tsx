@@ -1,21 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import useGlobalStore from "@/stores/global";
-import { updateOrderAfterCheckoutAction } from "@/data/actions/cartActions";
 import { MdOutlineCancel } from "react-icons/md";
 
 import Button from "@/components/ui/button/Button";
+import useGlobalStore from "@/stores/global";
+import { useRouter } from "next/navigation";
 
 export default function CancelPage() {
+    const router = useRouter();
+    const isRefreshedPage = useGlobalStore((state) => state.isRefreshedPage);
     const setIsRefreshedPage = useGlobalStore(
         (state) => state.setIsRefreshedPage,
     );
 
     useEffect(() => {
         (async () => {
-            setIsRefreshedPage(false);
-            await updateOrderAfterCheckoutAction(false);
+            if (!isRefreshedPage) {
+                setIsRefreshedPage(true);
+                router.refresh();
+            }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
