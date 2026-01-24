@@ -8,20 +8,27 @@ export default factories.createCoreController(
     "api::product.product",
     ({ strapi }) => ({
         async find(ctx) {
-            const params = (await this.sanitizeQuery(ctx)) as Record<
-                string,
-                any
-            >;
+            await this.validateQuery(ctx);
 
-            const result = await strapi
+            const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+            const { data, meta } = await strapi
                 .service("api::product.product")
-                .findProducts(params);
+                .findProducts(sanitizedQueryParams);
 
-            ctx.send(result);
+            return this.transformResponse(data, meta);
         },
 
         async priceRange(ctx) {
-            const filters = ctx.query.filters || {};
+            const contentType = strapi.contentType("api::product.product");
+
+            await strapi.contentAPI.validate.query(ctx.query, contentType);
+
+            const sanitizedQueryParams: Record<string, any> =
+                await strapi.contentAPI.sanitize.query(ctx.query, contentType);
+
+            const filters = sanitizedQueryParams.filters || {};
+
             const result = await strapi
                 .service("api::product.product")
                 .getPriceRange(filters);
@@ -30,19 +37,35 @@ export default factories.createCoreController(
         },
 
         async filtered(ctx) {
-            const filters = ctx.query.filters || {};
-            const queryParams = ctx.query.queryParams;
-            const pagination = ctx.query.pagination;
-            const sort = ctx.query.sort;
+            const contentType = strapi.contentType("api::product.product");
 
-            const result = await strapi
+            await strapi.contentAPI.validate.query(ctx.query, contentType);
+
+            const sanitizedQueryParams: Record<string, any> =
+                await strapi.contentAPI.sanitize.query(ctx.query, contentType);
+
+            const filters = sanitizedQueryParams.filters || {};
+            const queryParams = sanitizedQueryParams.queryParams;
+            const pagination = sanitizedQueryParams.pagination;
+            const sort = sanitizedQueryParams.sort;
+
+            const { data, totalPages, productsCount } = await strapi
                 .service("api::product.product")
                 .getFilteredProducts(filters, queryParams, pagination, sort);
 
-            ctx.send(result);
+            const sanitizedResults = await strapi.contentAPI.sanitize.output(
+                data,
+                contentType,
+            );
+
+            ctx.send({ data: sanitizedResults, totalPages, productsCount });
         },
 
         async productsCount(ctx) {
+            const contentType = strapi.contentType("api::product.product");
+
+            await strapi.contentAPI.validate.query(ctx.query, contentType);
+
             const result = await strapi
                 .service("api::product.product")
                 .getCount();

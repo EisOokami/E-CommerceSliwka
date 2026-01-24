@@ -12,13 +12,17 @@ export default factories.createCoreController("api::cart.cart", {
             return ctx.unauthorized("You are not authorized!");
         }
 
-        const params = (await this.sanitizeQuery(ctx)) as Record<string, any>;
+        await this.validateQuery(ctx);
 
-        const result = await strapi
+        const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+        const { data, meta } = await strapi
             .service("api::cart.cart")
-            .findCartProductsData(params, user);
+            .findCartProductsData(sanitizedQueryParams, user);
 
-        ctx.send(result);
+        const sanitizedResults = await this.sanitizeOutput(data, ctx);
+
+        return this.transformResponse(sanitizedResults, meta);
     },
 
     async findOne(ctx) {
@@ -28,13 +32,17 @@ export default factories.createCoreController("api::cart.cart", {
             return ctx.unauthorized("You are not authorized!");
         }
 
-        const params = (await this.sanitizeQuery(ctx)) as Record<string, any>;
+        await this.validateQuery(ctx);
+
+        const sanitizedQueryParams = await this.sanitizeQuery(ctx);
 
         const result = await strapi
             .service("api::cart.cart")
-            .findCartProductData(params, user, ctx.params);
+            .findCartProductData(sanitizedQueryParams, user, ctx.params);
 
-        ctx.send(result);
+        const sanitizedResults = await this.sanitizeOutput(result.data, ctx);
+
+        return this.transformResponse(sanitizedResults);
     },
 
     async create(ctx) {
@@ -44,13 +52,26 @@ export default factories.createCoreController("api::cart.cart", {
             return ctx.unauthorized("You are not authorized!");
         }
 
-        const params = (await this.sanitizeQuery(ctx)) as Record<string, any>;
+        await this.validateQuery(ctx);
+
+        const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+        const sanitizedData: Record<string, any> = await this.sanitizeInput(
+            ctx.request.body,
+            ctx,
+        );
 
         const result = await strapi
             .service("api::cart.cart")
-            .createCartProductData(params, user, ctx.request.body.data);
+            .createCartProductData(
+                sanitizedQueryParams,
+                user,
+                sanitizedData.data,
+            );
 
-        ctx.send(result);
+        const sanitizedResults = await this.sanitizeOutput(result.data, ctx);
+
+        return this.transformResponse(sanitizedResults);
     },
 
     async update(ctx) {
@@ -60,18 +81,27 @@ export default factories.createCoreController("api::cart.cart", {
             return ctx.unauthorized("You are not authorized!");
         }
 
-        const params = (await this.sanitizeQuery(ctx)) as Record<string, any>;
+        await this.validateQuery(ctx);
+
+        const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+        const sanitizedData: Record<string, any> = await this.sanitizeInput(
+            ctx.request.body,
+            ctx,
+        );
 
         const result = await strapi
             .service("api::cart.cart")
             .updateCartProductData(
-                params,
+                sanitizedQueryParams,
                 user,
-                ctx.request.body.data,
+                sanitizedData.data,
                 ctx.params,
             );
 
-        ctx.send(result);
+        const sanitizedResults = await this.sanitizeOutput(result.data, ctx);
+
+        return this.transformResponse(sanitizedResults);
     },
 
     async delete(ctx) {
@@ -80,6 +110,8 @@ export default factories.createCoreController("api::cart.cart", {
         if (!user) {
             return ctx.unauthorized("You are not authorized!");
         }
+
+        await this.validateQuery(ctx);
 
         const result = await strapi
             .service("api::cart.cart")
@@ -94,6 +126,11 @@ export default factories.createCoreController("api::cart.cart", {
         if (!user) {
             return ctx.unauthorized("You are not authorized!");
         }
+
+        const contentType = strapi.contentType("api::cart.cart");
+        const auth = { auth: ctx.state.auth };
+
+        await strapi.contentAPI.validate.query(ctx.query, contentType, auth);
 
         const result = await strapi.service("api::cart.cart").getCount(user);
 

@@ -12,7 +12,7 @@ export default factories.createCoreService("api::cart.cart", ({ strapi }) => ({
             populate: {
                 ...params.populate,
                 user: {
-                    fields: ["id"],
+                    populate: false,
                 },
             },
             filters: {

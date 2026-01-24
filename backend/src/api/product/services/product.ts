@@ -77,7 +77,7 @@ export default factories.createCoreService(
         async getFilteredProducts(filters, queryParams, pagination, sort) {
             const updatedFilters = {
                 ...filters,
-                ...(queryParams.price?.length === 2 && {
+                ...(queryParams.price.length === 2 && {
                     $or: [
                         {
                             discountedPrice: {

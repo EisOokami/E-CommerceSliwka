@@ -8,16 +8,15 @@ export default factories.createCoreController(
     "api::review.review",
     ({ strapi }) => ({
         async find(ctx) {
-            const params = (await this.sanitizeQuery(ctx)) as Record<
-                string,
-                any
-            >;
+            await this.validateQuery(ctx);
 
-            const result = await strapi
+            const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+            const { data, meta } = await strapi
                 .service("api::review.review")
-                .findReviewsData(params);
+                .findReviewsData(sanitizedQueryParams);
 
-            ctx.send(result);
+            return this.transformResponse(data, meta);
         },
 
         async create(ctx) {
@@ -27,16 +26,25 @@ export default factories.createCoreController(
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const params = (await this.sanitizeQuery(ctx)) as Record<
-                string,
-                any
-            >;
+            await this.validateQuery(ctx);
+
+            const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+            const sanitizedData: Record<string, any> = await this.sanitizeInput(
+                ctx.request.body,
+                ctx,
+            );
 
             const result = await strapi
                 .service("api::review.review")
-                .createReview(params, user, ctx.request.body.data);
+                .createReview(sanitizedQueryParams, user, sanitizedData.data);
 
-            ctx.send(result);
+            const sanitizedResults = await this.sanitizeOutput(
+                result.data,
+                ctx,
+            );
+
+            return this.transformResponse(sanitizedResults);
         },
 
         async update(ctx) {
@@ -46,21 +54,30 @@ export default factories.createCoreController(
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const params = (await this.sanitizeQuery(ctx)) as Record<
-                string,
-                any
-            >;
+            await this.validateQuery(ctx);
+
+            const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+            const sanitizedData: Record<string, any> = await this.sanitizeInput(
+                ctx.request.body,
+                ctx,
+            );
 
             const result = await strapi
                 .service("api::review.review")
                 .updateReviewData(
-                    params,
+                    sanitizedQueryParams,
                     user,
-                    ctx.request.body.data,
+                    sanitizedData.data,
                     ctx.params,
                 );
 
-            ctx.send(result);
+            const sanitizedResults = await this.sanitizeOutput(
+                result.data,
+                ctx,
+            );
+
+            return this.transformResponse(sanitizedResults);
         },
 
         async delete(ctx) {
@@ -69,6 +86,8 @@ export default factories.createCoreController(
             if (!user) {
                 return ctx.unauthorized("You are not authorized!");
             }
+
+            await this.validateQuery(ctx);
 
             const result = await strapi
                 .service("api::review.review")
@@ -84,7 +103,23 @@ export default factories.createCoreController(
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const { productDocumentId } = ctx.request.body.data;
+            const contentType = strapi.contentType("api::review.review");
+            const auth = { auth: ctx.state.auth };
+
+            await strapi.contentAPI.validate.query(
+                ctx.query,
+                contentType,
+                auth,
+            );
+
+            const sanitizedData: Record<string, any> =
+                await strapi.contentAPI.sanitize.input(
+                    ctx.request.body,
+                    contentType,
+                    auth,
+                );
+
+            const { productDocumentId } = sanitizedData.data;
 
             const result = await strapi
                 .service("api::review.review")

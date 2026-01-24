@@ -295,14 +295,6 @@ export async function getProductsData(
             },
             reviews: {
                 populate: {
-                    user: {
-                        populate: {
-                            avatar: {
-                                fields: ["url", "alternativeText"],
-                            },
-                        },
-                        fields: ["username"],
-                    },
                     product: {
                         fields: ["documentId"],
                     },
@@ -381,14 +373,6 @@ export async function getProductData(
             },
             reviews: {
                 populate: {
-                    user: {
-                        populate: {
-                            avatar: {
-                                fields: ["url", "alternativeText"],
-                            },
-                        },
-                        fields: ["username"],
-                    },
                     product: {
                         fields: ["documentId"],
                     },
@@ -505,14 +489,6 @@ export async function getFilteredProductsData(
             },
             reviews: {
                 populate: {
-                    user: {
-                        populate: {
-                            avatar: {
-                                fields: ["url", "alternativeText"],
-                            },
-                        },
-                        fields: ["username"],
-                    },
                     product: {
                         fields: ["documentId"],
                     },
@@ -659,9 +635,6 @@ export async function getCartProductsData(): Promise<ICart[]> {
                     },
                 },
             },
-            user: {
-                populate: true,
-            },
         },
         sort: ["createdAt:asc"],
     });
@@ -719,19 +692,11 @@ export async function getCartProductDataByProductDocumentId(
                     },
                 },
             },
-            user: {
-                fields: ["id"],
-            },
         },
         filters: {
             product: {
                 documentId: {
                     $eq: productDocumentId,
-                },
-            },
-            user: {
-                id: {
-                    $eq: user.data.id,
                 },
             },
         },
@@ -812,16 +777,6 @@ export async function getWishlistProductsData(): Promise<IWishlist[]> {
                     },
                 },
             },
-            user: {
-                fields: ["id"],
-            },
-        },
-        filters: {
-            user: {
-                id: {
-                    $eq: user.data.id,
-                },
-            },
         },
         sort: ["createdAt:asc"],
     });
@@ -854,19 +809,11 @@ export async function getWishlistProductData(
                     },
                 },
             },
-            user: {
-                fields: ["id"],
-            },
         },
         filters: {
             product: {
                 documentId: {
                     $eq: documentId,
-                },
-            },
-            user: {
-                id: {
-                    $eq: user.data.id,
                 },
             },
         },
@@ -925,11 +872,6 @@ export async function getOrdersData(
             "cartItems",
         ],
         filters: {
-            user: {
-                id: {
-                    $eq: user.data.id,
-                },
-            },
             ...(status && {
                 deliveryStatus: {
                     $eq: status,
@@ -964,14 +906,6 @@ export async function getReviewsData(
 
     url.search = qs.stringify({
         populate: {
-            user: {
-                populate: {
-                    avatar: {
-                        fields: ["url", "alternativeText"],
-                    },
-                },
-                fields: ["username"],
-            },
             product: {
                 fields: ["documentId"],
             },

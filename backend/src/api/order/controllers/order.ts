@@ -14,16 +14,17 @@ export default factories.createCoreController(
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const params = (await this.sanitizeQuery(ctx)) as Record<
-                string,
-                any
-            >;
+            await this.validateQuery(ctx);
 
-            const result = await strapi
+            const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+
+            const { data, meta } = await strapi
                 .service("api::order.order")
-                .findOrder(params, user);
+                .findOrder(sanitizedQueryParams, user);
 
-            ctx.send(result);
+            const sanitizedResults = await this.sanitizeOutput(data, ctx);
+
+            return this.transformResponse(sanitizedResults, meta);
         },
 
         async create(ctx) {
@@ -33,7 +34,19 @@ export default factories.createCoreController(
                 return ctx.unauthorized("You are not authorized!");
             }
 
-            const { cartItems } = ctx.request.body.data;
+            await this.validateQuery(ctx);
+
+            const sanitizedData: Record<string, any> = await this.sanitizeInput(
+                ctx.request.body,
+                ctx,
+            );
+
+            const { cartItems } = sanitizedData.data;
+
+            if (!cartItems) {
+                ctx.status = 404;
+                return (ctx.body = { error: "This product doesn't exist" });
+            }
 
             const result = await strapi
                 .service("api::order.order")
