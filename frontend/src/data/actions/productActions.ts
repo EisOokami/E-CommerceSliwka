@@ -21,9 +21,8 @@ export async function addProductToCartAction(productDocumentId: string) {
         };
     }
 
-    const productCart = await getCartProductDataByProductDocumentId(
-        productDocumentId,
-    );
+    const productCart =
+        await getCartProductDataByProductDocumentId(productDocumentId);
 
     if (productCart) {
         return { ok: false, message: "Product already added to cart" };
@@ -92,9 +91,8 @@ export async function deleteProductFromCartAction(productDocumentId: string) {
         };
     }
 
-    const productCart = await getCartProductDataByProductDocumentId(
-        productDocumentId,
-    );
+    const productCart =
+        await getCartProductDataByProductDocumentId(productDocumentId);
 
     if (!productCart) {
         return { ok: false, message: "Product already deleted from cart" };

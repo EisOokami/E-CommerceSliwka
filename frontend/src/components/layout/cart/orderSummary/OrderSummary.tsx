@@ -38,7 +38,6 @@ export default function OrderSummary({
                     : currentValue.quantity)
         );
     }, 0);
-    // const tax = +(subtotal * 0.23).toFixed(2);
     const tax = +(subtotal * 0).toFixed(2);
     const shippingAndHandling = subtotal ? 15 : 0;
     const total = (subtotal + tax + shippingAndHandling).toFixed(2);

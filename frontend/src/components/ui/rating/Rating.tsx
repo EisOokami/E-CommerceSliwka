@@ -17,8 +17,6 @@ const Rating = memo(function Rating({
     const [hover, setHover] = useState<number | null>(null);
 
     useEffect(() => {
-        console.dir(currentRating);
-
         if (typeof currentRating === "number") {
             setRating(currentRating);
         }
