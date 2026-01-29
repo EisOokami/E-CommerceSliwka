@@ -46,10 +46,8 @@ export default function ReviewInput({
     );
 
     useEffect(() => {
-        if (productData.reviews && productData.averageRating) {
-            setUpdatedReviewsData(productData.reviews);
-            setUpdatedAverageRating(productData.averageRating);
-        }
+        setUpdatedReviewsData(productData.reviews);
+        setUpdatedAverageRating(productData.averageRating);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
