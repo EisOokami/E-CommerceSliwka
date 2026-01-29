@@ -45,7 +45,7 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
         }
     };
 
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString: string | Date) => {
         return new Date(dateString).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
@@ -60,8 +60,8 @@ export default function OrderCard({ orderData }: Readonly<OrderCardProps>) {
         const price =
             currentValue.product.isDiscount &&
             currentValue.product.discountedPrice
-                ? currentValue.product.discountedPrice
-                : currentValue.product.price;
+                ? currentValue.product.discountedPrice * currentValue.quantity
+                : currentValue.product.price * currentValue.quantity;
 
         return accumulator + price;
     }, 0);
