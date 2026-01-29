@@ -2,6 +2,7 @@ import { getWishlistProductsData } from "@/data/loaders";
 import { GoHeart } from "react-icons/go";
 
 import Wishlist from "@/components/layout/wishlist/Wishlist";
+import RefreshOnFocus from "@/components/layout/refreshOnFocus/RefreshOnFocus";
 
 export default async function WishlistPage() {
     const data = await getWishlistProductsData();
@@ -14,6 +15,7 @@ export default async function WishlistPage() {
                     My Wishlist
                 </h1>
             </section>
+            <RefreshOnFocus />
             <Wishlist wishlistData={data} />
         </main>
     );

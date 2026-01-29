@@ -3,12 +3,14 @@ import { IoCartOutline } from "react-icons/io5";
 
 import CartList from "@/components/layout/cart/cartList/CartList";
 import OrderSummary from "@/components/layout/cart/orderSummary/OrderSummary";
+import RefreshOnFocus from "@/components/layout/refreshOnFocus/RefreshOnFocus";
 
 export default async function CartPage() {
     const data = await getCartProductsData();
 
     return (
         <main className="container mx-auto px-5 py-10 md:py-16">
+            <RefreshOnFocus />
             <div className="flex items-center gap-1 mb-3">
                 <IoCartOutline className="md:mt-1 text-3xl" />
                 <h1 className="text-2xl md:text-3xl xl:text-4xl font-medium">
