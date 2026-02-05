@@ -34,34 +34,34 @@ export interface IBaseAction {
 }
 
 export interface IRegisterZodErrors extends IBaseZodErrors {
-    username?: string[] | undefined;
-    email?: string[] | undefined;
-    password?: string[] | undefined;
-    agreeToTermsAndPrivacy?: string[] | undefined;
+    username?: string[];
+    email?: string[];
+    password?: string[];
+    agreeToTermsAndPrivacy?: string[];
 }
 
 export interface ILoginZodErrors extends IBaseZodErrors {
-    identifier?: string[] | undefined;
-    password?: string[] | undefined;
+    identifier?: string[];
+    password?: string[];
 }
 
 export interface IReviewZodErrors extends IBaseZodErrors {
-    description?: string[] | undefined;
-    rating?: string[] | undefined;
-    images?: string[] | undefined;
+    description?: string[];
+    rating?: string[];
+    images?: string[];
 }
 
 export interface IUpdateProfileZodErrors extends IBaseZodErrors {
-    username?: string[] | undefined;
-    email?: string[] | undefined;
-    avatar?: string[] | undefined;
+    username?: string[];
+    email?: string[];
+    avatar?: string[];
 }
 
 export interface IChangePasswordZodErrors extends IBaseZodErrors {
-    password?: string[] | undefined;
-    currentPassword?: string[] | undefined;
-    confirmPassword?: string[] | undefined;
-    confirmCurrentPassword?: string[] | undefined;
+    password?: string[];
+    currentPassword?: string[];
+    confirmPassword?: string[];
+    confirmCurrentPassword?: string[];
 }
 
 export interface IRegisterAction extends IBaseAction {
