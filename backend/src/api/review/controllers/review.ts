@@ -16,6 +16,8 @@ export default factories.createCoreController(
                 .service("api::review.review")
                 .findReviewsData(sanitizedQueryParams);
 
+            // const sanitizedResults = await this.sanitizeOutput(data, ctx);
+
             return this.transformResponse(data, meta);
         },
 
