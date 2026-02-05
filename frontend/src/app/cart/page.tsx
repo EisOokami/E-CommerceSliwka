@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { getCartProductsData } from "@/data/loaders";
+import { getUserMeLoader } from "@/data/services/getUserMeLoader";
 import { IoCartOutline } from "react-icons/io5";
 
 import CartList from "@/components/layout/cart/cartList/CartList";
@@ -6,7 +8,12 @@ import OrderSummary from "@/components/layout/cart/orderSummary/OrderSummary";
 import RefreshOnFocus from "@/components/layout/refreshOnFocus/RefreshOnFocus";
 
 export default async function CartPage() {
+    const user = await getUserMeLoader();
     const data = await getCartProductsData();
+
+    if (!user.ok) {
+        redirect("/singIn");
+    }
 
     return (
         <main className="container mx-auto px-5 py-10 md:py-16">

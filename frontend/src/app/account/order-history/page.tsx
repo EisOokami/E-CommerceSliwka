@@ -1,11 +1,18 @@
+import { redirect } from "next/navigation";
 import { getOrdersData } from "@/data/loaders";
+import { getUserMeLoader } from "@/data/services/getUserMeLoader";
 import { LuClock } from "react-icons/lu";
 
 import OrderStatusCards from "@/components/layout/account/orderStatusCards/OrderStatusCards";
 import OrderList from "@/components/layout/account/orderList/OrderList";
 
 export default async function OrderHistoryPage() {
+    const user = await getUserMeLoader();
     const ordersData = await getOrdersData(1, 999999);
+
+    if (!user.ok) {
+        redirect("/singIn");
+    }
 
     return (
         <main className="grid gap-10 w-full">

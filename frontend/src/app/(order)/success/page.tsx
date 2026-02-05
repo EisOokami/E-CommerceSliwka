@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
     deleteProductsFromCartAction,
@@ -15,6 +15,7 @@ export default function SuccessPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get("session_id");
+    const [isConfirm, setIsConfirm] = useState<boolean>(false);
     const setProductsInCartCount = useGlobalStore(
         (state) => state.setProductsInCartCount,
     );
@@ -42,6 +43,7 @@ export default function SuccessPage() {
 
                 setProductsInCartCount(0);
                 setIsRefreshedPage(false);
+                setIsConfirm(true);
             }
 
             if (!confirmData || (confirmData && !confirmData.isSuccess)) {
@@ -50,6 +52,16 @@ export default function SuccessPage() {
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (!isConfirm) {
+        return (
+            <main>
+                <div className="grid place-content-center h-svh">
+                    <div className="animate-spin h-12 w-12 border-t-4 border-pink-600 rounded-full" />
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="grid place-content-center container mx-auto mb-auto px-3 py-10 md:px-5">

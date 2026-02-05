@@ -1,11 +1,18 @@
+import { redirect } from "next/navigation";
 import { getWishlistProductsData } from "@/data/loaders";
+import { getUserMeLoader } from "@/data/services/getUserMeLoader";
 import { GoHeart } from "react-icons/go";
 
 import Wishlist from "@/components/layout/wishlist/Wishlist";
 import RefreshOnFocus from "@/components/layout/refreshOnFocus/RefreshOnFocus";
 
 export default async function WishlistPage() {
+    const user = await getUserMeLoader();
     const data = await getWishlistProductsData();
+
+    if (!user.ok) {
+        redirect("/singIn");
+    }
 
     return (
         <main className="container mx-auto mb-auto px-3 py-10 md:px-5">

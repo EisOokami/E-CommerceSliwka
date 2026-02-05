@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getUserMeLoader } from "@/data/services/getUserMeLoader";
+import useGlobalStore from "@/stores/global";
 import { MdOutlineCancel } from "react-icons/md";
 
 import Button from "@/components/ui/button/Button";
-import useGlobalStore from "@/stores/global";
-import { useRouter } from "next/navigation";
 
 export default function CancelPage() {
+    const [isUser, setIsUser] = useState<boolean | null>(null);
     const router = useRouter();
+    const [isConfirm, setIsConfirm] = useState<boolean>(false);
     const isRefreshedPage = useGlobalStore((state) => state.isRefreshedPage);
     const setIsRefreshedPage = useGlobalStore(
         (state) => state.setIsRefreshedPage,
@@ -16,13 +19,43 @@ export default function CancelPage() {
 
     useEffect(() => {
         (async () => {
-            if (!isRefreshedPage) {
+            const userData = await getUserMeLoader();
+
+            setIsUser(userData.ok);
+        })();
+    }, []);
+
+    useEffect(() => {
+        if (isUser === false) {
+            router.push("/");
+        }
+    }, [isUser, router]);
+
+    useEffect(() => {
+        (async () => {
+            if (!isRefreshedPage && !isUser) {
                 setIsRefreshedPage(true);
+
                 router.refresh();
             }
+
+            if (isRefreshedPage) {
+                setIsConfirm(true);
+            }
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isRefreshedPage, isUser, router, setIsRefreshedPage]);
+
+    if (!isConfirm) {
+        return (
+            <main>
+                <div className="grid place-content-center h-svh">
+                    <div className="animate-spin h-12 w-12 border-t-4 border-pink-600 rounded-full" />
+                </div>
+            </main>
+        );
+    }
+
+    if (isUser === null) return null;
 
     return (
         <main className="grid place-content-center container mx-auto mb-auto px-3 py-10 md:px-5">
