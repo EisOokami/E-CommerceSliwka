@@ -1,31 +1,30 @@
 import { DeliveryStatus } from "@/types/types";
 
 export interface BaseSchema {
-    id: number;
-    documentId: string;
-    createdAt: globalThis.Date | string;
-    createdBy: globalThis.Date | string;
-    locale: string | null;
-    publishedAt: globalThis.Date | string | null;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
-export interface BlockBase<TComponent extends string>
-    extends Pick<BaseSchema, "id"> {
+export interface BlockBase<TComponent extends string> extends Pick<
+    BaseSchema,
+    "id"
+> {
     __component: TComponent;
 }
 
-export interface IImage extends BaseSchema {
+export interface IImage extends Pick<BaseSchema, "id"> {
     url: string;
     alternativeText: string | null;
 }
 
-export interface IProductInfo extends BaseSchema {
+export interface IProductInfo extends Pick<BaseSchema, "id"> {
     delivery: string;
     inStore: string;
     guaranteed: string;
 }
 
-export interface IProductSpecs extends BaseSchema {
+export interface IProductSpecs extends Pick<BaseSchema, "id"> {
     icon: string;
     name: string;
     specification: string;
@@ -50,8 +49,8 @@ export interface IReview extends BaseSchema {
     rating: number;
     publicationDate: string;
     images: IImage[] | null;
-    user: Pick<IUser, "username" | "avatar" | "documentId" | "id">;
-    product: Pick<IProduct, "documentId" | "id">;
+    user: Pick<IUser, "username" | "avatar" | "id">;
+    product: Pick<IProduct, "id">;
     lastEdited: string | null;
 }
 
@@ -82,6 +81,28 @@ export interface IProductOptions extends Pick<BaseSchema, "id"> {
     optionName: string;
 }
 
+export enum Status {
+    active,
+    published,
+    ok,
+    low_stock,
+    low,
+    pending,
+    out_of_stock,
+    out,
+    cancelled,
+    draft,
+    inactive,
+    shipping,
+    public,
+}
+
+export enum VisibilityEnum {
+    "visible",
+    "draft",
+    "hidden",
+}
+
 export interface IProduct extends BaseSchema {
     name: string;
     image: IImage;
@@ -104,6 +125,8 @@ export interface IProduct extends BaseSchema {
     reviews: IReview[];
     wishlist: IWishlist[];
     slug: string;
+    status: Status;
+    visibility: VisibilityEnum;
 }
 
 export interface ILink extends Pick<BaseSchema, "id"> {
@@ -121,8 +144,7 @@ export interface ICart extends BaseSchema {
     quantity: number;
     product: IProduct;
     user: {
-        documentId: string;
-        id: number;
+        id: string;
     };
 }
 
@@ -132,16 +154,13 @@ export interface IUser extends BaseSchema {
     confirmed: boolean;
     blocked: boolean;
     provider: string;
-    productsCart: ICart[];
     avatar: IImage;
-    wishlist: IWishlist[];
-    orders: IOrder[];
 }
 
 export interface IUserMeLoader {
     ok: boolean;
     data: IUser | null;
-    error: Error | null;
+    error: string | null;
 }
 
 export interface IWishlist extends BaseSchema {

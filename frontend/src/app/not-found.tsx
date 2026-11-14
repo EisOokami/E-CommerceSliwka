@@ -1,4 +1,4 @@
-import Button from "@/components/ui/button/Button";
+import Button from "@/components/ui/main/button/Button";
 
 export default function NotFoundRoot() {
     return (

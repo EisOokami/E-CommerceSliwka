@@ -1,3 +1,6 @@
+import { Product } from "@/interfaces/admin/api";
+import { ProductRelations } from "@/interfaces/admin/catalog";
+
 export type DeliveryStatus =
     | "Delivered"
     | "Shipped"
@@ -67,3 +70,38 @@ export enum HttpStatusCode {
     NOT_EXTENDED = "510",
     NETWORK_AUTHENTICATION_REQUIRED = "511",
 }
+
+export type SearchParams = Promise<
+    Record<string, string | string[] | undefined>
+>;
+
+export type RecoveryMode = "verify" | "resend" | "forgot" | "reset";
+
+export type PageItem = { key: string; page: number | null };
+
+export type ProductInput = Pick<
+    Product,
+    | "name"
+    | "description"
+    | "imageId"
+    | "slug"
+    | "category"
+    | "price"
+    | "quantity"
+    | "color"
+    | "visibility"
+    | "isDiscount"
+> &
+    ProductRelations & { discountedPrice: string };
+export type OrderStatus = "Processing" | "Shipped" | "Delivered" | "Cancelled";
+
+export type Visibility = "visible" | "draft" | "hidden";
+
+export type Options = {
+    method?: string;
+    body?: unknown;
+    signal?: AbortSignal;
+    writeCookies?: boolean;
+    anonymous?: boolean;
+    csrf?: string;
+};

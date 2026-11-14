@@ -1,0 +1,21 @@
+import { EmblaOptionsType } from "embla-carousel";
+import { ProductsCarouselSectionProps } from "./ProductsCarouselSection.interfaces";
+
+import ProductsCarousel from "@/components/ui/main/productsCarousel/ProductsCarousel";
+
+const options: EmblaOptionsType = {
+    loop: true,
+    dragFree: true,
+};
+
+export default function ProductsCarouselSection({
+    data,
+}: Readonly<ProductsCarouselSectionProps>) {
+    const { products } = data;
+
+    return (
+        <section>
+            <ProductsCarousel productsData={products} options={options} />
+        </section>
+    );
+}

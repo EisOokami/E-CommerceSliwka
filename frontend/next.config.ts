@@ -1,21 +1,24 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    images: {
-        // domains: ["127.0.0.1"],
-        remotePatterns: [
+    skipMiddlewareUrlNormalize: true,
+    async rewrites() {
+        const apiOrigin = (
+            process.env.API_URL ??
+            process.env.ADMIN_API_ORIGIN ??
+            "http://127.0.0.1:3001"
+        ).replace(/\/$/, "");
+
+        return [
             {
-                protocol: "http",
-                hostname: "127.0.0.1",
-                port: "1337",
-                pathname: "**",
-                search: "",
+                source: "/media/files/:path*",
+                destination: apiOrigin + "/files/:path*",
             },
-        ],
+        ];
     },
     experimental: {
         serverActions: {
-            bodySizeLimit: "5mb",
+            bodySizeLimit: "55mb",
         },
     },
     async headers() {

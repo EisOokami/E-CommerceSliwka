@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface ICartStore {
+    pendingMutations: number;
     deletedProducts: string[];
     setDeletedProducts: (newDeletedProducts: string[]) => void;
     productsQuantity: { [key: string]: number };
@@ -12,6 +13,7 @@ interface ICartStore {
 }
 
 const useCartStore = create<ICartStore>((set) => ({
+    pendingMutations: 0,
     deletedProducts: [],
     setDeletedProducts: (newDeletedProducts) =>
         set(() => ({

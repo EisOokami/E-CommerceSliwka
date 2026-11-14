@@ -15,9 +15,32 @@ button[data-close-button] svg {
 }
 
 @layer base {
+    body {
+        @apply bg-white text-black;
+    }
+
+    :where(a, button, input, select, textarea):focus-visible {
+        @apply outline-none ring-2 ring-gray-300 ring-offset-2;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
+    }
+
+    input[type="checkbox"] {
+        @apply cursor-pointer rounded border-gray-300 accent-gray-900;
     }
 }
