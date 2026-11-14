@@ -67,9 +67,6 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(hpp());
 app.use(helmet());
 app.use(helmet.hidePoweredBy());
-// !
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-// !
 app.use(limiter);
 app.use(cookieParser());
 app.use(issueCsrfCookie);
@@ -85,6 +82,9 @@ app.use("/api/wishlists", wishlistsRoutes);
 
 app.use(
     "/files",
+    helmet.crossOriginResourcePolicy({
+        policy: "cross-origin",
+    }),
     express.static(
         path.resolve(
             process.env.UPLOAD_DIR ?? path.join(process.cwd(), "uploads"),
