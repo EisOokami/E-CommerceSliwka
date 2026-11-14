@@ -16,7 +16,7 @@ import {
     createAccessToken,
     createRefreshToken,
     revokeAllUserSessions,
-    revokeSession,
+    revokeSessionChain,
     rotateRefreshToken,
     verifyRefreshToken,
 } from "../utils/auth/jwt.js";
@@ -24,6 +24,7 @@ import { generateRawToken, hashToken } from "../utils/auth/mfa.js";
 import { generateCsrfToken } from "../utils/csrf.js";
 import { transporter } from "../utils/email/email.js";
 import { emailTemplate } from "../utils/email/emailTemplate.js";
+import { confirmEmailChange } from "./users.service.js";
 
 dotenv.config({ quiet: true });
 
@@ -140,10 +141,7 @@ export const verifyEmail = async (token: string) => {
     });
 
     if (!user) {
-        throw new ApiError({
-            statusCode: 400,
-            message: "Invalid verification token",
-        });
+        return await confirmEmailChange(String(token));
     }
 
     if (user.confirmed) {
@@ -603,6 +601,9 @@ export const resetPassword = async (
                 password: hashedPassword,
                 resetToken: null,
                 resetTokenExpiresAt: null,
+                pendingEmail: null,
+                emailChangeToken: null,
+                emailChangeExpiresAt: null,
                 updatedAt: new Date(),
             })
             .where(eq(users.id, id));
@@ -751,18 +752,21 @@ export const refresh = async (
 };
 
 export const logout = async (refreshToken: string) => {
-    const { payload } = await jwtVerify(refreshToken, refreshSecret);
+    const { payload } = await jwtVerify(refreshToken, refreshSecret, {
+        algorithms: ["HS256"],
+    });
 
     const sid = payload.sid;
+    const userId = payload.sub;
 
-    if (!sid || typeof sid !== "string") {
+    if (!sid || typeof sid !== "string" || !userId) {
         throw new ApiError({
             statusCode: 401,
             message: "Invalid token",
         });
     }
 
-    await revokeSession(sid);
+    await revokeSessionChain(sid, userId);
 };
 
 export const googleAuthCallback = async (code: string) => {
@@ -792,19 +796,61 @@ export const googleAuthCallback = async (code: string) => {
             columns: {
                 id: true,
                 googleId: true,
+                confirmed: true,
             },
             where: eq(users.email, profile.email),
         });
 
+        if (byEmail && byEmail.googleId) {
+            return {
+                redirect: `${process.env.FRONTEND_URL}/signIn?error=oauth_failed`,
+            };
+        }
+
         if (byEmail) {
-            await db
-                .update(users)
-                .set({
-                    googleId: profile.googleId,
-                    avatarUrl: sql`COALESCE(${users.avatarUrl}, ${profile.avatarUrl})`,
-                    updatedAt: sql`NOW()`,
-                })
-                .where(eq(users.id, byEmail.id));
+            const unverified = byEmail.confirmed !== true;
+
+            await db.transaction(async (tx) => {
+                await tx
+                    .update(users)
+                    .set({
+                        googleId: profile.googleId,
+                        avatarUrl: sql`COALESCE(${users.avatarUrl}, ${profile.avatarUrl})`,
+                        updatedAt: sql`NOW()`,
+                        ...(unverified
+                            ? {
+                                  password: null,
+                                  authProvider: "google" as const,
+                                  confirmed: true,
+                                  confirmationToken: null,
+                                  confirmationTokenExpires: null,
+                                  resetToken: null,
+                                  resetTokenExpiresAt: null,
+                                  pendingEmail: null,
+                                  emailChangeToken: null,
+                                  emailChangeExpiresAt: null,
+                              }
+                            : {}),
+                    })
+                    .where(
+                        and(eq(users.id, byEmail.id), isNull(users.googleId)),
+                    );
+
+                if (unverified) {
+                    await tx
+                        .update(userSessions)
+                        .set({
+                            revoked: true,
+                            replacedBy: null,
+                            replacedAt: null,
+                        })
+                        .where(eq(userSessions.userId, byEmail.id));
+
+                    await tx
+                        .delete(mfaLoginSessions)
+                        .where(eq(mfaLoginSessions.userId, byEmail.id));
+                }
+            });
 
             userId = byEmail.id;
         }

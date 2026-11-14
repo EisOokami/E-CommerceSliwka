@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { IBaseAction } from "@/interfaces/data";
 import { StoreApiError } from "./http";
 import z, { ZodError } from "zod";

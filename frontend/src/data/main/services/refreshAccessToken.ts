@@ -1,9 +1,18 @@
-import { cookieHeader, readResponse, StoreApiError, storeOrigin } from "./http";
+import "server-only";
+
+import {
+    cookieHeader,
+    forwardedClientIp,
+    readResponse,
+    StoreApiError,
+    storeOrigin,
+} from "./http";
 import { getResponseCSRFToken } from "./getCSRFToken";
 
 export async function refreshAccessToken(
     refreshToken: string,
     csrfToken: string,
+    incoming: Headers,
 ) {
     const response = await fetch(new URL("/api/auth/refresh", storeOrigin()), {
         method: "POST",
@@ -15,6 +24,7 @@ export async function refreshAccessToken(
                 csrfToken,
             }),
             "X-CSRF-Token": csrfToken,
+            ...forwardedClientIp(incoming),
         },
         body: "{}",
     });

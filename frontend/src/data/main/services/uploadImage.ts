@@ -1,3 +1,5 @@
+import "server-only";
+
 import { mutateData } from "./mutateData";
 import type { IImage } from "@/interfaces/interfaces";
 import { mediaUrl } from "@/lib/utils";

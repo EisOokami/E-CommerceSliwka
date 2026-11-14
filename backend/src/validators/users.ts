@@ -19,7 +19,14 @@ export const userUpdateSchema = createInsertSchema(users, {
         username: true,
         email: true,
     })
-    .partial();
+    .partial()
+    .extend({
+        currentPassword: z
+            .string()
+            .min(1, "Current password is required")
+            .max(255, "Password must be less than 255 characters long")
+            .optional(),
+    });
 
 export const changePasswordSchema = z
     .object({

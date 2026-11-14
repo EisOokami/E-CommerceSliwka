@@ -2,7 +2,7 @@ import { UAParser } from "ua-parser-js";
 import type { Request } from "express";
 import { emailTemplate } from "./emailTemplate.js";
 import dotenv from "dotenv";
-import { transporter } from "./email.js";
+import { escapeHtml, transporter } from "./email.js";
 import type { User } from "../../types/types.js";
 
 dotenv.config({ quiet: true });
@@ -50,7 +50,7 @@ export const sendLoginNotificationEmail = async (
         html: emailTemplate({
             logo: "cid:app-logo",
             title: "New sign-in detected",
-            heading: `Hi, ${user.username}!`,
+            heading: `Hi, ${escapeHtml(user.username)}!`,
             description: `
                 A new sign-in to your account was just detected. If this was you, no action is needed.
                 <br /><br />

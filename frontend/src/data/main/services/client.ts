@@ -1,5 +1,11 @@
-import { cookies } from "next/headers";
-import { cookieHeader, readResponse, StoreApiError, storeOrigin } from "./http";
+import { cookies, headers } from "next/headers";
+import {
+    cookieHeader,
+    forwardedClientIp,
+    readResponse,
+    StoreApiError,
+    storeOrigin,
+} from "./http";
 import { RequestOptions } from "@/interfaces/data";
 export { StoreApiError, storeOrigin } from "./http";
 
@@ -8,6 +14,7 @@ export async function storeRequest<T>(
     options: RequestOptions = {},
 ): Promise<T> {
     const cookieStore = await cookies();
+    const incoming = await headers();
     const token = cookieStore.get("accessToken")?.value;
     const csrf = cookieStore.get("csrfToken")?.value;
 
@@ -47,6 +54,7 @@ export async function storeRequest<T>(
                           Authorization: "Bearer " + token,
                       }
                     : {}),
+                ...forwardedClientIp(incoming),
                 ...(csrf
                     ? {
                           Cookie: cookieHeader({

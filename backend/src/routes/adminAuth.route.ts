@@ -139,14 +139,14 @@ router.get("/csrf", csrfToken);
 router.post(
     "/login",
     adminLoginLimiter,
-    adminCredentialLimit(5, 60 * 60000),
+    adminCredentialLimit("login", 5, 60 * 60000),
     validateData(loginSchema),
     adminLogin,
 );
 router.post(
     "/verify-mfa",
     verifyMfaLimiter,
-    adminCredentialLimit(5, 60 * 60000),
+    adminCredentialLimit("mfa", 5, 60 * 60000),
     validateData(verifyMfaSchema),
     verifyMfa,
 );

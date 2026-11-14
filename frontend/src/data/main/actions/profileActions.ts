@@ -26,6 +26,7 @@ export async function updateProfileAction(
         avatar: images ?? [],
         username: form.get("username"),
         email: form.get("email"),
+        currentPassword: form.get("profile-current-password") || undefined,
     });
 
     if (!validateData.success) {
@@ -39,9 +40,16 @@ export async function updateProfileAction(
     let profileSaved = false;
 
     try {
-        await mutateData("PUT", "/api/users", {
+        const result = await mutateData<{
+            message?: string;
+        }>("PUT", "/api/users", {
             username: validateData.data.username,
             email: validateData.data.email,
+            ...(validateData.data.currentPassword
+                ? {
+                      currentPassword: validateData.data.currentPassword,
+                  }
+                : {}),
         });
 
         profileSaved = true;
@@ -60,7 +68,7 @@ export async function updateProfileAction(
                 username: validateData.data.username,
                 email: validateData.data.email,
             },
-            message: "Profile Updated",
+            message: result?.message ?? "Profile Updated",
         };
     } catch (error) {
         revalidatePath("/account");

@@ -146,7 +146,24 @@ export default function AccountDetails({
                                         ?.toString() ?? userData.email
                                 }
                             />
+                            <AccountInput
+                                id="profile-current-password"
+                                name="profile-current-password"
+                                type="password"
+                                autoComplete="current-password"
+                                labelValue="Current password (required to change email)"
+                                zodErrorMsg={
+                                    accountSettingFormState?.zodErrors
+                                        ?.currentPassword
+                                }
+                            />
                             <div className="self-end grid gap-2">
+                                {accountSettingFormState?.message &&
+                                !accountSettingFormState?.strapiErrors ? (
+                                    <p role="status">
+                                        {accountSettingFormState.message}
+                                    </p>
+                                ) : null}
                                 {accountSettingFormState?.strapiErrorsDetails &&
                                 accountSettingFormState?.strapiErrorsDetails
                                     .length ? (

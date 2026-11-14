@@ -1,3 +1,5 @@
+import "server-only";
+
 import { responseCookie, StoreApiError } from "./http";
 
 export function getResponseCSRFToken(headers: Headers): string {

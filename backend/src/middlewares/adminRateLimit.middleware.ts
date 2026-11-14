@@ -1,14 +1,21 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
+import type { IAdminRequest } from "../types/types.js";
 import * as loginAttemptsService from "../services/loginAttempts.service.js";
 
 export function adminCredentialLimit(
+    scope: "login" | "mfa" | "step-up",
     count: number,
     time: number,
     nextArg?: NextFunction,
 ) {
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (req: IAdminRequest, res: Response, next: NextFunction) => {
+        const subject =
+            scope === "step-up" && req.admin
+                ? "admin:" + req.admin.id
+                : (req.ip ?? "unknown");
+
         const result = await loginAttemptsService.reserveIp(
-            req.ip ?? "unknown",
+            scope + ":" + subject,
             time,
         );
 

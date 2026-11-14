@@ -32,6 +32,15 @@ const app = express();
 
 app.set("query parser", "extended");
 
+if (process.env.TRUST_PROXY) {
+    app.set(
+        "trust proxy",
+        process.env.TRUST_PROXY.split(",")
+            .map((value) => value.trim())
+            .filter(Boolean),
+    );
+}
+
 if (process.env.TRUST_PROXY_HOPS) {
     app.set("trust proxy", Number(process.env.TRUST_PROXY_HOPS));
 }
@@ -48,6 +57,7 @@ const limiter = rateLimit({
     },
     standardHeaders: true,
     legacyHeaders: false,
+    skip: (req) => req.path.startsWith("/files/"),
 });
 
 const hosts = process.env.HOSTS?.split(",");

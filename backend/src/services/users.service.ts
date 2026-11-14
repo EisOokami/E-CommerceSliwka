@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
-import { and, eq, ne, sql } from "drizzle-orm";
+import crypto from "crypto";
+import { and, eq, gt, ne, sql } from "drizzle-orm";
 import { db } from "../db/index.js";
 import { mfaLoginSessions, userSessions, users } from "../db/schema.js";
 import { ApiError } from "../utils/apiError.js";
+import { hashToken } from "../utils/auth/mfa.js";
+import { sendEmailChangeMails } from "../utils/email/sendEmailChangeMails.js";
 
 export const me = async (userId: string) => {
     const user = await db.query.users.findFirst({
@@ -30,11 +33,43 @@ export const me = async (userId: string) => {
 
 export const updateUser = async (
     userId: string,
-    data: { username?: string; email?: string },
+    data: { username?: string; email?: string; currentPassword?: string },
 ) => {
-    if (data.email) {
+    const current = await db.query.users.findFirst({
+        where: eq(users.id, userId),
+        columns: { id: true, username: true, email: true, password: true },
+    });
+
+    if (!current) {
+        throw new ApiError({ statusCode: 404, message: "User not found" });
+    }
+
+    const newEmail =
+        data.email && data.email.toLowerCase() !== current.email.toLowerCase()
+            ? data.email
+            : undefined;
+
+    if (newEmail) {
+        if (current.password && !data.currentPassword) {
+            throw new ApiError({
+                statusCode: 400,
+                message: "Enter your current password to change your email",
+            });
+        }
+
+        if (
+            current.password &&
+            data.currentPassword &&
+            !(await bcrypt.compare(data.currentPassword, current.password))
+        ) {
+            throw new ApiError({
+                statusCode: 400,
+                message: "Current password is incorrect",
+            });
+        }
+
         const emailInUse = await db.query.users.findFirst({
-            where: and(ne(users.id, userId), eq(users.email, data.email)),
+            where: and(ne(users.id, userId), eq(users.email, newEmail)),
             columns: { id: true },
         });
 
@@ -46,9 +81,23 @@ export const updateUser = async (
         }
     }
 
+    const token = newEmail ? crypto.randomBytes(32).toString("hex") : null;
+
     const [user] = await db
         .update(users)
-        .set({ ...data, updatedAt: new Date() })
+        .set({
+            ...(data.username !== undefined ? { username: data.username } : {}),
+            ...(newEmail && token
+                ? {
+                      pendingEmail: newEmail,
+                      emailChangeToken: hashToken(token),
+                      emailChangeExpiresAt: new Date(
+                          Date.now() + 24 * 60 * 60 * 1000,
+                      ),
+                  }
+                : {}),
+            updatedAt: new Date(),
+        })
         .where(eq(users.id, userId))
         .returning({
             id: users.id,
@@ -63,11 +112,74 @@ export const updateUser = async (
         throw new ApiError({ statusCode: 404, message: "User not found" });
     }
 
+    if (newEmail && token) {
+        await sendEmailChangeMails(
+            { username: user.username, email: current.email },
+            newEmail,
+            token,
+        );
+    }
+
     return {
         status: "success",
-        message: "The profile has been successfully updated",
+        message: newEmail
+            ? "Profile updated. To finish changing your email, open the link we sent to the new address"
+            : "The profile has been successfully updated",
         user: [user],
     };
+};
+
+export const confirmEmailChange = async (token: string) => {
+    return await db.transaction(async (tx) => {
+        const [user] = await tx
+            .select({ id: users.id, pendingEmail: users.pendingEmail })
+            .from(users)
+            .where(
+                and(
+                    eq(users.emailChangeToken, hashToken(token)),
+                    gt(users.emailChangeExpiresAt, sql`NOW()`),
+                ),
+            )
+            .for("update");
+
+        if (!user || !user.pendingEmail) {
+            throw new ApiError({
+                statusCode: 400,
+                message: "Invalid or expired verification token",
+            });
+        }
+
+        const emailInUse = await tx.query.users.findFirst({
+            where: and(
+                ne(users.id, user.id),
+                eq(users.email, user.pendingEmail),
+            ),
+            columns: { id: true },
+        });
+
+        if (emailInUse) {
+            throw new ApiError({
+                statusCode: 409,
+                message: "Email already in use",
+            });
+        }
+
+        await tx
+            .update(users)
+            .set({
+                email: user.pendingEmail,
+                pendingEmail: null,
+                emailChangeToken: null,
+                emailChangeExpiresAt: null,
+                updatedAt: sql`NOW()`,
+            })
+            .where(eq(users.id, user.id));
+
+        return {
+            status: "success",
+            message: "Your email address has been changed. Use it to sign in",
+        };
+    });
 };
 
 export const changePassword = async (
@@ -116,6 +228,9 @@ export const changePassword = async (
             .set({
                 password: await bcrypt.hash(data.newPassword, 10),
                 authProvider: "local",
+                pendingEmail: null,
+                emailChangeToken: null,
+                emailChangeExpiresAt: null,
                 updatedAt: sql`NOW()`,
             })
             .where(eq(users.id, userId));

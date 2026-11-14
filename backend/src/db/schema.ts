@@ -170,8 +170,18 @@ export const users = pgTable(
         mfaSecret: varchar("mfa_secret", { length: 255 }),
         mfaEnabledAt: timestamp("mfa_enabled_at", { withTimezone: true }),
         avatarUrl: varchar("avatar_url", { length: 255 }),
+        pendingEmail: varchar("pending_email", { length: 255 }),
+        emailChangeToken: varchar("email_change_token", { length: 64 }),
+        emailChangeExpiresAt: timestamp("email_change_expires_at", {
+            withTimezone: true,
+        }),
     },
-    (table) => [index("users_avatar_id_index").on(table.avatarId)],
+    (table) => [
+        index("users_avatar_id_index").on(table.avatarId),
+        uniqueIndex("users_email_change_token_index").on(
+            table.emailChangeToken,
+        ),
+    ],
 );
 
 export const userSessions = pgTable("user_sessions", {

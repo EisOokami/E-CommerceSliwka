@@ -1,3 +1,5 @@
+import "server-only";
+
 import { storeRequest } from "./client";
 
 export async function mutateData<T>(

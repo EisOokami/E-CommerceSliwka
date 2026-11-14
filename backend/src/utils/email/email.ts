@@ -10,3 +10,7 @@ export const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD,
     },
 });
+
+export const escapeHtml = (value: string) => {
+    return value.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+};

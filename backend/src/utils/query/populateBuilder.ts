@@ -49,6 +49,18 @@ function buildColumns(
     return columns;
 }
 
+function defaultColumns(
+    allowed: true | PopulateRelationConfig,
+): Record<string, true> | undefined {
+    if (allowed === true || !allowed.fields) {
+        return undefined;
+    }
+
+    return Object.fromEntries(
+        allowed.fields.map((field) => [field, true as const]),
+    );
+}
+
 function buildLevel(
     input: RawPopulateInput,
     config: PopulateConfig,
@@ -76,7 +88,9 @@ function buildLevel(
         }
 
         if (value === true) {
-            result[key] = true;
+            const columns = defaultColumns(allowed);
+
+            result[key] = columns ? { columns } : true;
 
             continue;
         }
@@ -86,10 +100,9 @@ function buildLevel(
                 ? (value as { populate?: RawPopulateInput; fields?: unknown })
                 : undefined;
 
-        const columns = buildColumns(relationObject?.fields, allowed, [
-            ...path,
-            key,
-        ]);
+        const columns =
+            buildColumns(relationObject?.fields, allowed, [...path, key]) ??
+            defaultColumns(allowed);
 
         const nestedInput = relationObject?.populate;
 

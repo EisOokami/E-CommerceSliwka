@@ -280,5 +280,8 @@ export const cleanupSessions = async () => {
         await tx.execute(
             sql`delete from admin_rate_limits where key in (select key from admin_rate_limits where reset_at < now() - interval '1 day' limit 1000)`,
         );
+        await tx.execute(
+            sql`delete from user_sessions where id in (select id from user_sessions where expires_at < now() - interval '7 days' limit 1000)`,
+        );
     });
 };

@@ -132,6 +132,7 @@ async function validateSession(
     token: string,
     userId: string,
     session: typeof userSessions.$inferSelect | undefined,
+    revokeReusedChain = false,
 ) {
     if (
         !session ||
@@ -150,6 +151,10 @@ async function validateSession(
             !session.replacedAt ||
             Date.now() - session.replacedAt.getTime() >= 10000)
     ) {
+        if (revokeReusedChain && session.replacedBy) {
+            await revokeSessionChain(session.id, userId);
+        }
+
         throw new ApiError({
             statusCode: 401,
             message: "Invalid or expired session",
@@ -169,7 +174,7 @@ export async function verifyRefreshToken(token: string) {
         ),
     });
 
-    const session = await validateSession(token, userId, userSession);
+    const session = await validateSession(token, userId, userSession, true);
 
     const user = await db.query.users.findFirst({
         columns: {
@@ -230,7 +235,7 @@ export async function rotateRefreshToken(
             )
             .for("update");
 
-        const session = await validateSession(token, userId, userSession);
+        const session = await validateSession(token, user.id, userSession);
 
         const activeUser = await tx.query.users.findFirst({
             columns: {
@@ -292,7 +297,8 @@ export async function rotateRefreshToken(
 
         const next = await issueRefresh(userId, ip, userAgent, tx);
 
-        tx.update(userSessions)
+        await tx
+            .update(userSessions)
             .set({ revoked: true, replacedBy: next.id, replacedAt: new Date() })
             .where(eq(userSessions.id, id));
 
@@ -305,6 +311,12 @@ export const revokeSession = async (id: string) => {
         .update(userSessions)
         .set({ revoked: true, replacedBy: null, replacedAt: null })
         .where(eq(userSessions.id, id));
+};
+
+export const revokeSessionChain = async (id: string, userId: string) => {
+    return await db.execute(
+        sql`with recursive chain as (select id, replaced_by from user_sessions where id = ${id} and user_id = ${userId} union select s.id, s.replaced_by from user_sessions s join chain c on s.id::text = c.replaced_by where s.user_id = ${userId}) update user_sessions set revoked = true where id in (select id from chain)`,
+    );
 };
 
 export const revokeAllUserSessions = async (id: string) => {

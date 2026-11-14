@@ -55,6 +55,7 @@ export interface IUpdateProfileZodErrors extends IBaseZodErrors {
     username?: string[];
     email?: string[];
     avatar?: string[];
+    currentPassword?: string[];
 }
 
 export interface IChangePasswordZodErrors extends IBaseZodErrors {

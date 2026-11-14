@@ -1,5 +1,13 @@
-import { cookies } from "next/headers";
-import { cookieHeader, readResponse, StoreApiError, storeOrigin } from "./http";
+import "server-only";
+
+import { cookies, headers } from "next/headers";
+import {
+    cookieHeader,
+    forwardedClientIp,
+    readResponse,
+    StoreApiError,
+    storeOrigin,
+} from "./http";
 import { getResponseCSRFToken } from "./getCSRFToken";
 import { AuthResponse } from "@/interfaces/data";
 
@@ -8,6 +16,7 @@ export async function authRequest(
     body?: unknown,
 ): Promise<AuthResponse> {
     const cookieStore = await cookies();
+    const incoming = await headers();
     const csrf = cookieStore.get("csrfToken")?.value;
     const refresh = cookieStore.get("refreshToken")?.value;
     const access = cookieStore.get("accessToken")?.value;
@@ -25,6 +34,7 @@ export async function authRequest(
                           Authorization: "Bearer " + access,
                       }
                     : {}),
+                ...forwardedClientIp(incoming),
                 ...(csrf
                     ? {
                           "X-CSRF-Token": csrf,

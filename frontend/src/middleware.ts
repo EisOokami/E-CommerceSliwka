@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { storeOrigin } from "./data/main/services/http";
+import { forwardedClientIp, storeOrigin } from "./data/main/services/http";
 import { refreshAccessToken } from "./data/main/services/refreshAccessToken";
 
 const accessTokenConfig = {
@@ -51,7 +51,10 @@ export async function middleware(request: NextRequest) {
             const session = await fetch(
                 new URL("/api/users/me", storeOrigin()),
                 {
-                    headers: { Authorization: "Bearer " + accessToken },
+                    headers: {
+                        Authorization: "Bearer " + accessToken,
+                        ...forwardedClientIp(request.headers),
+                    },
                     cache: "no-store",
                 },
             );
@@ -82,7 +85,11 @@ export async function middleware(request: NextRequest) {
         csrfToken
     ) {
         try {
-            tokens = await refreshAccessToken(refreshToken, csrfToken);
+            tokens = await refreshAccessToken(
+                refreshToken,
+                csrfToken,
+                request.headers,
+            );
             invalidSession = !tokens;
         } catch {
             return new NextResponse(
@@ -151,7 +158,7 @@ export async function middleware(request: NextRequest) {
 
     if (invalidSession && !tokens) {
         ["accessToken", "refreshToken", "csrfToken"].forEach((name) => {
-            response.cookies.delete(name);
+            request.cookies.delete(name);
         });
 
         requestHeaders.set("cookie", request.cookies.toString());

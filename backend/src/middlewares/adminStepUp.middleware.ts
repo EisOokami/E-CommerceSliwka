@@ -19,7 +19,11 @@ export async function requireStepUp(
     }
 
     const allowed = await new Promise<boolean>((resolve, reject) => {
-        adminCredentialLimit(5, 60 * 60000, () => resolve(true))(req, res, next)
+        adminCredentialLimit("step-up", 5, 60 * 60000, () => resolve(true))(
+            req,
+            res,
+            next,
+        )
             .then(() => resolve(false))
             .catch(reject);
     });

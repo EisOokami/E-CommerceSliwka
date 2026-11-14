@@ -125,18 +125,26 @@ export async function loginUserAction(
 export async function logoutAction() {
     const cookieStore = await cookies();
 
-    if (cookieStore.get("refreshToken") && !cookieStore.get("accessToken")) {
-        await authRequest("refresh");
-        await authRequest("logout");
-    }
+    try {
+        if (
+            cookieStore.get("refreshToken") &&
+            !cookieStore.get("accessToken")
+        ) {
+            await authRequest("refresh");
+            await authRequest("logout");
+        }
 
-    if (cookieStore.get("refreshToken") && cookieStore.get("accessToken")) {
-        await authRequest("logout");
+        if (
+            cookieStore.get("refreshToken") &&
+            cookieStore.get("accessToken")
+        ) {
+            await authRequest("logout");
+        }
+    } finally {
+        ["accessToken", "refreshToken", "csrfToken", "customer_mfa"].forEach(
+            (name) => {
+                cookieStore.delete(name);
+            },
+        );
     }
-
-    ["accessToken", "refreshToken", "csrfToken", "customer_mfa"].forEach(
-        (name) => {
-            cookieStore.delete(name);
-        },
-    );
 }

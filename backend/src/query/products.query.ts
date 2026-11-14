@@ -4,10 +4,10 @@ import { defineQuery } from "../utils/query/defineQuery.js";
 export const productsQuery = defineQuery({
     populate: {
         image: {
-            fields: ["id", "fileUrl"],
+            fields: ["id", "fileUrl", "filename"],
         },
         sliderImages: {
-            fields: ["id", "fileUrl"],
+            fields: ["id", "fileUrl", "filename"],
         },
         productVariants: true,
         options: {
