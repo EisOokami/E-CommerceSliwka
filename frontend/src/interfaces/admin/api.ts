@@ -1,5 +1,6 @@
 import { OrderStatus } from "@/types/types";
 import type { ProductRelations, ProductImage } from "./catalog";
+export type { ProductInput, OrderStatus } from "@/types/types";
 
 export interface AdminIdentity {
     id: string;

@@ -105,3 +105,18 @@ export type Options = {
     anonymous?: boolean;
     csrf?: string;
 };
+
+export type AutofillDetails = Partial<
+    Pick<
+        ProductInput,
+        | "color"
+        | "price"
+        | "discountedPrice"
+        | "isDiscount"
+        | "productVariants"
+        | "productSpecifications"
+        | "options"
+        | "productSpecificationGroups"
+        | "productInfos"
+    >
+>;

@@ -54,3 +54,15 @@ export const saveSettings = (
 ) => {
     return unwrapAction(actions.saveSettings(...args));
 };
+
+export const autofillProduct = (
+    ...args: Parameters<typeof actions.autofillProduct>
+) => {
+    return unwrapAction(actions.autofillProduct(...args));
+};
+
+export const generateProductDescription = (
+    ...args: Parameters<typeof actions.generateProductDescription>
+) => {
+    return unwrapAction(actions.generateProductDescription(...args));
+};

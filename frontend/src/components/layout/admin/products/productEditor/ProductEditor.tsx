@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { saveProduct } from "@/data/admin/actions/client";
+import {
+    generateProductDescription,
+    autofillProduct,
+    saveProduct,
+} from "@/data/admin/actions/client";
+import { LuSparkles } from "react-icons/lu";
 import { errorMessage, AdminApiError } from "@/data/admin/services/client";
 import {
     cardClass,
@@ -15,6 +20,11 @@ import {
 import { productInputSchema } from "@/lib/schemas/admin/productEditor";
 import { cn } from "@/lib/utils";
 import type { ProductInput } from "@/interfaces/admin/api";
+import type { ProductSuggestions } from "@/interfaces/admin/ai";
+import {
+    autofillFields,
+    planProductAutofill,
+} from "@/lib/admin/productAutofill";
 import { ProductEditorProps } from "./ProductEditor.interfaces";
 
 import { useAdminSession } from "../../auth/AdminSessionProvider";
@@ -47,6 +57,17 @@ export default function ProductEditor({
     const [tab, setTab] = useState("general");
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
+    const [generating, setGenerating] = useState(false);
+    const [generationError, setGenerationError] = useState("");
+    const [autofilling, setAutofilling] = useState(false);
+    const [autofillError, setAutofillError] = useState("");
+    const [autofillStatus, setAutofillStatus] = useState("");
+    const [additionalInformation, setAdditionalInformation] = useState("");
+    const dataRef = useRef(data);
+    const fieldVersions = useRef<Partial<Record<keyof ProductInput, number>>>(
+        {},
+    );
+    const autofillInFlight = useRef(false);
     const router = useRouter();
     const { can } = useAdminSession();
 
@@ -55,15 +76,246 @@ export default function ProductEditor({
         ...new Set([data.category, ...categoryOptions.map((v) => v.name)]),
     ].filter(Boolean);
 
+    const updateData = (next: ProductInput) => {
+        for (const key of autofillFields) {
+            if (
+                JSON.stringify(dataRef.current[key]) !==
+                JSON.stringify(next[key])
+            ) {
+                fieldVersions.current[key] =
+                    (fieldVersions.current[key] ?? 0) + 1;
+            }
+        }
+
+        dataRef.current = next;
+
+        setData(next);
+    };
+
     const field = <K extends keyof ProductInput>(
         key: K,
         value: ProductInput[K],
-    ) => setData((current) => ({ ...current, [key]: value }));
+    ) => updateData({ ...dataRef.current, [key]: value });
+
+    const autoFill = async () => {
+        if (
+            busy ||
+            generating ||
+            autofillInFlight.current ||
+            !writable ||
+            !data.name.trim()
+        ) {
+            return;
+        }
+
+        const snapshot = dataRef.current;
+        const versions = { ...fieldVersions.current };
+
+        autofillInFlight.current = true;
+
+        setAutofilling(true);
+        setAutofillError("");
+        setAutofillStatus("");
+
+        try {
+            const suggestions = await autofillProduct({
+                name: snapshot.name,
+                description: snapshot.description,
+                category: snapshot.category,
+                specifications: Object.fromEntries(
+                    [
+                        ...(snapshot.productSpecifications ?? []).map(
+                            (item) => [item.name, item.specification],
+                        ),
+                        ...(snapshot.productSpecificationGroups ?? []).flatMap(
+                            (group) =>
+                                group.specifications.map((item) => [
+                                    [group.name, item.name]
+                                        .filter(Boolean)
+                                        .join(" / "),
+                                    item.description,
+                                ]),
+                        ),
+                    ]
+                        .map(([name, value]) => [name.trim(), value.trim()])
+                        .filter(
+                            ([name, value]) =>
+                                name &&
+                                value &&
+                                name.length <= 100 &&
+                                value.length <= 255,
+                        )
+                        .slice(0, 20),
+                ),
+                existingDetails: {
+                    ...Object.fromEntries(
+                        (
+                            [
+                                "color",
+                                "price",
+                                "discountedPrice",
+                                "isDiscount",
+                            ] as const
+                        )
+                            .filter(
+                                (key) =>
+                                    id ||
+                                    initialData ||
+                                    versions[key] !== undefined,
+                            )
+                            .map((key) => [key, snapshot[key]]),
+                    ),
+                    productVariants: snapshot.productVariants,
+                    productSpecifications: snapshot.productSpecifications,
+                    productInfos: snapshot.productInfos,
+                    options: snapshot.options,
+                    productSpecificationGroups:
+                        snapshot.productSpecificationGroups,
+                },
+                additionalInformation,
+            });
+
+            const edited = new Set<keyof ProductInput>(
+                autofillFields.filter(
+                    (key) => fieldVersions.current[key] !== versions[key],
+                ),
+            );
+
+            if (edited.has("productSpecificationGroups")) {
+                edited.add("productSpecifications");
+            }
+
+            if (edited.has("productSpecifications")) {
+                edited.add("description");
+            }
+
+            const plan = planProductAutofill(
+                snapshot,
+                dataRef.current,
+                suggestions,
+                categoryOptions.map((category) => category.name),
+                edited,
+            );
+
+            const replacements = Object.keys(
+                plan.replacements,
+            ) as (keyof ProductSuggestions)[];
+            const replace =
+                replacements.length > 0 &&
+                window.confirm(
+                    `Replace existing ${replacements
+                        .map((key) => {
+                            return {
+                                name: "product name",
+                                description: "description",
+                                slug: "slug",
+                                category: "category",
+                                productSpecifications: "specifications",
+                                color: "color",
+                                price: "price",
+                                discountedPrice: "discounted price",
+                                isDiscount: "discount status",
+                                productVariants: "variants",
+                                options: "options",
+                                productSpecificationGroups:
+                                    "detailed specifications",
+                                productInfos: "delivery / warranty",
+                            }[key];
+                        })
+                        .join(
+                            ", ",
+                        )} with AI suggestions? Cancel keeps existing values and fills only empty fields.`,
+                );
+            const patch = {
+                ...plan.empty,
+                ...(replace ? plan.replacements : {}),
+            };
+
+            if (Object.keys(patch).length) {
+                updateData({ ...dataRef.current, ...patch });
+                setAutofillStatus(
+                    "AI suggestions applied. Technical details may come from model knowledge and are not verified. Review all values and availability before saving.",
+                );
+            }
+
+            if (!Object.keys(patch).length) {
+                setAutofillStatus(
+                    "No fields changed. Existing values and edits were kept.",
+                );
+            }
+        } catch (reason) {
+            setAutofillError(errorMessage(reason));
+        } finally {
+            autofillInFlight.current = false;
+
+            setAutofilling(false);
+        }
+    };
+
+    const generateDescription = async () => {
+        if (busy || generating || autofillInFlight.current || !writable) {
+            return;
+        }
+
+        if (!data.name.trim()) {
+            setGenerationError(
+                "Enter a product name before generating a description.",
+            );
+
+            return;
+        }
+
+        if (
+            data.description.trim() &&
+            !window.confirm(
+                "Replace the current description with an AI-generated description?",
+            )
+        ) {
+            return;
+        }
+
+        setGenerating(true);
+        setGenerationError("");
+
+        try {
+            const specifications = [
+                ...(data.productSpecifications ?? []).map((item) => [
+                    item.name,
+                    item.specification,
+                ]),
+                ...(data.productSpecificationGroups ?? []).flatMap((group) =>
+                    group.specifications.map((item) => [
+                        [group.name, item.name].filter(Boolean).join(" / "),
+                        item.description,
+                    ]),
+                ),
+            ]
+                .filter(([name, value]) => name.trim() && value.trim())
+                .slice(0, 20)
+                .map(([name, value]) => [
+                    name.trim().slice(0, 100),
+                    value.trim().slice(0, 300),
+                ]);
+
+            const result = await generateProductDescription({
+                name: data.name,
+                category: data.category,
+                specifications: Object.fromEntries(specifications),
+                currentDescription: data.description,
+            });
+
+            field("description", result.description);
+        } catch (reason) {
+            setGenerationError(errorMessage(reason));
+        } finally {
+            setGenerating(false);
+        }
+    };
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (busy || !writable) {
+        if (busy || generating || autofillInFlight.current || !writable) {
             return;
         }
 
@@ -125,7 +377,7 @@ export default function ProductEditor({
                         </Link>
                         {writable && (
                             <button
-                                disabled={busy}
+                                disabled={busy || generating || autofilling}
                                 className={cn(solidButtonClass, "h-9 px-6")}
                             >
                                 {busy ? "Saving..." : "Save Changes"}
@@ -159,7 +411,10 @@ export default function ProductEditor({
                         {error}
                     </p>
                 )}
-                <fieldset disabled={busy || !writable} className="space-y-4">
+                <fieldset
+                    disabled={busy || generating || !writable}
+                    className="space-y-4"
+                >
                     <div
                         className={
                             tab === "general"
@@ -182,6 +437,73 @@ export default function ProductEditor({
                                     }
                                 />
                             </Field>
+                            {writable && (
+                                <div className="space-y-2">
+                                    <Field label="Additional information for AI (optional)">
+                                        <textarea
+                                            maxLength={12000}
+                                            rows={3}
+                                            disabled={autofilling}
+                                            className={
+                                                fieldClass + " h-auto py-2"
+                                            }
+                                            value={additionalInformation}
+                                            onChange={(event) =>
+                                                setAdditionalInformation(
+                                                    event.target.value,
+                                                )
+                                            }
+                                            placeholder="Facts as Name: value lines, or JSON using productVariants, options, productSpecificationGroups, color, price, discountedPrice and isDiscount"
+                                        />
+                                    </Field>
+                                    <button
+                                        type="button"
+                                        onClick={autoFill}
+                                        disabled={
+                                            busy ||
+                                            generating ||
+                                            autofilling ||
+                                            !data.name.trim()
+                                        }
+                                        className={cn(
+                                            outlineButtonClass,
+                                            "h-9 px-3 text-sm",
+                                        )}
+                                    >
+                                        <LuSparkles
+                                            size={16}
+                                            aria-hidden="true"
+                                        />
+                                        {autofilling
+                                            ? "Auto-filling..."
+                                            : "Auto-fill with AI"}
+                                    </button>
+                                    <p className="text-xs text-gray-500">
+                                        Fills empty content fields. Replacing
+                                        existing values requires confirmation.
+                                        AI notes are used only for generation.
+                                        Technical suggestions are not verified.
+                                        Review values and availability before
+                                        saving.
+                                    </p>
+                                    {autofillError && (
+                                        <p
+                                            role="alert"
+                                            className="text-sm text-red-600"
+                                        >
+                                            {autofillError}
+                                        </p>
+                                    )}
+                                    {autofillStatus && (
+                                        <p
+                                            role="status"
+                                            className="text-sm text-gray-600"
+                                        >
+                                            {autofillStatus}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                             <Field label="Description">
                                 <textarea
                                     maxLength={6000}
@@ -193,6 +515,30 @@ export default function ProductEditor({
                                     }
                                 />
                             </Field>
+                            {writable && (
+                                <button
+                                    type="button"
+                                    onClick={generateDescription}
+                                    disabled={busy || generating || autofilling}
+                                    className={cn(
+                                        outlineButtonClass,
+                                        "h-9 px-3 text-sm",
+                                    )}
+                                >
+                                    <LuSparkles size={16} aria-hidden="true" />
+                                    {generating
+                                        ? "Generating..."
+                                        : "Generate with AI"}
+                                </button>
+                            )}
+                            {generationError && (
+                                <p
+                                    role="alert"
+                                    className="text-sm text-red-600"
+                                >
+                                    {generationError}
+                                </p>
+                            )}
                             <Field label="Slug">
                                 <input
                                     required
@@ -370,11 +716,14 @@ export default function ProductEditor({
                                     : []),
                             ]}
                             data={data}
-                            onChange={setData}
+                            onChange={updateData}
                         />
                     )}
                     {tab === "details" && (
-                        <ProductDetailsFields data={data} onChange={setData} />
+                        <ProductDetailsFields
+                            data={data}
+                            onChange={updateData}
+                        />
                     )}
                 </fieldset>
             </div>

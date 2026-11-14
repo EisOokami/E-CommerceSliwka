@@ -275,6 +275,15 @@ async function authorize(path: string, method: string) {
         return;
     }
 
+    if (
+        ["/ai/generate-description", "/ai/autofill-product"].includes(path) &&
+        method === "POST"
+    ) {
+        await requirePermissions(["products.create", "products.update"], true);
+
+        return;
+    }
+
     if (resource === "images") {
         await requirePermissions(
             method === "GET"

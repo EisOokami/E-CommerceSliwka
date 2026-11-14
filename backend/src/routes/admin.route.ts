@@ -8,6 +8,7 @@ import { adminSecurity } from "../middlewares/adminSecurity.middleware.js";
 import auth from "./adminAuth.route.js";
 import panel from "./adminPanel.route.js";
 import audit from "./audit.route.js";
+import ai from "./adminAi.route.js";
 
 export const createAdminRouter = () => {
     const router = Router();
@@ -28,6 +29,7 @@ export const createAdminRouter = () => {
     );
     router.use("/auth", auth);
     router.use("/audit-logs", audit);
+    router.use("/ai", ai);
     router.use(images);
     router.use(catalog);
     router.use(panel);

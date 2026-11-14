@@ -1,6 +1,14 @@
 "use server";
 
 import { mutateData } from "../services/mutateData";
+import { adminRequest } from "../services/server";
+import { actionResult } from "../services/actionResult";
+import type {
+    GenerateDescriptionInput,
+    GeneratedDescription,
+    AutofillProductInput,
+    ProductSuggestions,
+} from "@/interfaces/admin/ai";
 import type {
     ProductInput,
     OrderStatus,
@@ -84,4 +92,27 @@ export async function saveSettings(
         ...input,
         _reauth,
     });
+}
+
+export async function autofillProduct(input: AutofillProductInput) {
+    return actionResult(() =>
+        adminRequest<ProductSuggestions>("/ai/autofill-product", {
+            method: "POST",
+            body: input,
+            writeCookies: true,
+            signal: AbortSignal.timeout(30000),
+        }),
+    );
+}
+
+export async function generateProductDescription(
+    input: GenerateDescriptionInput,
+) {
+    return actionResult(() =>
+        adminRequest<GeneratedDescription>("/ai/generate-description", {
+            method: "POST",
+            body: input,
+            writeCookies: true,
+        }),
+    );
 }

@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, inArray, asc, count, desc, eq, ilike, sql } from "drizzle-orm";
 import { type z } from "zod";
 import { db } from "../db/index.js";
 import {
@@ -392,4 +392,17 @@ export const categoryList = async () => {
     });
 
     return categoryData;
+};
+
+export const existingAiProductSlugs = async (slugs: string[]) => {
+    if (!slugs.length) {
+        return new Set<string>();
+    }
+
+    const rows = await db
+        .select({ slug: products.slug })
+        .from(products)
+        .where(inArray(products.slug, [...new Set(slugs)].slice(0, 630)));
+
+    return new Set(rows.map((row) => row.slug));
 };
