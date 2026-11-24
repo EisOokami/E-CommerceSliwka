@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaInstagram, FaTiktok } from "react-icons/fa";
 import { FaBluesky, FaXTwitter } from "react-icons/fa6";
 import { SocialMediaProps } from "./SocialMedia.interfaces";
 
 function selectSocialMediaIcon(socialMedia: string) {
     switch (socialMedia.toLowerCase()) {
+        case "github":
+            return <FaGithub />;
         case "x":
             return <FaXTwitter />;
         case "bluesky":
@@ -32,6 +34,7 @@ export default function SocialMedia({
                     href={url ?? ""}
                     className={styles.footer__icons}
                     target="_blank"
+                    rel="noopener noreferrer"
                 >
                     {selectSocialMediaIcon(text.length ? text : id)}
                 </Link>

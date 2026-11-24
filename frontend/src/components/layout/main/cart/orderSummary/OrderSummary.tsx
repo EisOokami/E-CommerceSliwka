@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import useCartStore from "@/stores/cart";
 import { redirectToCheckoutAction } from "@/data/main/actions/cartActions";
 import { OrderSummaryProps } from "./OrderSummary.interfaces";
@@ -121,11 +122,21 @@ export default function OrderSummary({
             <p className="text-sm text-gray-500">
                 Discounts and final shipping charges are confirmed at checkout.
             </p>
-            {checkoutError && (
-                <p role="alert" className="text-red-600">
-                    {checkoutError}
+            <div className="p-4 text-sm bg-amber-50 border border-amber-300 rounded-lg">
+                <p className="font-medium">
+                    Demo checkout: nothing is charged or shipped.
                 </p>
-            )}
+                <p className="mt-1 text-pretty">
+                    You will be redirected to a Stripe page in test mode. Use a
+                    Stripe test card (e.g. 4242 4242 4242 4242, any future date,
+                    any CVC) and a made-up name. Never enter your real card,
+                    name or address.{" "}
+                    <Link href="/privacy" className="underline">
+                        Privacy Policy
+                    </Link>
+                </p>
+            </div>
+            {checkoutError && <p className="text-red-600">{checkoutError}</p>}
             {isPending ? (
                 <Button
                     text="Loading"

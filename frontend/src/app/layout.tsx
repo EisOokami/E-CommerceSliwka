@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
     title: "E-Commerce Sliwka",
     description:
-        "Buy the latest products at great prices. Fast delivery only from us!",
+        "Demo online electronics store (portfolio project). Nothing is sold.",
     icons: "/icon.ico",
 };
 

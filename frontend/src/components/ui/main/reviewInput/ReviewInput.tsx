@@ -3,6 +3,7 @@
 import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import useProductStore from "@/stores/product";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "sonner";
 import {
     addReviewToProductAction,
@@ -178,6 +179,15 @@ export default function ReviewInput({
 
     return (
         <form action={formAction} className="grid gap-5">
+            <p className="text-sm md:text-base text-gray-500 text-pretty">
+                Reviews are public: everyone can see your text, rating, photos,
+                username and avatar. You can delete your review at any time. Do
+                not include other people&apos;s personal data or photos you do
+                not have the rights to.{" "}
+                <Link href="/privacy" className="underline">
+                    Privacy Policy
+                </Link>
+            </p>
             <div className="flex items-center gap-2 px-5 md:px-10 py-2.5 md:py-5 border rounded-xl">
                 <textarea
                     name="description"

@@ -8,6 +8,11 @@ const link = (id: string, url: string, text: string) => ({
     isExternal: false,
 });
 
+const external = (id: string, url: string, text: string) => ({
+    ...link(id, url, text),
+    isExternal: true,
+});
+
 const logo = { id: "brand", url: "/icon.ico", alternativeText: "Sliwka" };
 
 export const storeContent: {
@@ -37,41 +42,49 @@ export const storeContent: {
         footer: {
             id: "footer",
             aboutUs:
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam aperiam, velit saepe cupiditate in alias corrupti repellat rem excepturi. Reprehenderit.",
+                "Sliwka is a demo online store: an open-source portfolio project. Nothing is sold here, orders are never shipped and payments run in Stripe test mode only.",
             logoImage: logo,
             logoLink: link("home", "/", "Sliwka"),
             utilityLinks: [
                 {
-                    id: "services",
-                    title: "Services",
+                    id: "store",
+                    title: "Store",
                     links: [
-                        link("bonus-program", "#", "Bonus program"),
-                        link("gift-cards", "#", "Gift cards"),
-                        link("credit", "#", "Credit and payment"),
-                        link("service-contracts", "#", "Service contracts"),
-                        link("non-cash-account", "#", "Non-cash account"),
-                        link("payment", "#", "Payment"),
+                        link("catalog", "/catalog", "Catalog"),
+                        link("cart", "/cart", "Cart"),
+                        link("wishlist", "/wishlist", "Wishlist"),
+                        link(
+                            "order-history",
+                            "/account/order-history",
+                            "Order history",
+                        ),
                     ],
                 },
                 {
-                    id: "buyer-assistance",
-                    title: "Assistance to the buyer",
+                    id: "legal",
+                    title: "About this demo",
                     links: [
-                        link("find-order", "#", "Find an order"),
-                        link("delivery", "#", "Terms of delivery"),
-                        link("returns", "#", "Exchange and return of goods"),
-                        link("guarantee", "#", "Guarantee"),
-                        link("faq", "#", "Frequently asked questions"),
-                        link("terms-of-use", "#", "Terms of use of the site"),
+                        link("terms", "/terms", "Terms of Service (PL)"),
+                        link("privacy", "/privacy", "Privacy Policy (PL)"),
+                        external(
+                            "contact",
+                            "mailto:help.lakio@gmail.com",
+                            "Contact",
+                        ),
+                        external(
+                            "source",
+                            "https://github.com/EisOokami/E-CommerceSliwka",
+                            "Source code",
+                        ),
                     ],
                 },
             ],
             socialLinks: [
-                link("x", "#", "X"),
-                link("bluesky", "#", "Bluesky"),
-                link("facebook", "#", "Facebook"),
-                link("tiktok", "#", "TikTok"),
-                link("instagram", "#", "Instagram"),
+                external(
+                    "github",
+                    "https://github.com/EisOokami/E-CommerceSliwka",
+                    "GitHub",
+                ),
             ],
         },
     },
