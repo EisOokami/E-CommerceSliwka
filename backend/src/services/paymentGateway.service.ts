@@ -3,7 +3,10 @@ import { ApiError } from "../utils/apiError.js";
 import type { PaymentGateway } from "../types/types.js";
 
 function stripe() {
-    if (!process.env.STRIPE_KEY) {
+    if (
+        !process.env.STRIPE_KEY ||
+        !/^(sk|rk)_test_[A-Za-z0-9]+$/.test(process.env.STRIPE_KEY)
+    ) {
         throw new ApiError({
             statusCode: 503,
             message: "Checkout is temporarily unavailable",
@@ -31,8 +34,9 @@ export const paymentGateway: PaymentGateway = {
             {
                 mode: "payment",
                 automatic_tax: {
-                    enabled: process.env.STRIPE_AUTOMATIC_TAX !== "false",
+                    enabled: process.env.STRIPE_AUTOMATIC_TAX === "true",
                 },
+                billing_address_collection: "auto",
                 client_reference_id: input.orderId,
                 customer_email: input.email,
                 expires_at: input.expiresAt,
