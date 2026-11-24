@@ -44,6 +44,7 @@ export function errorMiddleware(
         res.status(error.statusCode).json({
             status: "error",
             message: error.message,
+            ...(error.data !== undefined ? { data: error.data } : {}),
         });
 
         return;
