@@ -61,7 +61,7 @@ export const uploadImage = async (
             };
         });
     } catch (error) {
-        await imageStorageService.removeProductImage(stored.fileUrl);
+        await imageStorageService.removeStoredFile(stored.fileUrl);
 
         throw error;
     }
@@ -100,7 +100,7 @@ export const deleteImage = async (id: string, req: IAdminRequest) => {
             });
         }
 
-        if (!/^\/files\/admin-[a-f0-9-]{36}\.webp$/.test(file.fileUrl)) {
+        if (!/^\/files\/(admin-[a-f0-9-]{36}\.webp)$/.test(file.fileUrl)) {
             throw new ApiError({
                 statusCode: 409,
                 message: "This file is managed by another upload workflow",

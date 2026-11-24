@@ -98,8 +98,11 @@ export const storeProductImage = async (file: Express.Multer.File) => {
     };
 };
 
-export const removeProductImage = async (fileUrl: string) => {
-    const match = /^\/files\/(admin-[a-f0-9-]{36}\.webp)$/.exec(fileUrl);
+export const removeStoredFile = async (fileUrl: string) => {
+    const match =
+        /^\/files\/(admin-[a-f0-9-]{36}\.webp|strapi-[a-f0-9]{64}\.(?:jpe?g|png|webp|gif))$/.exec(
+            fileUrl,
+        );
 
     if (!match || !match[1]) {
         throw new ApiError({

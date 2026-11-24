@@ -118,7 +118,7 @@ export const uploadMultiple = async (
                             and(
                                 eq(files.id, user.avatarId),
                                 eq(files.uploaderId, userId),
-                                sql`${files.fileUrl} ~ '^/files/admin-[a-f0-9-]{36}\\.webp$'`,
+                                sql`${files.fileUrl} ~ ${/^\/files\/(admin-[a-f0-9-]{36}\.webp)$/.source}`,
                             ),
                         )
                         .returning();
@@ -142,7 +142,7 @@ export const uploadMultiple = async (
     } catch (error) {
         await Promise.allSettled(
             stored.map((image) =>
-                imageStorageService.removeProductImage(image.fileUrl),
+                imageStorageService.removeStoredFile(image.fileUrl),
             ),
         );
 
@@ -173,7 +173,7 @@ export const deleteFile = async (userId: string, id: string) => {
             throw new ApiError({ statusCode: 404, message: "File not found" });
         }
 
-        if (!/^\/files\/admin-[a-f0-9-]{36}\.webp$/.test(file.fileUrl)) {
+        if (!/^\/files\/(admin-[a-f0-9-]{36}\.webp)$/.test(file.fileUrl)) {
             throw new ApiError({
                 statusCode: 409,
                 message:

@@ -4,7 +4,7 @@ import { startAdminSessionCleanup } from "./adminSessionCleanup.js";
 export async function cleanupFiles() {
     for (const file of await imageStorageService.pendingFileDeletions()) {
         try {
-            await imageStorageService.removeProductImage(file.fileUrl);
+            await imageStorageService.removeStoredFile(file.fileUrl);
             await imageStorageService.finishFileDeletion(file.fileUrl);
         } catch {
             console.error("File cleanup failed; queued for retry");
