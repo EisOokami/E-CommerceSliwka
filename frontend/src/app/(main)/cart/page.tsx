@@ -12,7 +12,7 @@ export default async function CartPage() {
     const data = await getCartProductsData();
 
     if (!user.ok) {
-        redirect("/singIn");
+        redirect("/signIn");
     }
 
     return (

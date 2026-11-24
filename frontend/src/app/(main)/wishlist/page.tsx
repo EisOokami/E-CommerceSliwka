@@ -11,7 +11,7 @@ export default async function WishlistPage() {
     const data = await getWishlistProductsData();
 
     if (!user.ok) {
-        redirect("/singIn");
+        redirect("/signIn");
     }
 
     return (
