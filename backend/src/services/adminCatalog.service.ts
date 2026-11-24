@@ -11,6 +11,7 @@ import {
 } from "../db/schema.js";
 import { type IAdminRequest } from "../types/types.js";
 import { ApiError } from "../utils/apiError.js";
+import { releaseFiles } from "./fileRelease.service.js";
 import {
     catalogListSchema,
     categorySchema,
@@ -241,7 +242,7 @@ export const mutate = async (
                 await tx
                     .select()
                     .from(products)
-                    .where(eq(products.id, id))
+                    .where(eq(products.id, review.productId))
                     .for("update");
 
                 const lockedReview = !!(
@@ -252,7 +253,7 @@ export const mutate = async (
                         .for("update")
                 )[0];
 
-                if (lockedReview) {
+                if (!lockedReview) {
                     throw new ApiError({
                         statusCode: 404,
                         message: "Review not found",
@@ -261,10 +262,15 @@ export const mutate = async (
             }
 
             if (operation === "delete" && id) {
-                await tx
-                    .update(files)
-                    .set({ reviewId: null })
+                const photos = await tx
+                    .select({ id: files.id })
+                    .from(files)
                     .where(eq(files.reviewId, id));
+
+                await releaseFiles(
+                    tx,
+                    photos.map((photo) => photo.id),
+                );
 
                 await tx.delete(reviews).where(eq(reviews.id, id));
             }
@@ -279,14 +285,14 @@ export const mutate = async (
                     .where(eq(reviews.id, id));
             }
 
-            if (id) {
+            if (review) {
                 await tx
                     .update(products)
                     .set({
-                        averageRating: sql`(select coalesce(round(avg(rating)::numeric,1),0) from reviews where product_id=${id} and visible=true)`,
+                        averageRating: sql`(select coalesce(round(avg(rating)::numeric,1),0) from reviews where product_id=${review.productId} and visible=true)`,
                         updatedAt: new Date(),
                     })
-                    .where(eq(products.id, id));
+                    .where(eq(products.id, review.productId));
             }
         }
 

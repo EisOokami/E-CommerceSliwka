@@ -5,6 +5,7 @@ import { reviewsQuery } from "../query/reviews.query.js";
 import { type QueryInput } from "../types/query.js";
 import { ApiError } from "../utils/apiError.js";
 import { buildQuery } from "../utils/query/queryBuilder.js";
+import { releaseFiles } from "./fileRelease.service.js";
 
 export const getReviews = async (
     query: QueryInput<typeof reviewsQuery.config>,
@@ -145,10 +146,15 @@ export const deleteReview = async (userId: string, id: string) => {
             .where(eq(products.id, review.productId))
             .for("update");
 
-        await tx
-            .update(files)
-            .set({ reviewId: null })
-            .where(and(eq(files.reviewId, id), eq(files.uploaderId, userId)));
+        const photos = await tx
+            .select({ id: files.id })
+            .from(files)
+            .where(eq(files.reviewId, id));
+
+        await releaseFiles(
+            tx,
+            photos.map((photo) => photo.id),
+        );
 
         const row = await tx
             .delete(reviews)
