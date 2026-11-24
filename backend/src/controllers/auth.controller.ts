@@ -10,6 +10,7 @@ import {
 import { ZodError } from "zod";
 import * as authService from "../services/auth.service.js";
 import { sendLoginNotificationEmail } from "../utils/email/loginNotificationEmail.js";
+import { ApiError } from "../utils/apiError.js";
 import { getGoogleAuthUrl } from "../utils/auth/googleAuth.js";
 import dotenv from "dotenv";
 import crypto from "crypto";
@@ -158,13 +159,14 @@ export const login = async (
     try {
         const validateData = loginSchema.parse(req.body);
 
-        const { email, password } = validateData;
+        const { email, password, acceptTerms } = validateData;
 
         const response = await authService.login(
             email,
             password,
             req.ip,
             req.headers["user-agent"],
+            acceptTerms === true,
         );
 
         if (
@@ -423,7 +425,8 @@ export const googleAuthStart = async (
     next: NextFunction,
 ) => {
     try {
-        const state = crypto.randomUUID();
+        const termsAccepted = req.query.terms === "accepted";
+        const state = `${crypto.randomUUID()}.${termsAccepted ? "t" : "n"}`;
 
         res.cookie("google_oauth_state", state, {
             httpOnly: true,
@@ -460,7 +463,9 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
             return;
         }
 
-        const response = await authService.googleAuthCallback(code);
+        const response = await authService.googleAuthCallback(code, {
+            termsAccepted: savedState.endsWith(".t"),
+        });
 
         res.redirect(response.redirect);
     } catch (error) {
@@ -517,9 +522,10 @@ export const googleAuthExchange = async (req: Request, res: Response) => {
             error instanceof Error ? error.name : "UnknownError",
         );
 
-        return res.redirect(
-            `${process.env.FRONTEND_URL}/signIn?error=oauth_failed`,
-        );
+        res.status(error instanceof ApiError ? error.statusCode : 500).json({
+            status: "error",
+            message: error instanceof ApiError ? error.message : "Server error",
+        });
     }
 };
 

@@ -25,6 +25,21 @@ export const me = async (req: IGetUserRequest, res: Response) => {
     res.status(200).json(response);
 };
 
+export const acceptTerms = async (req: IGetUserRequest, res: Response) => {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({
+            status: "error",
+            message: "Authentication required",
+        });
+
+        return;
+    }
+
+    const response = await usersService.acceptTerms(req.user.id);
+
+    res.status(200).json(response);
+};
+
 export const updateUser = async (req: IGetUserRequest, res: Response) => {
     if (!req.user || !req.user.id) {
         res.status(401).json({
@@ -83,14 +98,51 @@ export const deleteAccount = async (req: IGetUserRequest, res: Response) => {
         return;
     }
 
-    const validateData = deleteAccountSchema.parse(req.body);
+    const validateData = deleteAccountSchema.parse(req.body ?? {});
 
     await usersService.deleteAccount(id, validateData);
+
+    res.clearCookie("refreshToken");
+    res.clearCookie("csrfToken");
 
     res.status(200).json({
         status: "success",
         message: "The account has been successfully deleted",
     });
+};
+
+export const requestAccountDeletionCode = async (
+    req: IGetUserRequest,
+    res: Response,
+) => {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({
+            status: "error",
+            message: "Authentication required",
+        });
+
+        return;
+    }
+
+    const response = await usersService.requestAccountDeletionCode(req.user.id);
+
+    res.status(200).json(response);
+};
+
+export const exportData = async (req: IGetUserRequest, res: Response) => {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({
+            status: "error",
+            message: "Authentication required",
+        });
+
+        return;
+    }
+
+    const data = await usersService.exportData(req.user.id);
+
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json(data);
 };
 
 export const setPassword = async (req: IGetUserRequest, res: Response) => {

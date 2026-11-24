@@ -24,6 +24,7 @@ import {
     type ListInput,
     type Resource,
 } from "../validators/adminPanel.js";
+import * as accountErasureService from "./accountErasure.service.js";
 import * as adminAuthService from "./adminAuth.service.js";
 import * as adminBootstrapService from "./adminBootstrap.service.js";
 import * as adminMfaLoginSessionService from "./adminMfaLoginSession.service.js";
@@ -158,8 +159,9 @@ export const mutate = async (
         resource === "admins" && operation === "create"
             ? await hashPassword(adminCreateSchema.parse(body).password)
             : undefined;
+    const openCheckoutSessions: string[] = [];
 
-    return await db.transaction(async (tx) => {
+    const result = await db.transaction(async (tx) => {
         const permission =
             resource === "admins"
                 ? "admins.manage"
@@ -383,12 +385,17 @@ export const mutate = async (
                 }
 
                 if (operation === "delete" && id) {
-                    const [userData] = await tx
-                        .delete(users)
-                        .where(eq(users.id, id))
-                        .returning({ id: users.id });
+                    const erased = await accountErasureService.eraseUser(
+                        tx,
+                        id,
+                    );
 
-                    user = userData;
+                    if (erased) {
+                        user = { id };
+                        openCheckoutSessions.push(
+                            ...erased.openCheckoutSessions,
+                        );
+                    }
                 }
 
                 if (!user) {
@@ -432,6 +439,14 @@ export const mutate = async (
 
         return { id: entityId, success: true };
     });
+
+    if (openCheckoutSessions.length) {
+        await accountErasureService.expireCheckoutSessions(
+            openCheckoutSessions,
+        );
+    }
+
+    return result;
 };
 
 export const settings = async () => {

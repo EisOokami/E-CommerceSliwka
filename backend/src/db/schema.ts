@@ -157,6 +157,12 @@ export const users = pgTable(
         confirmed: boolean("confirmed").default(false),
         blocked: boolean("blocked").default(false),
         agreeToTermsAndPrivacy: boolean("agree_to_terms_and_privacy").notNull(),
+        termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
+        termsVersion: varchar("terms_version", { length: 20 }),
+        privacyAcceptedAt: timestamp("privacy_accepted_at", {
+            withTimezone: true,
+        }),
+        privacyVersion: varchar("privacy_version", { length: 20 }),
         avatarId: uuid("avatar_id").references(() => files.id),
         googleId: varchar("google_id", { length: 255 }),
         authProvider: authProviderEnum("auth_provider")
@@ -175,6 +181,13 @@ export const users = pgTable(
         emailChangeExpiresAt: timestamp("email_change_expires_at", {
             withTimezone: true,
         }),
+        deletionCodeHash: varchar("deletion_code_hash", { length: 64 }),
+        deletionCodeExpiresAt: timestamp("deletion_code_expires_at", {
+            withTimezone: true,
+        }),
+        deletionCodeAttempts: integer("deletion_code_attempts")
+            .notNull()
+            .default(0),
     },
     (table) => [
         index("users_avatar_id_index").on(table.avatarId),
@@ -399,7 +412,10 @@ export const orders = pgTable(
             .notNull()
             .references(() => users.id),
     },
-    (table) => [index("orders_user_id_index").on(table.userId)],
+    (table) => [
+        index("orders_user_id_index").on(table.userId),
+        index("orders_created_at_index").on(table.createdAt),
+    ],
 );
 
 export const productVariants = pgTable(

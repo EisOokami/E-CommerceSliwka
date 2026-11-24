@@ -40,14 +40,13 @@ export function emailTemplate({
                         sans-serif;
                 "
             >
-                <table width="100%" cellspacing="0" cellpadding="0" role="presentation">
+                <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="center">
                             <table
                                 width="620"
                                 cellspacing="0"
                                 cellpadding="0"
-                                role="presentation"
                                 style="
                                     width: 620px;
                                     max-width: 100%;
@@ -106,7 +105,6 @@ export function emailTemplate({
                                             buttonText
                                                 ? `
                                                     <table
-                                                        role="presentation"
                                                         cellspacing="0"
                                                         cellpadding="0"
                                                         style="margin-top: 34px"

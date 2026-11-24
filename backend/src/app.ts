@@ -3,6 +3,9 @@ import { startFileCleanup } from "./jobs/fileCleanup.js";
 import { createAdminRouter } from "./routes/admin.route.js";
 import { validateAdminConfig } from "./config/admin.js";
 import { startAdminSessionCleanup } from "./jobs/adminSessionCleanup.js";
+import { startRetentionCleanup } from "./jobs/retentionCleanup.js";
+import { validateStripeConfig } from "./config/stripe.js";
+import { legalVersions } from "./config/legal.js";
 import { pool } from "./db/index.js";
 import express from "express";
 import cors from "cors";
@@ -27,6 +30,8 @@ import path from "node:path";
 dotenv.config({ quiet: true });
 
 validateAdminConfig();
+validateStripeConfig();
+legalVersions();
 
 const app = express();
 
@@ -119,6 +124,7 @@ const server = app.listen(port, () => {
 const stopCleanup = startAdminSessionCleanup();
 const stopFileCleanup = startFileCleanup();
 const stopCheckouts = startCheckoutReconciliation();
+const stopRetention = startRetentionCleanup();
 
 let stopping = false;
 
@@ -135,6 +141,7 @@ function shutdown() {
                 stopCleanup(),
                 stopFileCleanup(),
                 stopCheckouts(),
+                stopRetention(),
             ]);
         } finally {
             await pool.end();

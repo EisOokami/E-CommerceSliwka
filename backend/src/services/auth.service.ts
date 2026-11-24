@@ -10,6 +10,8 @@ import {
     users,
     userSessions,
 } from "../db/schema.js";
+import { legalVersions } from "../config/legal.js";
+import { recordTermsAcceptance } from "./legalAcceptance.service.js";
 import { ApiError } from "../utils/apiError.js";
 import { exchangeCodeForProfile } from "../utils/auth/googleAuth.js";
 import {
@@ -55,6 +57,9 @@ export const register = async (
     const confirmationToken = crypto.randomBytes(32).toString("hex");
     const confirmationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
+    const { terms, privacy } = legalVersions();
+    const now = new Date();
+
     const createdUser = await db
         .insert(users)
         .values({
@@ -63,6 +68,10 @@ export const register = async (
             email: email,
             confirmed: false,
             agreeToTermsAndPrivacy: true,
+            termsAcceptedAt: now,
+            termsVersion: terms,
+            privacyAcceptedAt: now,
+            privacyVersion: privacy,
             confirmationToken: confirmationToken,
             confirmationTokenExpires: confirmationTokenExpires,
         })
@@ -288,6 +297,7 @@ export const login = async (
     password: string,
     ip: string | undefined,
     userAgent: string | undefined,
+    acceptTerms = false,
 ) => {
     const user = await db.query.users.findFirst({
         columns: {
@@ -299,6 +309,8 @@ export const login = async (
             mfaEnabled: true,
             blocked: true,
             confirmed: true,
+            termsVersion: true,
+            privacyVersion: true,
         },
         where: eq(users.email, email),
     });
@@ -332,6 +344,21 @@ export const login = async (
             statusCode: 401,
             message: "Invalid email or password",
         });
+    }
+
+    const { terms, privacy } = legalVersions();
+
+    if (user.termsVersion !== terms || user.privacyVersion !== privacy) {
+        if (!acceptTerms) {
+            throw new ApiError({
+                statusCode: 403,
+                message:
+                    "Our Terms of Service and Privacy Policy have been updated. Please review and accept them to continue.",
+                data: { requiresTermsAcceptance: true },
+            });
+        }
+
+        await recordTermsAcceptance(user.id);
     }
 
     if (user.mfaEnabled) {
@@ -769,7 +796,10 @@ export const logout = async (refreshToken: string) => {
     await revokeSessionChain(sid, userId);
 };
 
-export const googleAuthCallback = async (code: string) => {
+export const googleAuthCallback = async (
+    code: string,
+    options: { termsAccepted: boolean },
+) => {
     const profile = await exchangeCodeForProfile(code);
 
     if (!profile.emailVerified) {
@@ -780,14 +810,33 @@ export const googleAuthCallback = async (code: string) => {
 
     let userId = undefined;
 
+    const termsRequired = {
+        redirect: `${process.env.FRONTEND_URL}/signIn?error=terms_required`,
+    };
+
     const byGoogleId = await db.query.users.findFirst({
         columns: {
             id: true,
+            termsVersion: true,
+            privacyVersion: true,
         },
         where: eq(users.googleId, profile.googleId),
     });
 
+    const { terms, privacy } = legalVersions();
+
     if (byGoogleId) {
+        if (
+            byGoogleId.termsVersion !== terms ||
+            byGoogleId.privacyVersion !== privacy
+        ) {
+            if (!options.termsAccepted) {
+                return termsRequired;
+            }
+
+            await recordTermsAcceptance(byGoogleId.id);
+        }
+
         userId = byGoogleId.id;
     }
 
@@ -797,6 +846,8 @@ export const googleAuthCallback = async (code: string) => {
                 id: true,
                 googleId: true,
                 confirmed: true,
+                termsVersion: true,
+                privacyVersion: true,
             },
             where: eq(users.email, profile.email),
         });
@@ -805,6 +856,18 @@ export const googleAuthCallback = async (code: string) => {
             return {
                 redirect: `${process.env.FRONTEND_URL}/signIn?error=oauth_failed`,
             };
+        }
+
+        if (
+            byEmail &&
+            (byEmail.termsVersion !== terms ||
+                byEmail.privacyVersion !== privacy)
+        ) {
+            if (!options.termsAccepted) {
+                return termsRequired;
+            }
+
+            await recordTermsAcceptance(byEmail.id);
         }
 
         if (byEmail) {
@@ -857,6 +920,15 @@ export const googleAuthCallback = async (code: string) => {
     }
 
     if (!userId) {
+        if (!options.termsAccepted) {
+            return {
+                redirect: `${process.env.FRONTEND_URL}/signUp?error=terms_required`,
+            };
+        }
+
+        const { terms, privacy } = legalVersions();
+        const now = new Date();
+
         const [userRow] = await db
             .insert(users)
             .values({
@@ -864,10 +936,14 @@ export const googleAuthCallback = async (code: string) => {
                 googleId: profile.googleId,
                 authProvider: "google",
                 confirmed: true,
-                username: `${profile.name} ${profile.surname}`,
+                username: `user-${crypto.randomBytes(5).toString("hex")}`,
                 avatarUrl: profile.avatarUrl,
                 password: null,
                 agreeToTermsAndPrivacy: true,
+                termsAcceptedAt: now,
+                termsVersion: terms,
+                privacyAcceptedAt: now,
+                privacyVersion: privacy,
             })
             .returning({ id: users.id });
 

@@ -24,6 +24,7 @@ export const loginSchema = z.object({
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$/,
             "Password must contain at least one uppercase letter, one lowercase letter, one special character and one number",
         ),
+    acceptTerms: z.boolean().optional(),
 });
 
 export const registerSchema = z.object({
@@ -46,6 +47,9 @@ export const registerSchema = z.object({
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).+$/,
             "Password must contain at least one uppercase letter, one lowercase letter, one special character and one number",
         ),
+    agreeToTermsAndPrivacy: z.literal(true, {
+        error: "You must accept the Terms of Service and acknowledge the Privacy Policy",
+    }),
 });
 
 export const resendVerificationSchema = z.object({
