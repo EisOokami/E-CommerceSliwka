@@ -57,9 +57,7 @@ export default function AccountRecovery({
                         />
                     </>
                 )}
-                {state.message && (
-                    <p role={state.ok ? "status" : "alert"}>{state.message}</p>
-                )}
+                {state.message && <p>{state.message}</p>}
                 {!state.ok && (
                     <Button
                         type="submit"

@@ -98,9 +98,9 @@ export enum Status {
 }
 
 export enum VisibilityEnum {
-    "visible",
-    "draft",
-    "hidden",
+    visible,
+    draft,
+    hidden,
 }
 
 export interface IProduct extends BaseSchema {
@@ -154,6 +154,8 @@ export interface IUser extends BaseSchema {
     confirmed: boolean;
     blocked: boolean;
     provider: string;
+    hasPassword: boolean;
+    requiresTermsAcceptance: boolean;
     avatar: IImage;
 }
 

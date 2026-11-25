@@ -5,11 +5,11 @@ import useCatalogStore from "@/stores/catalog";
 import AccordionItem from "../accordion/AccordionItem";
 
 const sortOptions = [
-    { label: "Quantity (high → low)", value: ["quantity:desc"] },
+    { label: "Quantity (high -> low)", value: ["quantity:desc"] },
     { label: "In stock first", value: ["inStock:desc"] },
-    { label: "Rating (high → low)", value: ["averageRating:desc"] },
-    { label: "Name (A → Z)", value: ["name:asc"] },
-    { label: "Name (Z → A)", value: ["name:desc"] },
+    { label: "Rating (high -> low)", value: ["averageRating:desc"] },
+    { label: "Name (A -> Z)", value: ["name:asc"] },
+    { label: "Name (Z -> A)", value: ["name:desc"] },
 ];
 
 export default function SortAccordion() {

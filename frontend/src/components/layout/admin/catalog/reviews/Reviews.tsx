@@ -24,10 +24,7 @@ export default function Reviews({ initialData }: Readonly<ReviewsProps>) {
     return (
         <div className="flex flex-1 min-h-0 flex-col">
             {error && (
-                <p
-                    role="alert"
-                    className="border-b border-red-200 bg-red-50 px-6 py-2 text-xs text-red-700"
-                >
+                <p className="border-b border-red-200 bg-red-50 px-6 py-2 text-xs text-red-700">
                     {error}
                 </p>
             )}
@@ -75,10 +72,7 @@ export default function Reviews({ initialData }: Readonly<ReviewsProps>) {
                     {
                         title: "Rating",
                         cell: (review) => (
-                            <div
-                                role="img"
-                                className="flex items-center gap-0.5"
-                            >
+                            <div className="flex items-center gap-0.5">
                                 {Array.from({ length: 5 }, (_, index) => (
                                     <LuStar
                                         key={index}

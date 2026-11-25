@@ -9,6 +9,7 @@ import {
     loginUserService,
 } from "../services/authService";
 import { emptyAction, actionFailure } from "../services/actionState";
+import { StoreApiError } from "../services/http";
 import type { ILoginAction, IRegisterAction } from "@/interfaces/data";
 import {
     codeSchema,
@@ -91,7 +92,12 @@ export async function loginUserAction(
                 };
             }
 
-            const response = await loginUserService(validateData.data);
+            const response = await loginUserService({
+                ...validateData.data,
+                ...(form.get("acceptTerms") === "on"
+                    ? { acceptTerms: true }
+                    : {}),
+            });
 
             if (response.requiresMfa && response.tempToken) {
                 cookieStore.set("customer_mfa", response.tempToken, {
@@ -110,12 +116,36 @@ export async function loginUserAction(
             }
         }
     } catch (error) {
+        if (
+            error instanceof StoreApiError &&
+            typeof error.data === "object" &&
+            error.data !== null &&
+            "requiresTermsAcceptance" in error.data &&
+            error.data.requiresTermsAcceptance === true
+        ) {
+            return {
+                ...emptyAction,
+                formData: form,
+                message: error.message,
+                requiresTermsAcceptance: true,
+            };
+        }
+
+        const challengeUsedUp =
+            !!challenge &&
+            error instanceof StoreApiError &&
+            error.status === 401;
+
+        if (challengeUsedUp) {
+            cookieStore.delete("customer_mfa");
+        }
+
         return {
             ...actionFailure(error, {
                 email: "identifier",
             }),
 
-            requiresMfa: !!challenge,
+            requiresMfa: !!challenge && !challengeUsedUp,
         };
     }
 
@@ -134,10 +164,7 @@ export async function logoutAction() {
             await authRequest("logout");
         }
 
-        if (
-            cookieStore.get("refreshToken") &&
-            cookieStore.get("accessToken")
-        ) {
+        if (cookieStore.get("refreshToken") && cookieStore.get("accessToken")) {
             await authRequest("logout");
         }
     } finally {

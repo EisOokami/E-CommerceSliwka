@@ -7,6 +7,7 @@ export class StoreApiError extends Error {
         public status: number,
         message: string,
         public details: ApiFieldError[] = [],
+        public data: unknown = undefined,
     ) {
         super(message);
         this.name = "StoreApiError";
@@ -85,6 +86,7 @@ export async function readResponse<T>(response: Response): Promise<T> {
                 ? data.message
                 : "The store service is unavailable.",
             details,
+            data?.data,
         );
     }
 

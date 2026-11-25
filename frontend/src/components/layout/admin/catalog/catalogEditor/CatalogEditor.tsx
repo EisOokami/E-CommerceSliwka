@@ -274,11 +274,7 @@ export default function CatalogEditor({
                             </label>
                         </>
                     )}
-                    {error && (
-                        <p role="alert" className="text-red-600 text-sm">
-                            {error}
-                        </p>
-                    )}
+                    {error && <p className="text-red-600 text-sm">{error}</p>}
                     {writable && (
                         <button className={cn(solidButtonClass, "h-9 px-6")}>
                             {busy ? "Saving..." : "Save changes"}

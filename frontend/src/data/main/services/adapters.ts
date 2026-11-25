@@ -175,6 +175,8 @@ export function user(data: UserDto): IUser {
         confirmed: data.confirmed,
         blocked: data.blocked,
         provider: data.authProvider,
+        hasPassword: data.hasPassword ?? data.authProvider !== "google",
+        requiresTermsAcceptance: data.requiresTermsAcceptance === true,
         avatar: {
             id: data.id,
             url: data.avatarUrl ? mediaUrl(data.avatarUrl) : "/avatar.png",

@@ -71,6 +71,7 @@ export interface IRegisterAction extends IBaseAction {
 
 export interface ILoginAction extends IBaseAction {
     requiresMfa?: boolean;
+    requiresTermsAcceptance?: boolean;
     zodErrors: ILoginZodErrors | null;
 }
 
@@ -89,6 +90,17 @@ export interface IUpdateProfileAction extends IBaseAction {
         avatar?: string[] | null;
     } | null;
     zodErrors: IUpdateProfileZodErrors | null;
+}
+
+export interface IDeleteAccountZodErrors extends IBaseZodErrors {
+    password?: string[];
+    code?: string[];
+    confirm?: string[];
+}
+
+export interface IDeleteAccountAction extends IBaseAction {
+    codeSent?: boolean;
+    zodErrors: IDeleteAccountZodErrors | null;
 }
 
 export interface IChangePasswordAction extends IBaseAction {
@@ -224,6 +236,8 @@ export interface UserDto extends BaseDto {
     confirmed: boolean;
     blocked: boolean;
     authProvider: string;
+    hasPassword?: boolean;
+    requiresTermsAcceptance?: boolean;
 }
 
 export interface OrderDto extends BaseDto {

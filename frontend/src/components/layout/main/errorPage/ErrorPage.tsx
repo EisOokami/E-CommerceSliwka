@@ -12,9 +12,7 @@ export default function ErrorPage({
             <h1 className="text-3xl md:text-4xl font-bold">
                 Oops! Something went wrong.
             </h1>
-            <p className="max-w-xl text-lg text-gray-500" role="alert">
-                {message}
-            </p>
+            <p className="max-w-xl text-lg text-gray-500">{message}</p>
             <div className="flex flex-wrap justify-center gap-4">
                 {onRetry && (
                     <Button text="Try again" theme="dark" onClick={onRetry} />

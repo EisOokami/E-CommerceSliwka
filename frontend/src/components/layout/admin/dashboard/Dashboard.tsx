@@ -55,15 +55,11 @@ export default function Dashboard({ initialData }: Readonly<DashboardProps>) {
                 actions={
                     <div className="flex items-center gap-2">
                         {currencies.length > 1 && (
-                            <div
-                                role="tablist"
-                                className="inline-flex h-8 items-center rounded-md border border-gray-200 bg-white p-0.5"
-                            >
+                            <div className="inline-flex h-8 items-center rounded-md border border-gray-200 bg-white p-0.5">
                                 {currencies.map((value) => (
                                     <button
                                         key={value}
                                         type="button"
-                                        role="tab"
                                         onClick={() => setCurrency(value)}
                                         className={cn(
                                             "h-full rounded px-2.5 text-xs font-medium transition-colors",

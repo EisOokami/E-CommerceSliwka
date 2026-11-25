@@ -138,9 +138,7 @@ export default function OrderDetail({
                         Cancelling delivery does not issue a payment refund.
                     </p>
                     {error && (
-                        <p role="alert" className="mt-2 text-sm text-red-600">
-                            {error}
-                        </p>
+                        <p className="mt-2 text-sm text-red-600">{error}</p>
                     )}
                 </div>
                 <div className={cardClass}>

@@ -119,11 +119,7 @@ export default function Security({ initialData }: Readonly<SecurityProps>) {
                         {admin.email} · {admin.role}
                     </p>
                 </div>
-                {error && (
-                    <p role="alert" className="text-sm text-red-600">
-                        {error}
-                    </p>
-                )}
+                {error && <p className="text-sm text-red-600">{error}</p>}
                 <div className="grid lg:grid-cols-2 gap-4">
                     <form
                         onSubmit={passwordSubmit}

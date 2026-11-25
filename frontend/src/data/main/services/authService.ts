@@ -99,12 +99,14 @@ export async function registerUserService(body: {
         username: body.username,
         email: body.email,
         password: body.password,
+        agreeToTermsAndPrivacy: true,
     });
 }
 
 export async function loginUserService(body: {
     email: string;
     password: string;
+    acceptTerms?: boolean;
 }) {
     return authRequest("login", body);
 }

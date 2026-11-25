@@ -135,9 +135,7 @@ const SearchBarHeader = memo(function SearchBarHeader({
                     }`}
                 >
                     {searchError ? (
-                        <p role="alert" className="p-4">
-                            {searchError}
-                        </p>
+                        <p className="p-4">{searchError}</p>
                     ) : products.length > 0 ? (
                         <div className="py-2">
                             {products.slice(0, 5).map((productData) => (

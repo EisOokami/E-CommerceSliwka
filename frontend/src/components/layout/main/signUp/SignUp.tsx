@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { registerUserAction } from "@/data/main/actions/authActions";
 import { SignUpProps } from "./SignUp.interfaces";
@@ -10,6 +10,9 @@ import { StrapiErrors } from "@/components/ui/main/strapiErrors/StrapiErrors";
 import AuthShell from "@/components/layout/main/authShell/AuthShell";
 import AuthInput from "@/components/ui/main/authInput/AuthInput";
 import { ZodErrors } from "@/components/ui/main/zodErrors/ZodErrors";
+import GoogleButton, {
+    isGoogleSignInAvailable,
+} from "@/components/ui/main/googleButton/GoogleButton";
 
 const INITIAL_STATE = {
     zodErrors: null,
@@ -19,11 +22,17 @@ const INITIAL_STATE = {
     formData: null,
 };
 
-export default function SignUp({ pageData }: Readonly<SignUpProps>) {
+const OAUTH_ERRORS: Record<string, string> = {
+    terms_required:
+        "To create an account with Google, tick the Terms of Service checkbox first, then use Continue with Google.",
+};
+
+export default function SignUp({ pageData, error }: Readonly<SignUpProps>) {
     const [formState, formAction, pending] = useActionState(
         registerUserAction,
         INITIAL_STATE,
     );
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     return (
         <AuthShell pageData={pageData}>
@@ -72,12 +81,29 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                             type="checkbox"
                             name="terms-and-policy"
                             id="terms-and-policy"
+                            checked={termsAccepted}
+                            onChange={(event) =>
+                                setTermsAccepted(event.target.checked)
+                            }
                         />
                         <label htmlFor="terms-and-policy">
-                            I agree to the{" "}
-                            <a href="#" className="underline">
-                                Terms & Privacy
-                            </a>
+                            I accept the{" "}
+                            <Link
+                                href="/terms"
+                                target="_blank"
+                                className="underline"
+                            >
+                                Terms of Service
+                            </Link>{" "}
+                            and confirm that I have read the{" "}
+                            <Link
+                                href="/privacy"
+                                target="_blank"
+                                className="underline"
+                            >
+                                Privacy Policy
+                            </Link>{" "}
+                            (both in Polish).
                         </label>
                     </div>
                     <ZodErrors
@@ -92,7 +118,10 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                 ) : (
                     <StrapiErrors error={formState?.strapiErrors} />
                 )}
-                {formState?.message && <p role="status">{formState.message}</p>}
+                {error && OAUTH_ERRORS[error] && !formState?.message && (
+                    <p className="text-red-600">{OAUTH_ERRORS[error]}</p>
+                )}
+                {formState?.message && <p>{formState.message}</p>}
                 <Button
                     text="Sign Up"
                     theme="dark"
@@ -100,6 +129,19 @@ export default function SignUp({ pageData }: Readonly<SignUpProps>) {
                     isLoading={pending}
                     className="w-full"
                 />
+                {isGoogleSignInAvailable && (
+                    <div className="grid gap-4">
+                        <div className="flex items-center gap-3 text-sm text-gray-500">
+                            <span className="h-px flex-1 bg-gray-200" />
+                            or
+                            <span className="h-px flex-1 bg-gray-200" />
+                        </div>
+                        <GoogleButton
+                            termsAccepted={termsAccepted}
+                            disabled={!termsAccepted}
+                        />
+                    </div>
+                )}
                 <div className="flex flex-wrap justify-center items-center gap-2">
                     <p>Have an account?</p>
                     <Link href="/signIn" className="underline">

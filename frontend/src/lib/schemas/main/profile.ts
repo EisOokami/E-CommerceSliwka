@@ -74,3 +74,24 @@ export const changePasswordSchema = z
             message: "New passwords do not match",
         },
     );
+
+export const deleteAccountSchema = z
+    .object({
+        password: z
+            .string()
+            .min(1, "Enter your password")
+            .max(255, "Password must be less than 255 characters long")
+            .optional(),
+        code: z
+            .string()
+            .trim()
+            .regex(/^\d{6}$/, "Enter the six-digit code from the email")
+            .optional(),
+        confirm: z.literal("on", {
+            error: "Confirm that you understand the deletion cannot be undone",
+        }),
+    })
+    .refine((data) => data.password || data.code, {
+        message: "Enter your password or the code from the email",
+        path: ["password"],
+    });

@@ -55,7 +55,7 @@ export default function AccountDetails({
     };
 
     return (
-        <main className="grid gap-10 w-full">
+        <div className="grid gap-10 w-full">
             <section className="grid gap-7">
                 <div className="flex items-center gap-1">
                     <IoPersonOutline className="md:mt-1 text-3xl" />
@@ -160,9 +160,7 @@ export default function AccountDetails({
                             <div className="self-end grid gap-2">
                                 {accountSettingFormState?.message &&
                                 !accountSettingFormState?.strapiErrors ? (
-                                    <p role="status">
-                                        {accountSettingFormState.message}
-                                    </p>
+                                    <p>{accountSettingFormState.message}</p>
                                 ) : null}
                                 {accountSettingFormState?.strapiErrorsDetails &&
                                 accountSettingFormState?.strapiErrorsDetails
@@ -316,6 +314,6 @@ export default function AccountDetails({
                     </div>
                 </form>
             </section>
-        </main>
+        </div>
     );
 }

@@ -137,11 +137,7 @@ export default function CustomerDetail({
                             )}
                         </div>
                     )}
-                    {error && (
-                        <p role="alert" className="text-sm text-red-600">
-                            {error}
-                        </p>
-                    )}
+                    {error && <p className="text-sm text-red-600">{error}</p>}
                 </div>
             </div>
         </div>

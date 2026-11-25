@@ -63,7 +63,7 @@ export default function Settings({ initialData }: Readonly<SettingsProps>) {
             />
             <div className="p-6 max-w-3xl">
                 {saved && (
-                    <p role="status" className="mb-3 text-sm text-emerald-700">
+                    <p className="mb-3 text-sm text-emerald-700">
                         Settings saved.
                     </p>
                 )}

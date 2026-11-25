@@ -9,10 +9,12 @@ import { emptyAction, actionFailure } from "../services/actionState";
 import { uploadImagesToStrapi } from "../services/uploadImage";
 import type {
     IChangePasswordAction,
+    IDeleteAccountAction,
     IUpdateProfileAction,
 } from "@/interfaces/data";
 import {
     changePasswordSchema,
+    deleteAccountSchema,
     updateProfileSchema,
 } from "@/lib/schemas/main/profile";
 
@@ -134,4 +136,70 @@ export async function changePasswordAction(
     );
 
     redirect("/signIn");
+}
+
+export async function requestAccountDeletionCodeAction(): Promise<IDeleteAccountAction> {
+    try {
+        const result = await mutateData<{ message?: string }>(
+            "POST",
+            "/api/users/me/deletion-code",
+        );
+
+        return {
+            ...emptyAction,
+            codeSent: true,
+            message:
+                result?.message ?? "We sent a confirmation code to your email.",
+        };
+    } catch (error) {
+        return {
+            ...actionFailure(error),
+            codeSent: false,
+        };
+    }
+}
+
+export async function deleteAccountAction(
+    userId: string,
+    _previous: IDeleteAccountAction | undefined,
+    form: FormData,
+): Promise<IDeleteAccountAction> {
+    const codeSent = form.get("delete-code-sent") === "true";
+    const validateData = deleteAccountSchema.safeParse({
+        password: form.get("delete-password") || undefined,
+        code: form.get("delete-code") || undefined,
+        confirm: form.get("delete-confirm"),
+    });
+
+    if (!validateData.success) {
+        return {
+            ...emptyAction,
+            codeSent,
+            zodErrors: z.flattenError(validateData.error).fieldErrors,
+        };
+    }
+
+    try {
+        await mutateData("DELETE", "/api/users/" + encodeURIComponent(userId), {
+            ...(validateData.data.password
+                ? { password: validateData.data.password }
+                : {}),
+            ...(validateData.data.code ? { code: validateData.data.code } : {}),
+        });
+    } catch (error) {
+        return {
+            ...actionFailure(error),
+            codeSent,
+        };
+    }
+
+    const cookieStore = await cookies();
+
+    ["accessToken", "refreshToken", "csrfToken", "customer_mfa"].forEach(
+        (name) => {
+            cookieStore.delete(name);
+        },
+    );
+
+    redirect("/?accountDeleted=1");
 }

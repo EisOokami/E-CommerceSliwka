@@ -208,10 +208,7 @@ export default function AccordionContainer({
     return (
         <section className="w-full">
             {error ? (
-                <div
-                    role="alert"
-                    className="grid gap-4 rounded-lg border p-5 text-gray-700"
-                >
+                <div className="grid gap-4 rounded-lg border p-5 text-gray-700">
                     <p>{error}</p>
                     <Button
                         text="Retry"

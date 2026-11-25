@@ -406,11 +406,7 @@ export default function ProductEditor({
                         ),
                     )}
                 </div>
-                {error && (
-                    <p role="alert" className="mb-4 text-sm text-red-600">
-                        {error}
-                    </p>
-                )}
+                {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
                 <fieldset
                     disabled={busy || generating || !writable}
                     className="space-y-4"
@@ -470,10 +466,7 @@ export default function ProductEditor({
                                             "h-9 px-3 text-sm",
                                         )}
                                     >
-                                        <LuSparkles
-                                            size={16}
-                                            aria-hidden="true"
-                                        />
+                                        <LuSparkles size={16} />
                                         {autofilling
                                             ? "Auto-filling..."
                                             : "Auto-fill with AI"}
@@ -487,18 +480,12 @@ export default function ProductEditor({
                                         saving.
                                     </p>
                                     {autofillError && (
-                                        <p
-                                            role="alert"
-                                            className="text-sm text-red-600"
-                                        >
+                                        <p className="text-sm text-red-600">
                                             {autofillError}
                                         </p>
                                     )}
                                     {autofillStatus && (
-                                        <p
-                                            role="status"
-                                            className="text-sm text-gray-600"
-                                        >
+                                        <p className="text-sm text-gray-600">
                                             {autofillStatus}
                                         </p>
                                     )}
@@ -525,17 +512,14 @@ export default function ProductEditor({
                                         "h-9 px-3 text-sm",
                                     )}
                                 >
-                                    <LuSparkles size={16} aria-hidden="true" />
+                                    <LuSparkles size={16} />
                                     {generating
                                         ? "Generating..."
                                         : "Generate with AI"}
                                 </button>
                             )}
                             {generationError && (
-                                <p
-                                    role="alert"
-                                    className="text-sm text-red-600"
-                                >
+                                <p className="text-sm text-red-600">
                                     {generationError}
                                 </p>
                             )}

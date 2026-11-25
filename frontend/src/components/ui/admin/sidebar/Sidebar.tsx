@@ -198,11 +198,7 @@ export default function Sidebar() {
                 ))}
             </nav>
             <div className="border-t border-gray-200 p-3">
-                {error && (
-                    <p role="alert" className="mb-2 text-xs text-red-600">
-                        {error}
-                    </p>
-                )}
+                {error && <p className="mb-2 text-xs text-red-600">{error}</p>}
                 <div className="flex items-center gap-2.5 px-1">
                     <div className="hidden lg:flex w-7 h-7 rounded-full bg-gray-200 items-center justify-center text-xs font-semibold text-gray-700">
                         {admin.fullName.slice(0, 2).toUpperCase()}

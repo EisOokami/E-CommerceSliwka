@@ -94,11 +94,7 @@ export default function ProductImages({
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
                 Product Images
             </h2>
-            {error && (
-                <p role="alert" className="mb-3 text-xs text-red-600">
-                    {error}
-                </p>
-            )}
+            {error && <p className="mb-3 text-xs text-red-600">{error}</p>}
             {state.error && <ApiState {...state} retry={state.reload} />}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {images.map((image) => {

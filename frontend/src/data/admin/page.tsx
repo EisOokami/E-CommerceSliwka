@@ -23,7 +23,7 @@ export default async function renderAdminPage(
             }
 
             return (
-                <section className="p-8" role="alert">
+                <section className="p-8">
                     <h1 className="font-semibold">
                         {error.status === 403
                             ? "Access denied"
@@ -43,7 +43,7 @@ export default async function renderAdminPage(
 
         if (error instanceof ZodError) {
             return (
-                <section className="p-8" role="alert">
+                <section className="p-8">
                     Invalid page parameters. Please check the URL.
                 </section>
             );

@@ -1,6 +1,7 @@
 import { getUserMeLoader } from "@/data/main/services/getUserMeLoader";
 import { redirect } from "next/navigation";
 
+import AccountData from "@/components/layout/main/account/accountData/AccountData";
 import AccountDetails from "@/components/layout/main/account/accountDetails/AccountDetails";
 
 export default async function AccountDetailsPage() {
@@ -10,5 +11,10 @@ export default async function AccountDetailsPage() {
         redirect("/signIn");
     }
 
-    return <AccountDetails userData={user.data} />;
+    return (
+        <main className="grid gap-10 w-full">
+            <AccountDetails userData={user.data} />
+            <AccountData userData={user.data} />
+        </main>
+    );
 }

@@ -80,7 +80,7 @@ export default function OrderList() {
         <div className="grid gap-3">
             <div className="space-y-4">
                 {error ? (
-                    <p role="alert">{error}</p>
+                    <p>{error}</p>
                 ) : isLoading ? (
                     [...Array(8)].map((_, i) => <OrderCardSkeleton key={i} />)
                 ) : !ordersData.length ? (
