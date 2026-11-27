@@ -64,8 +64,8 @@ export const storeContent: {
                     id: "legal",
                     title: "About this demo",
                     links: [
-                        link("terms", "/terms", "Terms of Service (PL)"),
-                        link("privacy", "/privacy", "Privacy Policy (PL)"),
+                        link("terms", "/terms", "Terms of Service"),
+                        link("privacy", "/privacy", "Privacy Policy"),
                         external(
                             "contact",
                             "mailto:help.lakio@gmail.com",

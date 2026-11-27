@@ -51,7 +51,7 @@ function renderInline(text: string): ReactNode[] {
     let last = 0;
 
     for (const match of text.matchAll(
-        /(\*\*[^*]+\*\*|`[^`]+`|\[DO UZUPEŁNIENIA:[^\]]*\]|https?:\/\/[^\s)]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
+        /(\*\*[^*]+\*\*|`[^`]+`|\[DO UZUPEŁNIENIA:[^\]]*\]|https?:\/\/[^\s)|]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
     )) {
         const index = match.index ?? 0;
 
@@ -64,17 +64,25 @@ function renderInline(text: string): ReactNode[] {
 
         if (token.startsWith("**")) {
             nodes.push(
-                <strong key={index}>{renderInline(token.slice(2, -2))}</strong>,
+                <strong key={index} className="font-semibold text-black">
+                    {renderInline(token.slice(2, -2))}
+                </strong>,
             );
         } else if (token.startsWith("`")) {
             nodes.push(
-                <code key={index} className="px-1 bg-gray-100 rounded">
+                <code
+                    key={index}
+                    className="px-1 py-0.5 text-[0.85em] bg-gray-100 rounded"
+                >
                     {token.slice(1, -1)}
                 </code>,
             );
         } else if (token.startsWith("[DO UZUPEŁNIENIA")) {
             nodes.push(
-                <mark key={index} className="px-1 bg-amber-200">
+                <mark
+                    key={index}
+                    className="px-1 text-amber-950 bg-amber-200 rounded"
+                >
                     {token}
                 </mark>,
             );
@@ -90,7 +98,7 @@ function renderInline(text: string): ReactNode[] {
                 <a
                     key={index}
                     href={token}
-                    className="underline break-all"
+                    className="text-black underline underline-offset-4 break-words"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -99,7 +107,11 @@ function renderInline(text: string): ReactNode[] {
             );
         } else {
             nodes.push(
-                <a key={index} href={"mailto:" + token} className="underline">
+                <a
+                    key={index}
+                    href={`mailto:${token}`}
+                    className="text-black underline underline-offset-4 break-words"
+                >
                     {token}
                 </a>,
             );
@@ -121,11 +133,11 @@ function renderInline(text: string): ReactNode[] {
 
 function renderBlocks(source: string): ReactNode[] {
     const lines = source
-        .replace(/\{\{(\w+)\}\}/g, (match, key: string) => {
-            return key in legalInfo
+        .replace(/\{\{(\w+)\}\}/g, (match, key: string) =>
+            key in legalInfo
                 ? String(legalInfo[key as keyof typeof legalInfo])
-                : match;
-        })
+                : match,
+        )
         .trim()
         .split("\n");
     const blocks: ReactNode[] = [];
@@ -154,41 +166,27 @@ function renderBlocks(source: string): ReactNode[] {
             continue;
         }
 
-        if (line.startsWith("# ")) {
+        const headingMatch = /^(#{1,3}) (.*)$/.exec(line);
+
+        if (headingMatch) {
+            const level = headingMatch[1].length;
+            const anchor = /\s*\{#([a-z0-9-]+)\}\s*$/.exec(headingMatch[2]);
+            const id = anchor?.[1];
+            const text = anchor
+                ? headingMatch[2].slice(0, anchor.index)
+                : headingMatch[2];
+            const className =
+                level === 1
+                    ? "text-3xl md:text-4xl font-semibold tracking-tight text-black text-balance"
+                    : level === 2
+                      ? "mt-6 text-xl md:text-2xl font-semibold tracking-tight text-black scroll-mt-20"
+                      : "mt-2 text-lg font-medium text-black scroll-mt-20";
+            const Tag = `h${level}` as "h1" | "h2" | "h3";
+
             blocks.push(
-                <h1
-                    key={key}
-                    className="text-3xl md:text-4xl xl:text-5xl font-bold text-pretty"
-                >
-                    {renderInline(line.slice(2))}
-                </h1>,
-            );
-
-            i++;
-
-            continue;
-        }
-
-        if (line.startsWith("## ")) {
-            blocks.push(
-                <h2
-                    key={key}
-                    className="mt-6 text-2xl md:text-3xl font-semibold text-pretty"
-                >
-                    {renderInline(line.slice(3))}
-                </h2>,
-            );
-
-            i++;
-
-            continue;
-        }
-
-        if (line.startsWith("### ")) {
-            blocks.push(
-                <h3 key={key} className="mt-2 text-xl md:text-2xl font-medium">
-                    {renderInline(line.slice(4))}
-                </h3>,
+                <Tag key={key} id={id} className={className}>
+                    {renderInline(text)}
+                </Tag>,
             );
 
             i++;
@@ -197,7 +195,7 @@ function renderBlocks(source: string): ReactNode[] {
         }
 
         if (/^---\s*$/.test(line)) {
-            blocks.push(<hr key={key} className="my-4" />);
+            blocks.push(<hr key={key} className="my-2 border-gray-200" />);
 
             i++;
 
@@ -210,7 +208,7 @@ function renderBlocks(source: string): ReactNode[] {
             blocks.push(
                 <blockquote
                     key={key}
-                    className="p-5 bg-amber-50 border-l-4 border-amber-400 rounded-r-xl"
+                    className="p-4 bg-gray-100 border-l-4 border-gray-900 rounded-r-md"
                 >
                     {renderInline(
                         quote.map((current) => current.slice(2)).join(" "),
@@ -232,17 +230,17 @@ function renderBlocks(source: string): ReactNode[] {
                         .split("|")
                         .map((cell) => cell.trim()),
                 );
-            const [head, ...body] = rows;
+            const [head = [], ...body] = rows;
 
             blocks.push(
                 <div key={key} className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left text-sm border-collapse">
                         <thead>
                             <tr>
                                 {head.map((cell, index) => (
                                     <th
                                         key={index}
-                                        className="p-3 bg-gray-100 border font-medium"
+                                        className="p-2.5 font-semibold text-black bg-gray-100 border border-gray-200"
                                     >
                                         {renderInline(cell)}
                                     </th>
@@ -255,7 +253,7 @@ function renderBlocks(source: string): ReactNode[] {
                                     {row.map((cell, index) => (
                                         <td
                                             key={index}
-                                            className="p-3 border align-top"
+                                            className="p-2.5 border border-gray-200 align-top"
                                         >
                                             {renderInline(cell)}
                                         </td>
@@ -271,13 +269,44 @@ function renderBlocks(source: string): ReactNode[] {
         }
 
         if (/^\d+\. /.test(line)) {
-            const items = collect((current) => /^\d+\. /.test(current));
+            const items: { text: string; children: string[] }[] = [];
+
+            while (i < lines.length) {
+                const current = lines[i];
+
+                if (/^\d+\. /.test(current)) {
+                    items.push({
+                        text: current.replace(/^\d+\. /, ""),
+                        children: [],
+                    });
+                } else if (/^\s+\d+\. /.test(current) && items.length) {
+                    items[items.length - 1].children.push(
+                        current.replace(/^\s+\d+\. /, ""),
+                    );
+                } else {
+                    break;
+                }
+
+                i++;
+            }
 
             blocks.push(
-                <ol key={key} className="grid gap-2 pl-6 list-decimal">
+                <ol
+                    key={key}
+                    className="space-y-2 pl-5 list-decimal marker:text-gray-500"
+                >
                     {items.map((item, index) => (
                         <li key={index}>
-                            {renderInline(item.replace(/^\d+\. /, ""))}
+                            {renderInline(item.text)}
+                            {item.children.length > 0 && (
+                                <ol className="mt-2 space-y-1 pl-5 list-[lower-alpha] marker:text-gray-500">
+                                    {item.children.map((child, childIndex) => (
+                                        <li key={childIndex}>
+                                            {renderInline(child)}
+                                        </li>
+                                    ))}
+                                </ol>
+                            )}
                         </li>
                     ))}
                 </ol>,
@@ -290,7 +319,10 @@ function renderBlocks(source: string): ReactNode[] {
             const items = collect((current) => current.startsWith("- "));
 
             blocks.push(
-                <ul key={key} className="grid gap-2 pl-6 list-disc">
+                <ul
+                    key={key}
+                    className="space-y-2 pl-5 list-disc marker:text-gray-500"
+                >
                     {items.map((item, index) => (
                         <li key={index}>{renderInline(item.slice(2))}</li>
                     ))}
@@ -307,7 +339,7 @@ function renderBlocks(source: string): ReactNode[] {
         while (
             i < lines.length &&
             lines[i].trim() &&
-            !/^(#{1,3} |> |\||- |\d+\. |---\s*$)/.test(lines[i])
+            !/^(#{1,3} |> |\||- |\d+\. |\s+\d+\. |---\s*$)/.test(lines[i])
         ) {
             paragraph.push(lines[i]);
 
@@ -316,7 +348,11 @@ function renderBlocks(source: string): ReactNode[] {
 
         blocks.push(
             <p key={key} className="text-pretty">
-                {renderInline(paragraph.join(" "))}
+                {paragraph.flatMap((part, index) =>
+                    index === 0
+                        ? renderInline(part)
+                        : [<br key={`br-${index}`} />, ...renderInline(part)],
+                )}
             </p>,
         );
     }
@@ -328,13 +364,10 @@ export default function LegalDocument({
     source,
 }: Readonly<LegalDocumentProps>) {
     return (
-        <main className="container mx-auto mb-auto px-5 py-10 md:py-16">
-            <p className="mb-6 text-sm text-gray-500">
-                Legal documents are available in Polish only.
-            </p>
+        <main className="container mx-auto px-5 py-12 md:py-16 lg:py-24">
             <article
                 lang="pl"
-                className="grid gap-4 max-w-4xl md:text-lg leading-relaxed"
+                className="space-y-4 max-w-3xl mx-auto text-[0.9375rem] leading-relaxed text-gray-700"
             >
                 {renderBlocks(source)}
             </article>

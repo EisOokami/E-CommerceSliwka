@@ -114,8 +114,7 @@ export default function SignIn({
                                     className="underline"
                                 >
                                     Privacy Policy
-                                </Link>{" "}
-                                (both in Polish).
+                                </Link>
                             </label>
                         </div>
                     )}
@@ -173,8 +172,7 @@ export default function SignIn({
                                         className="underline"
                                     >
                                         Privacy Policy
-                                    </Link>{" "}
-                                    (both in Polish).
+                                    </Link>
                                 </label>
                             </div>
                         )}

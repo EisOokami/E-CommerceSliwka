@@ -102,8 +102,7 @@ export default function SignUp({ pageData, error }: Readonly<SignUpProps>) {
                                 className="underline"
                             >
                                 Privacy Policy
-                            </Link>{" "}
-                            (both in Polish).
+                            </Link>
                         </label>
                     </div>
                     <ZodErrors

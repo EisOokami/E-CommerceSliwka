@@ -79,8 +79,7 @@ export default function TermsUpdateDialog() {
                             className="underline"
                         >
                             Privacy Policy
-                        </Link>{" "}
-                        (both in Polish).
+                        </Link>
                     </label>
                 </div>
                 {error && <p className="text-red-600">{error}</p>}
