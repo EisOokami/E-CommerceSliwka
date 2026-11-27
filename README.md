@@ -18,6 +18,7 @@
 <p align="center">
     <a href="#about">About</a> •
     <a href="#features">Features</a> •
+    <a href="#layout">Layout</a> •
     <a href="#started">Getting Started</a> •
     <a href="#tech">Tech Stack</a> •
     <a href="#contribute">Contribute</a> •
@@ -35,6 +36,12 @@ The repository contains two applications:
 | ----------- | ------------------------------------------------------------------------------------------------- |
 | `frontend/` | Next.js app: the storefront and the admin panel at `/admin`                                       |
 | `backend/`  | Express REST API on PostgreSQL (Drizzle ORM): store, checkout, admin, uploads and background jobs |
+
+<h2 id="layout">🎨 Layout</h2>
+
+<p align="center">
+    <img src="frontend/public/e-commercesliwka.png" alt="Sliwka store home page" width="900" />
+</p>
 
 <h2 id="started">🚀 Getting Started</h2>
 
